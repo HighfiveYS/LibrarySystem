@@ -3,6 +3,7 @@ package yonsei.highfive.library.circulation;
 import java.util.ArrayList;
 
 import yonsei.highfive.R;
+import yonsei.highfive.library.LibrarySystemActivity;
 import yonsei.highfive.library.Settings;
 import android.app.Activity;
 import android.app.AlertDialog;
@@ -10,6 +11,8 @@ import android.content.DialogInterface;
 import android.content.Intent;
 import android.content.SharedPreferences;
 import android.os.Bundle;
+import android.preference.CheckBoxPreference;
+import android.preference.EditTextPreference;
 import android.preference.PreferenceManager;
 import android.view.Menu;
 import android.view.MenuInflater;
@@ -17,9 +20,7 @@ import android.view.MenuItem;
 import android.view.View;
 import android.view.View.OnClickListener;
 import android.widget.Button;
-import android.widget.EditText;
 import android.widget.TextView;
-import android.widget.Toast;
 
 
 public class CirculationVer1Activity extends Activity 
@@ -30,8 +31,7 @@ public class CirculationVer1Activity extends Activity
 	String userpw;
 	
 	String bookid;
-	
-	boolean certification = false;
+
 	
 	UserSpec queryuser = new UserSpec();
 	
@@ -78,7 +78,6 @@ public class CirculationVer1Activity extends Activity
         BookSpec prebook = new BookSpec();
         prebook = _123;
 		user.Borrowing.add(prebook);
-        
         // 이용자 계정 DB에 등록 // 
         UserList.add(user);
 
@@ -132,47 +131,14 @@ public class CirculationVer1Activity extends Activity
 		}
 		return false;
 	}
-  
-	@Override
-	protected void onResume() {
-		// TODO Auto-generated method stub
-		super.onResume();
 
-        // 환경설정을 통해 학번 가져오기 //
-        SharedPreferences pref = PreferenceManager.getDefaultSharedPreferences(this);
-        userid = pref.getString("id", "");
-        userpw = pref.getString("pw", "");
-        
-        // 학생인증 //
-        String queryID = userid;
-        String queryPW = userpw;
-        queryuser = new UserSpec();
-        certification = false;
-        for(UserSpec tmp : UserList){
-        	String tempID = tmp.get_UserID();
-        	String tempPW = tmp.get_Password();
-        	if(tempID.equals(queryID) && tempPW.equals(queryPW)){
-        		queryuser = tmp;
-        		certification = true;
-        		Toast.makeText(this, "인증 성공", Toast.LENGTH_LONG).show();
-        		break;
-        	}
-        }
-        if(certification==false)
-        	Toast.makeText(this, "인증 실패", Toast.LENGTH_LONG).show();
-	}
-
-
-
-
-
+	
 	// 버튼 클릭 이벤트 처리 
 	public void onClick(View view)
 	{
 	if (view == button) {
-		
-		
-		if( certification == false) {
+		SharedPreferences pref = PreferenceManager.getDefaultSharedPreferences(this);
+		if(pref.getBoolean("certification", false)==false){
 			showDialog(this, "조회 실패", "유효하지 않은 이용자입니다.");
 			 return;
 		}
