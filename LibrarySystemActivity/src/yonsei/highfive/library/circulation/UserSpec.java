@@ -8,7 +8,6 @@ public class UserSpec {
 	String Password;
 	String UserName;
 	
-	public ArrayList <BookSpec> Borrowing = new ArrayList<BookSpec>();
 	int Borr_num;
 	int Delay_pay;
 		

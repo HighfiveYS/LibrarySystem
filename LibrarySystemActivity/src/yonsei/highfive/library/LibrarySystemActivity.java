@@ -1,34 +1,25 @@
 package yonsei.highfive.library;
 
-import java.net.URI;
-
-import org.json.JSONException;
-import org.json.JSONObject;
+import java.sql.ResultSet;
+import java.sql.SQLException;
+import java.sql.Statement;
 
 import yonsei.highfive.R;
+import yonsei.highfive.db.DBConnector;
 import android.app.Activity;
-import android.app.ProgressDialog;
-import android.content.DialogInterface;
 import android.content.Intent;
 import android.content.SharedPreferences;
 import android.net.Uri;
-import android.os.AsyncTask;
 import android.os.Bundle;
 import android.preference.PreferenceManager;
 import android.view.Menu;
 import android.view.MenuInflater;
 import android.view.MenuItem;
-import edu.stanford.junction.JunctionException;
-import edu.stanford.junction.android.AndroidJunctionMaker;
-import edu.stanford.junction.api.activity.JunctionActor;
-import edu.stanford.junction.api.messaging.MessageHeader;
-import edu.stanford.junction.provider.xmpp.XMPPSwitchboardConfig;
+import android.widget.Toast;
 
 public class LibrarySystemActivity extends Activity {
     /** Called when the activity is first created. */
 	
-	//testcommit-jh//
-
 	//NFC변수는 나중에 Activity가 태그를 Share할 일이 생길 때 사용이 됩니다.
 	//private Nfc mNfc;
 	
@@ -75,103 +66,7 @@ public class LibrarySystemActivity extends Activity {
 		 
     }
     
-	// JunctionActor 정의
 
-	private UserJunction actor = new UserJunction();
-	private XMPPSwitchboardConfig config = new XMPPSwitchboardConfig(	"boom1492.iptime.org");
-	
-	/**
-	 * custom Junction Actor 클래스 생성
-	 * 어플리케이션에서 Actor의 Role은 user ( Java Director의 Role은 director )
-	 * onMessageReceived 핸들러를 정의함.
-	 * @author Lee
-	 * @issue 이 클래스를 외부에 다시 정의하여 재사용이 가능하도록 만들어야함.
-	 */
-	private class UserJunction extends JunctionActor {
-		public UserJunction() {
-			super("user");
-		}
-
-		public UserJunction(String role) {
-			super(role);
-			// TODO Auto-generated constructor stub
-		}
-
-		@Override
-		public void onMessageReceived(MessageHeader header, JSONObject message) {
-			// TODO Auto-generated method stub
-			if (message.has("accept")) {
-				try {
-					if (message.getString("accept").equals("true")) {
-						SharedPreferences pref = PreferenceManager.getDefaultSharedPreferences(LibrarySystemActivity.this);
-						pref.edit().putBoolean("certification", true).commit();
-						actor.leave();
-						synchronized (actor) {
-							actor.notify();
-						}
-					} else if (message.getString("accept").equals("false")) {
-						SharedPreferences pref = PreferenceManager.getDefaultSharedPreferences(LibrarySystemActivity.this);
-						pref.edit().putBoolean("certification", false).commit();
-						actor.leave();
-						synchronized (actor) {
-							actor.notify();
-						}
-					}
-				} catch (JSONException e) {
-					// TODO Auto-generated catch block
-					e.printStackTrace();
-				}
-			}
-		}
-	}
-
-	/**
-	 * AsynchTask 객체로 Junction Connection, Session Join 및 Director로 부터 응답을 받을
-	 * 때까지 기다림 (Android에서만 사용되는 일종의 간단한 Thread)
-	 */
-	private AsyncTask<JSONObject, Void, Void> mJunctionBindingAsyncTask = new AsyncTask<JSONObject, Void, Void>() {
-		private ProgressDialog mDialog;
-
-		protected Void doInBackground(JSONObject... params) {
-			try {
-				URI jxSession = URI.create("junction://boom1492.iptime.org/db");
-				AndroidJunctionMaker.getInstance(config).newJunction(jxSession,	actor);
-				synchronized (actor) {
-					try {
-						actor.sendMessageToRole("director", params[0]);
-						actor.wait();
-					} catch (InterruptedException e) {
-						// TODO Auto-generated catch block
-						e.printStackTrace();
-					}	
-				}
-			} catch (JunctionException e) {
-				// TODO Auto-generated catch block
-				e.printStackTrace();
-			}
-			return null;
-		};
-
-		@Override
-		protected void onPreExecute() {
-			if (mDialog == null) {
-				mDialog = new ProgressDialog(LibrarySystemActivity.this);
-				mDialog.setMessage("학사 인증 중...");
-				mDialog.setIndeterminate(true);
-				mDialog.setCancelable(true);
-				mDialog.setOnCancelListener(new DialogInterface.OnCancelListener() {
-					@Override
-					public void onCancel(DialogInterface arg0) {
-					}
-				});
-				mDialog.show();
-			}
-		}
-
-		protected void onPostExecute(Void result) {
-			mDialog.hide();
-		};
-	};
 
 	/**
 	 * MainActivity를 restart할 때 핸들링 (Settings -> LibrarySystemActivity ?)
@@ -180,32 +75,30 @@ public class LibrarySystemActivity extends Activity {
 	protected void onRestart() {
 		// TODO Auto-generated method stub
 		super.onRestart();
+		
 		// 환경설정을 통해 학번 가져오기 //
-		SharedPreferences pref = PreferenceManager
-				.getDefaultSharedPreferences(this);
+		SharedPreferences pref = PreferenceManager.getDefaultSharedPreferences(this);
 		String id = pref.getString("id", "");
 		String pw = pref.getString("pw", "");
 
-		// JSON 객체 생성
-		JSONObject message = new JSONObject();
+		//mJunctionBindingAsyncTask.execute(message); // AsyncTask Thread 시작
+		Statement stmt = DBConnector.getStatement();
+	
 		try {
-
-			message.put("action", "dbquery");
-			message.put("service", "certification");
-			message.put("id", id);
-			message.put("pw", pw);
-
-		} catch (JSONException e) {
+			ResultSet rs = stmt.executeQuery("SELECT * FROM users WHERE user_id LIKE " + id);
+			
+			pref.edit().putBoolean("certification", false).commit();
+			while(rs.next()){
+				if(rs.getString("user_pw").equals(pw)){
+					pref.edit().putBoolean("certification", true).commit();
+					return;
+				}
+			}
+		} catch (SQLException e) {
 			// TODO Auto-generated catch block
 			e.printStackTrace();
 		}
-
-		/*
-		 * 여기서 director를 통해 ID, PW를 인증받아야함
-		 */
-
-		mJunctionBindingAsyncTask.execute(message); // AsyncTask Thread 시작
-
+		
 	}
 
 	/**
