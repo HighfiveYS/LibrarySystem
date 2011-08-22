@@ -10,5 +10,17 @@
     	android:key="pw"
     	android:title="비밀번호"
     	android:summary="비밀번호를 입력하세요."
-/>
+	/>
+	<EditTextPreference 
+		android:key="switchboard"
+		android:title="스위치보드"
+		android:summary="스위치보드를 설정하세요."
+		android:defaultValue="165.132.214.212"
+	/>
+	<CheckBoxPreference 
+		android:key="certification"
+		android:title="학사정보인증"
+		android:summary="(자동)학번과 비밀번호를 설정하세요"
+		android:enabled="false"
+	/>
 </PreferenceScreen>

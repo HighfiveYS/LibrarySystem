@@ -3,10 +3,7 @@
 	<classpathentry kind="con" path="com.android.ide.eclipse.adt.ANDROID_FRAMEWORK"/>
 	<classpathentry kind="lib" path="lib/AndroidJunction-0.6.7-SNAPSHOT.jar"/>
 	<classpathentry kind="lib" path="lib/asmack-level7-3.1.1.jar"/>
-	<classpathentry kind="lib" path="lib/core.jar"/>
 	<classpathentry kind="lib" path="lib/easynfc-0.3-SNAPSHOT.jar"/>
-	<classpathentry kind="lib" path="lib/google-api-client-1.0.9-alpha.jar"/>
-	<classpathentry kind="lib" path="lib/jackson-core-asl-1.5.3.jar"/>
 	<classpathentry kind="lib" path="lib/JAVAJunction-0.6.7-SNAPSHOT.jar"/>
 	<classpathentry kind="src" path="src"/>
 	<classpathentry kind="src" path="gen"/>

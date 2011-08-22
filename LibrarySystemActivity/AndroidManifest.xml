@@ -25,7 +25,7 @@
 				<action android:name="android.intent.action.VIEW" />
 				<category android:name="android.intent.category.DEFAULT" />
 				<category android:name="android.intent.category.BROWSABLE" />
-				<data android:scheme="http" android:host="boom1492.iptime.org"/>
+				<data android:scheme="http" android:host="165.132.214.212"/>
 			 </intent-filter>
         </activity>
         <activity android:name=".library.circulation.CirculationVer1Activity"></activity>

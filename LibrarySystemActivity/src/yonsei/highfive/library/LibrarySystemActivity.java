@@ -1,21 +1,13 @@
 package yonsei.highfive.library;
 
-import java.sql.ResultSet;
-import java.sql.SQLException;
-import java.sql.Statement;
-
 import yonsei.highfive.R;
-import yonsei.highfive.db.DBConnector;
 import android.app.Activity;
 import android.content.Intent;
-import android.content.SharedPreferences;
 import android.net.Uri;
 import android.os.Bundle;
-import android.preference.PreferenceManager;
 import android.view.Menu;
 import android.view.MenuInflater;
 import android.view.MenuItem;
-import android.widget.Toast;
 
 public class LibrarySystemActivity extends Activity {
     /** Called when the activity is first created. */
@@ -38,7 +30,6 @@ public class LibrarySystemActivity extends Activity {
 		         getIntent().getData().toString().startsWith("http://boom1492.iptime.org")) {
 		    Uri data = getIntent().getData();
 		    String service = data.getQueryParameter("service");
-		    
 		    
 		    if(service.equals("circulation")){
 		    	String bookid = data.getQueryParameter("bookid");
@@ -65,41 +56,6 @@ public class LibrarySystemActivity extends Activity {
 		}
 		 
     }
-    
-
-
-	/**
-	 * MainActivity를 restart할 때 핸들링 (Settings -> LibrarySystemActivity ?)
-	 */
-    @Override
-	protected void onRestart() {
-		// TODO Auto-generated method stub
-		super.onRestart();
-		
-		// 환경설정을 통해 학번 가져오기 //
-		SharedPreferences pref = PreferenceManager.getDefaultSharedPreferences(this);
-		String id = pref.getString("id", "");
-		String pw = pref.getString("pw", "");
-
-		//mJunctionBindingAsyncTask.execute(message); // AsyncTask Thread 시작
-		Statement stmt = DBConnector.getStatement();
-	
-		try {
-			ResultSet rs = stmt.executeQuery("SELECT * FROM users WHERE user_id LIKE " + id);
-			
-			pref.edit().putBoolean("certification", false).commit();
-			while(rs.next()){
-				if(rs.getString("user_pw").equals(pw)){
-					pref.edit().putBoolean("certification", true).commit();
-					return;
-				}
-			}
-		} catch (SQLException e) {
-			// TODO Auto-generated catch block
-			e.printStackTrace();
-		}
-		
-	}
 
 	/**
 	 * 메뉴버튼을 눌렀을 때 설정메뉴를 출력함

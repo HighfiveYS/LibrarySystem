@@ -77,7 +77,6 @@ public class CirculationVer1Activity extends Activity
         // 이용자 계정에 빌린 책 정보 넣기
         BookSpec prebook = new BookSpec();
         prebook = _123;
-		user.Borrowing.add(prebook);
         // 이용자 계정 DB에 등록 // 
         UserList.add(user);
 
@@ -175,11 +174,11 @@ public class CirculationVer1Activity extends Activity
 		case 1 :
 			showDialog(this, "반납 안내", "반납되었습니다");
 			querybook.Borrower = ""; // 책 정보에서 대출자 삭제
-			for(BookSpec tmp : queryuser.Borrowing) {
-				if(tmp.get_BookID() == querybook.BookID) {
-					queryuser.Borrowing.remove(tmp);
-				}
-			} // 이용자의 책 대여 리스트에서 삭제
+//			for(BookSpec tmp : queryuser.Borrowing) {
+//				if(tmp.get_BookID() == querybook.BookID) {
+//					queryuser.Borrowing.remove(tmp);
+//				}
+//			} // 이용자의 책 대여 리스트에서 삭제
 			break;
 			
 		case 2 :
@@ -207,7 +206,7 @@ public class CirculationVer1Activity extends Activity
 			 
 			 BookSpec lended_tmp = new BookSpec();
 			 lended_tmp = querybook; 
-			 queryuser.Borrowing.add(lended_tmp);      // 이용자 계정에 빌린 책 정보 삽입
+//			 queryuser.Borrowing.add(lended_tmp);      // 이용자 계정에 빌린 책 정보 삽입
 			 querybook.set_Borrower(queryuser.UserID); // 책 정보에 이용자 아이디 삽입
 			 
 			 break;
