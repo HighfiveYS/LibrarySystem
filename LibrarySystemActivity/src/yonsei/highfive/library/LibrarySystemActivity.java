@@ -14,7 +14,8 @@ import edu.stanford.junction.provider.xmpp.XMPPSwitchboardConfig;
 
 public class LibrarySystemActivity extends Activity {
     /** Called when the activity is first created. */
-	
+
+	//  testtesttest //
 	
 	/**
 	 * NFC변수는 나중에 Activity가 태그를 Share할 일이 생길 때 사용이 됩니다.
