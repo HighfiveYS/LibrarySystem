@@ -6,6 +6,7 @@ import org.json.JSONException;
 import org.json.JSONObject;
 
 import yonsei.highfive.R;
+import yonsei.highfive.junction.JunctionAsyncTask;
 import android.app.ProgressDialog;
 import android.content.DialogInterface;
 import android.content.SharedPreferences;
@@ -53,50 +54,8 @@ public class Settings extends PreferenceActivity{
 				e.printStackTrace();
 			}
 			
-			mJunctionBindingAsyncTask = new AsyncTask<JSONObject, Void, Void>() {
-				private ProgressDialog mDialog;
-
-				protected Void doInBackground(JSONObject... params) {
-					try {
-						URI jxSession = URI.create("junction://"+switchboard+"/db");
-						AndroidJunctionMaker.getInstance(config).newJunction(jxSession,	actor);
-						synchronized (actor) {
-							try {
-								actor.sendMessageToRole("director", params[0]);
-								actor.wait();
-							} catch (InterruptedException e) {
-								// TODO Auto-generated catch block
-								e.printStackTrace();
-							}	
-						}
-					} catch (JunctionException e) {
-						// TODO Auto-generated catch block
-						e.printStackTrace();
-						Settings.this.finish();
-					}
-					return null;
-				};
-
-				@Override
-				protected void onPreExecute() {
-					if (mDialog == null) {
-						mDialog = new ProgressDialog(Settings.this);
-						mDialog.setMessage("학사 인증 중...");
-						mDialog.setIndeterminate(true);
-						mDialog.setCancelable(true);
-						mDialog.setOnCancelListener(new DialogInterface.OnCancelListener() {
-							@Override
-							public void onCancel(DialogInterface arg0) {
-							}
-						});
-						mDialog.show();
-					}
-				}
-
-				protected void onPostExecute(Void result) {
-					mDialog.hide();
-				};
-			};
+			AsyncTask<JSONObject, Void, Void> mJunctionBindingAsyncTask = new JunctionAsyncTask(Settings.this, switchboard, config, actor);
+			
 			mJunctionBindingAsyncTask.execute(message); // AsyncTask Thread 시작
 		}
 		return super.onKeyDown(keyCode, event);
@@ -154,11 +113,5 @@ public class Settings extends PreferenceActivity{
 			}
 		}
 	}
-	
-	/**
-	 * AsynchTask 객체로 Junction Connection, Session Join 및 Director로 부터 응답을 받을
-	 * 때까지 기다림 (Android에서만 사용되는 일종의 간단한 Thread)
-	 */
-	private AsyncTask<JSONObject, Void, Void> mJunctionBindingAsyncTask;
 
 }

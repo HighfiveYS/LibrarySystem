@@ -1,15 +1,13 @@
 package yonsei.highfive.library.circulation;
 
-import java.net.URI;
-
 import org.json.JSONException;
 import org.json.JSONObject;
 
 import yonsei.highfive.R;
+import yonsei.highfive.junction.JunctionAsyncTask;
 import yonsei.highfive.library.Settings;
 import android.app.Activity;
 import android.app.AlertDialog;
-import android.app.ProgressDialog;
 import android.content.DialogInterface;
 import android.content.Intent;
 import android.content.SharedPreferences;
@@ -24,8 +22,6 @@ import android.view.View.OnClickListener;
 import android.widget.Button;
 import android.widget.TextView;
 import android.widget.Toast;
-import edu.stanford.junction.JunctionException;
-import edu.stanford.junction.android.AndroidJunctionMaker;
 import edu.stanford.junction.api.activity.JunctionActor;
 import edu.stanford.junction.api.messaging.MessageHeader;
 import edu.stanford.junction.provider.xmpp.XMPPSwitchboardConfig;
@@ -33,10 +29,10 @@ import edu.stanford.junction.provider.xmpp.XMPPSwitchboardConfig;
 
 public class CirculationVer1Activity extends Activity implements OnClickListener {
     String bookid = null;
-//    String title = null;
-//    String author = null;
-//    String publisher = null;
-//    String borrower = null;
+    String title = null;
+    String author = null;
+    String publisher = null;
+    String borrower = null;
 
 	@Override
     public void onCreate(Bundle savedInstanceState) {
@@ -46,11 +42,11 @@ public class CirculationVer1Activity extends Activity implements OnClickListener
         setContentView(R.layout.circulation);
         
         // 버튼 초기화, 리스너 지정 //
-        Button _burrow = (Button)findViewById(R.id.button_burrow);
+        Button _borrow = (Button)findViewById(R.id.button_borrow);
         Button _return = (Button)findViewById(R.id.button_return);
-//        _burrow.setOnClickListener(this);
-//        _return.setOnClickListener(this);
-// 
+        _borrow.setOnClickListener(this);
+        _return.setOnClickListener(this);
+ 
   
         // 설정에서 Switchboard 호스트를 불러와 config 설정 
 		SharedPreferences pref = PreferenceManager.getDefaultSharedPreferences(this);
@@ -72,55 +68,37 @@ public class CirculationVer1Activity extends Activity implements OnClickListener
 			// TODO Auto-generated catch block
 			e1.printStackTrace();
 		}
-        
-        mJunctionBindingAsyncTask = new AsyncTask<JSONObject, Void, Void>() {
-			private ProgressDialog mDialog;
-
-			protected Void doInBackground(JSONObject... params) {
-				try {
-					URI jxSession = URI.create("junction://"+switchboard+"/db");
-					AndroidJunctionMaker.getInstance(config).newJunction(jxSession,	actor);
-					synchronized (actor) {
-						try {
-							actor.sendMessageToRole("director", params[0]);
-							actor.wait();
-						} catch (InterruptedException e) {
-							// TODO Auto-generated catch block
-							e.printStackTrace();
-						}	
-					}
-				} catch (JunctionException e) {
-					// TODO Auto-generated catch block
-					e.printStackTrace();
-					CirculationVer1Activity.this.finish();
-				}
-				return null;
-			};
-
-			@Override
-			protected void onPreExecute() {
-				if (mDialog == null) {
-					mDialog = new ProgressDialog(CirculationVer1Activity.this);
-					mDialog.setMessage("서버로부터 데이터를 받는 중...");
-					mDialog.setIndeterminate(true);
-					mDialog.setCancelable(true);
-					mDialog.setOnCancelListener(new DialogInterface.OnCancelListener() {
-						@Override
-						public void onCancel(DialogInterface arg0) {
-						}
-					});
-					mDialog.show();
-				}
-			}
-
-			protected void onPostExecute(Void result) {
-				mDialog.hide();
-			};
-		};
+        AsyncTask<JSONObject, Void, Void> mJunctionBindingAsyncTask = new JunctionAsyncTask(CirculationVer1Activity.this, switchboard, config, actor);
 		mJunctionBindingAsyncTask.execute(message);
-        
-		
+
     }
+
+	@Override
+	public void onClick(View v) {
+		// TODO Auto-generated method stub
+		try{
+			if(v.getId() == R.id.button_borrow){
+				SharedPreferences pref = PreferenceManager.getDefaultSharedPreferences(this);
+				JSONObject message = new JSONObject();
+				message.put("service", "borrowbook");
+				message.put("bookid", bookid);
+				message.put("userid", pref.getString("id", ""));
+				AsyncTask<JSONObject, Void, Void> mJunctionBindingAsyncTask = new JunctionAsyncTask(CirculationVer1Activity.this, switchboard, config, actor);
+				mJunctionBindingAsyncTask.execute(message);
+			}
+			else if(v.getId() == R.id.button_return){
+				SharedPreferences pref = PreferenceManager.getDefaultSharedPreferences(this);
+				JSONObject message = new JSONObject();
+				message.put("service", "returnbook");
+				message.put("bookid", bookid);
+				message.put("userid", pref.getString("id", ""));
+				AsyncTask<JSONObject, Void, Void> mJunctionBindingAsyncTask = new JunctionAsyncTask(CirculationVer1Activity.this, switchboard, config, actor);
+				mJunctionBindingAsyncTask.execute(message);
+			}
+		} catch(JSONException e){
+			e.printStackTrace();
+		}
+	}
 	
 	public void setBooktext(String title, String author, String publisher, String borrower){
 	
@@ -140,42 +118,6 @@ public class CirculationVer1Activity extends Activity implements OnClickListener
 			_possible.setText("대출 가능 여부 : 현재대여중");
 		else
 			_possible.setText("대출 가능 여부 : 불가");
-	}
-
-	/**
-	 * AsynchTask 객체로 Junction Connection, Session Join 및 Director로 부터 응답을 받을
-	 * 때까지 기다림 (Android에서만 사용되는 일종의 간단한 Thread)
-	 */
-	private AsyncTask<JSONObject, Void, Void> mJunctionBindingAsyncTask;
-	
-	
-    /**
-     * 메뉴버튼을 눌렀을 때 설정메뉴를 출력함
-     */
-    @Override
-	public boolean onCreateOptionsMenu(Menu menu) {
-		// TODO Auto-generated method stub
-		super.onCreateOptionsMenu(menu);
-		
-		MenuInflater inflater = getMenuInflater();
-		inflater.inflate(R.menu.menu, menu);
-		
-		return true;
-		
-	}
-    
-    /**
-     * 설정메뉴를 클릭했을 때 Settings 액티비티를 시작하는 Intent 발생
-     */
-	@Override
-	public boolean onOptionsItemSelected(MenuItem item) {
-		// TODO Auto-generated method stub
-		switch(item.getItemId()){
-		case R.id.settings:
-			startActivity(new Intent(this, Settings.class));
-			return true;
-		}
-		return false;
 	}
 
 
@@ -201,10 +143,10 @@ public class CirculationVer1Activity extends Activity implements OnClickListener
 					String service = message.getString("service");
 					if(service.equals("checkbook")){
 						
-						String title = message.getString("title");
-						String author = message.getString("author");
-						String publisher = message.getString("publisher");
-						String borrower = message.getString("borrower");
+						title = message.getString("title");
+						author = message.getString("author");
+						publisher = message.getString("publisher");
+						borrower = message.getString("borrower");
 						synchronized (actor) {
 							 actor.notify();
 							 actor.leave();
@@ -213,7 +155,17 @@ public class CirculationVer1Activity extends Activity implements OnClickListener
 							
 
 					}
-					else if(service.equals("burrowbook")){
+					else if(service.equals("borrowbook")){
+						String ack = message.getString("ack");
+						synchronized (actor) {
+							actor.notify();
+							actor.leave();
+						}
+						if(ack.equals("true"))
+							showDialog(CirculationVer1Activity.this, "대출 성공", "도서 대출을 성공하였습니다.");
+							//	Toast.makeText(CirculationVer1Activity.this, "도서 대출 성공", Toast.LENGTH_LONG).show();
+						else if(ack.equals("false"))
+							Toast.makeText(CirculationVer1Activity.this, "도서 대출 실패", Toast.LENGTH_LONG).show();
 						
 					}
 					else if(service.equals("returnbook")){
@@ -246,17 +198,34 @@ public class CirculationVer1Activity extends Activity implements OnClickListener
 	
 	}
 
-	@Override
-	public void onClick(View v) {
+	
+    /**
+     * 메뉴버튼을 눌렀을 때 설정메뉴를 출력함
+     */
+    @Override
+	public boolean onCreateOptionsMenu(Menu menu) {
 		// TODO Auto-generated method stub
-		/*
-		if(v.getId() == R.id.button_burrow){
-			;
+		super.onCreateOptionsMenu(menu);
+		
+		MenuInflater inflater = getMenuInflater();
+		inflater.inflate(R.menu.menu, menu);
+		
+		return true;
+		
+	}
+    
+    /**
+     * 설정메뉴를 클릭했을 때 Settings 액티비티를 시작하는 Intent 발생
+     */
+	@Override
+	public boolean onOptionsItemSelected(MenuItem item) {
+		// TODO Auto-generated method stub
+		switch(item.getItemId()){
+		case R.id.settings:
+			startActivity(new Intent(this, Settings.class));
+			return true;
 		}
-		else if(v.getId() == R.id.button_return){
-			;
-		}
-		*/
+		return false;
 	}
 }
 
