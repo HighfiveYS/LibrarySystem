@@ -62,7 +62,7 @@ public class Settings extends PreferenceActivity{
 						AndroidJunctionMaker.getInstance(config).newJunction(jxSession,	actor);
 						synchronized (actor) {
 							try {
-								actor.sendMessageToRole("dbc", params[0]);
+								actor.sendMessageToRole("director", params[0]);
 								actor.wait();
 							} catch (InterruptedException e) {
 								// TODO Auto-generated catch block

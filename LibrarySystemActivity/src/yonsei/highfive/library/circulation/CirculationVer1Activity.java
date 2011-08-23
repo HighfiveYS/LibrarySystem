@@ -1,18 +1,20 @@
 package yonsei.highfive.library.circulation;
 
-import java.util.ArrayList;
+import java.net.URI;
+
+import org.json.JSONException;
+import org.json.JSONObject;
 
 import yonsei.highfive.R;
-import yonsei.highfive.library.LibrarySystemActivity;
 import yonsei.highfive.library.Settings;
 import android.app.Activity;
 import android.app.AlertDialog;
+import android.app.ProgressDialog;
 import android.content.DialogInterface;
 import android.content.Intent;
 import android.content.SharedPreferences;
+import android.os.AsyncTask;
 import android.os.Bundle;
-import android.preference.CheckBoxPreference;
-import android.preference.EditTextPreference;
 import android.preference.PreferenceManager;
 import android.view.Menu;
 import android.view.MenuInflater;
@@ -21,85 +23,137 @@ import android.view.View;
 import android.view.View.OnClickListener;
 import android.widget.Button;
 import android.widget.TextView;
+import edu.stanford.junction.JunctionException;
+import edu.stanford.junction.android.AndroidJunctionMaker;
+import edu.stanford.junction.api.activity.JunctionActor;
+import edu.stanford.junction.api.messaging.MessageHeader;
+import edu.stanford.junction.provider.xmpp.XMPPSwitchboardConfig;
 
 
-public class CirculationVer1Activity extends Activity 
-	implements OnClickListener {
+public class CirculationVer1Activity extends Activity implements OnClickListener {
 	
-	private Button button; 
-	String userid;
-	String userpw;
-	
-	String bookid;
 
-	
-	UserSpec queryuser = new UserSpec();
-	
-	// 이용자 계정 // 
-	UserSpec user = new UserSpec();
-	
-	// 도서 객체들 //
-	BookSpec _123 = new BookSpec("005.123", "안드로이드 공략", "김전화", "IT출판사");    // 빌려진 책
-	BookSpec _234 = new BookSpec("005.234", "자바 공략", "이자바", "이클립스출판");      // 빌릴 책
-	BookSpec _345 = new BookSpec("005.345", "씨언어 공략", "최코딩", "굿소프트");       // 다른사람이 빌린책
-	
-	// 유저 계정과 책의 리스트들. -> 나중에 DB를 쓰면 없앨 예정 //
-	ArrayList <UserSpec> UserList = new ArrayList<UserSpec>();
-	ArrayList <BookSpec> BookList = new ArrayList<BookSpec>();
-	
+
+   
+    String bookid = null;
+//    String title = null;
+//    String author = null;
+//    String publisher = null;
+//    String borrower = null;
+    
 	@Override
     public void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         
-        // 레이아웃 지정///
+        // 레이아웃 지정 //
         setContentView(R.layout.circulation);
         
-        // 컴포넌트 관련 //
-        button = (Button) this.findViewById(R.id.button_p);
-        button.setOnClickListener(this);
-        
-        
-        // 이용자  계정 데이터 정의 //
-        user.set_UserID("2000253000");
-        user.set_UserName("홍길동");
-        user.set_Password("123456");
-        user.set_Delay_pay(0);
-        user.set_Borr_num(0);
-        
-        // 도서 상태 정의 // 
-        _123.set_LanedDate(110815);
-        _123.set_DueDate(110830);
-        _123.set_Borrower("2000253000");
-        _345.set_LanedDate(110815);
-        _345.set_DueDate(110830);
-        _345.set_Borrower("2000253011");
-        
-        // 이용자 계정에 빌린 책 정보 넣기
-        BookSpec prebook = new BookSpec();
-        prebook = _123;
-        // 이용자 계정 DB에 등록 // 
-        UserList.add(user);
-
-        
-        // 도서들 DB에 등록 //
-        BookList.add(_123);
-        BookList.add(_234);
-        BookList.add(_345);
-
-        /**
-         * 이정현 수정
-         */
+        // 버튼 초기화, 리스너 지정 //
+        Button _burrow = (Button)findViewById(R.id.button_burrow);
+        Button _return = (Button)findViewById(R.id.button_return);
+//        _burrow.setOnClickListener(this);
+//        _return.setOnClickListener(this);
+// 
+  
+        // 설정에서 Switchboard 호스트를 불러와 config 설정 
+		SharedPreferences pref = PreferenceManager.getDefaultSharedPreferences(this);
+		switchboard = pref.getString("switchboard", "165.132.214.212"); 
+		config = new XMPPSwitchboardConfig(switchboard);
+		
+	       
         // Intent를 통해 bookid 가져오기 //
         Intent intent = getIntent();
         Bundle intent_data = intent.getExtras();
         bookid = intent_data.getString("bookid");
         
-        TextView _bookid = (TextView)findViewById(R.id.bookid);
+        JSONObject message = new JSONObject();
         
-        _bookid.setText("도서 ID : " + bookid);
+        try {
+        	message.put("service", "checkbook");
+			message.put("bookid", bookid);
+		} catch (JSONException e1) {
+			// TODO Auto-generated catch block
+			e1.printStackTrace();
+		}
+        
+        mJunctionBindingAsyncTask = new AsyncTask<JSONObject, Void, Void>() {
+			private ProgressDialog mDialog;
+
+			protected Void doInBackground(JSONObject... params) {
+				try {
+					URI jxSession = URI.create("junction://"+switchboard+"/db");
+					AndroidJunctionMaker.getInstance(config).newJunction(jxSession,	actor);
+					synchronized (actor) {
+						try {
+							actor.sendMessageToRole("director", params[0]);
+							actor.wait();
+						} catch (InterruptedException e) {
+							// TODO Auto-generated catch block
+							e.printStackTrace();
+						}	
+					}
+				} catch (JunctionException e) {
+					// TODO Auto-generated catch block
+					e.printStackTrace();
+					CirculationVer1Activity.this.finish();
+				}
+				return null;
+			};
+
+			@Override
+			protected void onPreExecute() {
+				if (mDialog == null) {
+					mDialog = new ProgressDialog(CirculationVer1Activity.this);
+					mDialog.setMessage("서버로부터 데이터를 받는 중...");
+					mDialog.setIndeterminate(true);
+					mDialog.setCancelable(true);
+					mDialog.setOnCancelListener(new DialogInterface.OnCancelListener() {
+						@Override
+						public void onCancel(DialogInterface arg0) {
+						}
+					});
+					mDialog.show();
+				}
+			}
+
+			protected void onPostExecute(Void result) {
+				mDialog.hide();
+			};
+		};
+		mJunctionBindingAsyncTask.execute(message);
+        
+		
     }
 	
-	
+	public void setBooktext(String title, String author, String publisher, String borrower){
+		TextView _bookid = null;
+		TextView _title = null;
+		TextView _author = null;
+		TextView _publisher = null; 
+		TextView _possible = null;
+	    _bookid = (TextView)this.findViewById(R.id.book_id);
+        _title =  (TextView)this.findViewById(R.id.title);
+        _author = (TextView)this.findViewById(R.id.author);
+        _publisher = (TextView)this.findViewById(R.id.publisher);
+        _possible = (TextView)this.findViewById(R.id.possible);
+
+		_title.setText("제목 : " + title);
+		_author.setText("저자 : " + author);
+		_publisher.setText("출판사 : " + publisher);
+		SharedPreferences pref = PreferenceManager.getDefaultSharedPreferences(CirculationVer1Activity.this);
+		if(borrower==null || borrower.equals("null"))
+			_possible.setText("대출 가능 여부 : 가능");
+		else if(borrower.equals(pref.getString("id", "")))
+			_possible.setText("대출 가능 여부 : 현재대여중");
+		else
+			_possible.setText("대출 가능 여부 : 불가");
+	}
+
+	/**
+	 * AsynchTask 객체로 Junction Connection, Session Join 및 Director로 부터 응답을 받을
+	 * 때까지 기다림 (Android에서만 사용되는 일종의 간단한 Thread)
+	 */
+	private AsyncTask<JSONObject, Void, Void> mJunctionBindingAsyncTask;
 	
 	
     /**
@@ -118,7 +172,7 @@ public class CirculationVer1Activity extends Activity
 	}
     
     /**
-     * 메뉴에서 설정을 눌렀을 때 설정창으로 이동하는 Intent 발생
+     * 설정메뉴를 클릭했을 때 Settings 액티비티를 시작하는 Intent 발생
      */
 	@Override
 	public boolean onOptionsItemSelected(MenuItem item) {
@@ -131,107 +185,86 @@ public class CirculationVer1Activity extends Activity
 		return false;
 	}
 
+
+	// Junction Setup
+	private String switchboard;
+	private UserJunction actor = new UserJunction();
+	private XMPPSwitchboardConfig config = null;
 	
-	// 버튼 클릭 이벤트 처리 
-	public void onClick(View view)
-	{
-	if (view == button) {
-		SharedPreferences pref = PreferenceManager.getDefaultSharedPreferences(this);
-		if(pref.getBoolean("certification", false)==false){
-			showDialog(this, "조회 실패", "유효하지 않은 이용자입니다.");
-			 return;
+	
+	private class UserJunction extends JunctionActor {
+
+		public UserJunction() {
+			super("user");
+			// TODO Auto-generated constructor stub
 		}
-		
-		// 책 정보 불러오기 //
-		String querybookid = bookid;
-		BookSpec querybook = new BookSpec();
-		int findflag_book = 0;
-		
-		for(BookSpec tmp : BookList) {
-			if(tmp.get_BookID().equals(querybookid)  ) { 
-				querybook = tmp;
-				findflag_book = 1;
+
+		@Override
+		public void onMessageReceived(MessageHeader header, JSONObject message) {
+			// TODO Auto-generated method stub
+
+			try {
+				if (message.has("service")) {
+					String service = message.getString("service");
+					if(service.equals("checkbook")){
+						
+						String title = message.getString("title");
+						String author = message.getString("author");
+						String publisher = message.getString("publisher");
+						String borrower = message.getString("borrower");
+						
+						synchronized (actor) {
+							 actor.notify();
+							 actor.leave();
+						}
+						setBooktext(title, author, publisher, borrower);
+							
+
+					}
+					else if(service.equals("burrowbook")){
+						
+					}
+					else if(service.equals("returnbook")){
+						
+					}
+
 				}
+
+			} catch (JSONException e) {
+				// TODO Auto-generated catch block
+				e.printStackTrace();
+			}
 		}
-		
-		if( findflag_book == 0) {
-			showDialog(this, "도서 조회 실패", "유효하지 않은 도서입니다.");
-			 return;
-		}
-		
-		// 책의 현재 상태 확인
-		int circulation_case; // 대출반납의 케이스
-		
-		if(queryuser.get_UserID().equals(querybook.get_Borrower()))
-			circulation_case = 1; // 이미 대출한 경우
-		else if (! querybook.Borrower.equals(""))
-			circulation_case = 2; // 다른 사람에게 대출된 경우
-		else 
-			circulation_case = 3; // 정상 대출 가능 경우
-		
-		// 경우에 따른 처리 //
-		switch(circulation_case) {
-		case 1 :
-			showDialog(this, "반납 안내", "반납되었습니다");
-			querybook.Borrower = ""; // 책 정보에서 대출자 삭제
-//			for(BookSpec tmp : queryuser.Borrowing) {
-//				if(tmp.get_BookID() == querybook.BookID) {
-//					queryuser.Borrowing.remove(tmp);
-//				}
-//			} // 이용자의 책 대여 리스트에서 삭제
-			break;
-			
-		case 2 :
-			showDialog(this, "대출 실패", "이미 다른 사람에게 대여된 책입니다.");
-			break;
-			
-		case 3 :
-			// 대여 권수 확인 //
-			 if( queryuser.get_Borr_num() >= 3 ) {
-				 showDialog(this, "대출 실패", "가능 대여권수를 초과하였습니다.");
-				 return;
-			 }
-			
-			 // 연체료 확인 //
-			 if( queryuser.get_Delay_pay() > 0 ) {
-				 showDialog(this, "대출 실패", "연체료를 내지 않았습니다.");
-				 return;
-			 }
-			
-			 // 대출 성공 처리 // 
-			 showDialog(this, "대출 성공", queryuser.get_UserID() + " " 
-			 + queryuser.get_UserName() + '\n' + querybook.BookName 
-			 + '(' + querybook.BookID + ')'
-			 + "이 대출 되었습니다");
-			 
-			 BookSpec lended_tmp = new BookSpec();
-			 lended_tmp = querybook; 
-//			 queryuser.Borrowing.add(lended_tmp);      // 이용자 계정에 빌린 책 정보 삽입
-			 querybook.set_Borrower(queryuser.UserID); // 책 정보에 이용자 아이디 삽입
-			 
-			 break;
-		
-		}
-		
-    }
+	}
 	
 
-}
-
-private void showDialog(final CirculationVer1Activity activity, String title, String text) {
+	private void showDialog(final CirculationVer1Activity activity, String title, String text) {
+			
+		AlertDialog.Builder ad = new AlertDialog.Builder(activity);
+		ad.setTitle(title);
+		ad.setMessage(text);
+		ad.setPositiveButton("ok", new DialogInterface.OnClickListener() {
+			public void onClick(DialogInterface dialog, int whichbutton) {
+				activity.setResult(Activity.RESULT_OK);
+			}
+		});
 		
-	AlertDialog.Builder ad = new AlertDialog.Builder(activity);
-	ad.setTitle(title);
-	ad.setMessage(text);
-	ad.setPositiveButton("ok", new DialogInterface.OnClickListener() {
-		public void onClick(DialogInterface dialog, int whichbutton) {
-			activity.setResult(Activity.RESULT_OK);
+		ad.create();
+		ad.show();
+	
+	}
+
+	@Override
+	public void onClick(View v) {
+		// TODO Auto-generated method stub
+		/*
+		if(v.getId() == R.id.button_burrow){
+			;
 		}
-	});
-	
-	ad.create();
-	ad.show();
-	
+		else if(v.getId() == R.id.button_return){
+			;
+		}
+		*/
 	}
 }
 

@@ -5,5 +5,16 @@
     android:layout_height="fill_parent"
     >
     <TextView android:layout_width="wrap_content" android:textAppearance="?android:attr/textAppearanceLarge" android:id="@+id/bookid" android:layout_height="wrap_content" android:text="Book Info"></TextView>
-    <Button android:layout_height="wrap_content" android:layout_width="wrap_content" android:id="@+id/button_p" android:text="전송"></Button>
+    <TextView android:text="책 ID : " android:id="@+id/book_id" android:layout_width="wrap_content" android:layout_height="wrap_content"></TextView>
+    <TextView android:text="제목 : " android:id="@+id/title" android:layout_width="wrap_content" android:layout_height="wrap_content"></TextView>
+    <TextView android:text="저자 : " android:id="@+id/author" android:layout_width="wrap_content" android:layout_height="wrap_content"></TextView>
+    <TextView android:text="출판사 : " android:id="@+id/publisher" android:layout_width="wrap_content" android:layout_height="wrap_content"></TextView>
+    <TextView android:text="대출 가능 여부 : " android:id="@+id/possible" android:layout_width="wrap_content" android:layout_height="wrap_content"></TextView>
+    <LinearLayout 
+    	android:orientation="horizontal"
+    	android:layout_width="fill_parent"
+    	android:layout_height="fill_parent">
+    	<Button android:text="대출" android:id="@+id/button_burrow" android:layout_width="wrap_content" android:layout_height="wrap_content"></Button>
+    	<Button android:text="반납" android:id="@+id/button_return" android:layout_width="wrap_content" android:layout_height="wrap_content"></Button>
+   	</LinearLayout>
 </LinearLayout>

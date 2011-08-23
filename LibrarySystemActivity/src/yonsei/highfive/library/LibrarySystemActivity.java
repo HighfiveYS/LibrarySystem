@@ -5,6 +5,7 @@ import android.app.Activity;
 import android.content.Intent;
 import android.net.Uri;
 import android.os.Bundle;
+import android.util.Log;
 import android.view.Menu;
 import android.view.MenuInflater;
 import android.view.MenuItem;
@@ -27,7 +28,7 @@ public class LibrarySystemActivity extends Activity {
 	 * 여기서 각 service에 필요한 추가적인 parameters를 Extra를 이용해 같이 보내줌. 
 	 */
 		if (getIntent().getData() != null &&
-		         getIntent().getData().toString().startsWith("http://boom1492.iptime.org")) {
+		         getIntent().getData().toString().startsWith("http://165.132.214.212")) {
 		    Uri data = getIntent().getData();
 		    String service = data.getQueryParameter("service");
 		    
