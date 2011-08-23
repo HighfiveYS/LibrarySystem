@@ -23,6 +23,7 @@ import android.view.View;
 import android.view.View.OnClickListener;
 import android.widget.Button;
 import android.widget.TextView;
+import android.widget.Toast;
 import edu.stanford.junction.JunctionException;
 import edu.stanford.junction.android.AndroidJunctionMaker;
 import edu.stanford.junction.api.activity.JunctionActor;
@@ -31,16 +32,12 @@ import edu.stanford.junction.provider.xmpp.XMPPSwitchboardConfig;
 
 
 public class CirculationVer1Activity extends Activity implements OnClickListener {
-	
-
-
-   
     String bookid = null;
 //    String title = null;
 //    String author = null;
 //    String publisher = null;
 //    String borrower = null;
-    
+
 	@Override
     public void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -126,16 +123,12 @@ public class CirculationVer1Activity extends Activity implements OnClickListener
     }
 	
 	public void setBooktext(String title, String author, String publisher, String borrower){
-		TextView _bookid = null;
-		TextView _title = null;
-		TextView _author = null;
-		TextView _publisher = null; 
-		TextView _possible = null;
-	    _bookid = (TextView)this.findViewById(R.id.book_id);
-        _title =  (TextView)this.findViewById(R.id.title);
-        _author = (TextView)this.findViewById(R.id.author);
-        _publisher = (TextView)this.findViewById(R.id.publisher);
-        _possible = (TextView)this.findViewById(R.id.possible);
+	
+	    TextView _bookid = (TextView)CirculationVer1Activity.this.findViewById(R.id.book_id);
+        TextView _title =  (TextView)CirculationVer1Activity.this.findViewById(R.id.title);
+	    TextView _author = (TextView)CirculationVer1Activity.this.findViewById(R.id.author);
+	    TextView _publisher = (TextView)CirculationVer1Activity.this.findViewById(R.id.publisher);
+	    TextView _possible = (TextView)CirculationVer1Activity.this.findViewById(R.id.possible);
 
 		_title.setText("제목 : " + title);
 		_author.setText("저자 : " + author);
@@ -212,7 +205,6 @@ public class CirculationVer1Activity extends Activity implements OnClickListener
 						String author = message.getString("author");
 						String publisher = message.getString("publisher");
 						String borrower = message.getString("borrower");
-						
 						synchronized (actor) {
 							 actor.notify();
 							 actor.leave();
