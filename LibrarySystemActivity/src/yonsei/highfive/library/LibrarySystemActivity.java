@@ -16,7 +16,7 @@ public class LibrarySystemActivity extends Activity {
 	
 	//NFC변수는 나중에 Activity가 태그를 Share할 일이 생길 때 사용이 됩니다.
 	//private Nfc mNfc;
-	
+	//git test comment
     @Override
     public void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
