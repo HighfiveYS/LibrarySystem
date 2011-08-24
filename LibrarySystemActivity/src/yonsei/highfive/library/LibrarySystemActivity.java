@@ -52,8 +52,6 @@ public class LibrarySystemActivity extends Activity {
 		    	 * Junction Show Activity 호출
 		    	 */
 		    	
-		    	//test cord //
-		    	System.out.println("test");
 		    }
 		    
 		    /* 기타 시나리오 */
