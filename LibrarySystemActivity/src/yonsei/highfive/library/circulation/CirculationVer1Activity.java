@@ -101,17 +101,33 @@ public class CirculationVer1Activity extends Activity implements OnClickListener
 	}
 	
 	public void setBooktext(String title, String author, String publisher, String borrower){
-	
+		
+		SharedPreferences pref = PreferenceManager.getDefaultSharedPreferences(CirculationVer1Activity.this);
+        Button _borrow = (Button)findViewById(R.id.button_borrow);
+        Button _return = (Button)findViewById(R.id.button_return);
+        if(borrower.equals("null")||borrower==null){
+        	_return.setEnabled(false);
+        	_borrow.setEnabled(true);
+        }
+        else if(borrower.equals(pref.getString("id",""))){
+        	_return.setEnabled(true);
+        	_borrow.setEnabled(false);
+        }
+        else{
+        	_return.setEnabled(false);
+        	_borrow.setEnabled(false);
+        }
+        
 	    TextView _bookid = (TextView)CirculationVer1Activity.this.findViewById(R.id.book_id);
         TextView _title =  (TextView)CirculationVer1Activity.this.findViewById(R.id.title);
 	    TextView _author = (TextView)CirculationVer1Activity.this.findViewById(R.id.author);
 	    TextView _publisher = (TextView)CirculationVer1Activity.this.findViewById(R.id.publisher);
 	    TextView _possible = (TextView)CirculationVer1Activity.this.findViewById(R.id.possible);
 
+	    _bookid.setText("책 ID : " + bookid);
 		_title.setText("제목 : " + title);
 		_author.setText("저자 : " + author);
 		_publisher.setText("출판사 : " + publisher);
-		SharedPreferences pref = PreferenceManager.getDefaultSharedPreferences(CirculationVer1Activity.this);
 		if(borrower==null || borrower.equals("null"))
 			_possible.setText("대출 가능 여부 : 가능");
 		else if(borrower.equals(pref.getString("id", "")))
@@ -151,8 +167,14 @@ public class CirculationVer1Activity extends Activity implements OnClickListener
 							 actor.notify();
 							 actor.leave();
 						}
-						setBooktext(title, author, publisher, borrower);
-							
+						// 안드로이드 위젯에 접근해 사용하기 위해서는 UI Thread인 Main Thread에서 작업이 이루어져야한다.
+						runOnUiThread(new Runnable() {
+							@Override
+							public void run() {
+								// TODO Auto-generated method stub
+								setBooktext(title, author, publisher, borrower);
+							}
+						});
 
 					}
 					else if(service.equals("borrowbook")){
@@ -161,15 +183,55 @@ public class CirculationVer1Activity extends Activity implements OnClickListener
 							actor.notify();
 							actor.leave();
 						}
-						if(ack.equals("true"))
-							showDialog(CirculationVer1Activity.this, "대출 성공", "도서 대출을 성공하였습니다.");
-							//	Toast.makeText(CirculationVer1Activity.this, "도서 대출 성공", Toast.LENGTH_LONG).show();
-						else if(ack.equals("false"))
-							Toast.makeText(CirculationVer1Activity.this, "도서 대출 실패", Toast.LENGTH_LONG).show();
-						
+						if(ack.equals("true")){
+							runOnUiThread(new Runnable() {
+								@Override
+								public void run() {
+									// TODO Auto-generated method stub
+									SharedPreferences pref = PreferenceManager.getDefaultSharedPreferences(CirculationVer1Activity.this);
+									borrower = pref.getString("id", "");
+									setBooktext(title, author, publisher, borrower);
+									Toast.makeText(CirculationVer1Activity.this, "도서 대출 성공", Toast.LENGTH_LONG).show();
+								}
+							});
+						}
+						else if(ack.equals("false")){
+							runOnUiThread(new Runnable() {
+								@Override
+								public void run() {
+									// TODO Auto-generated method stub
+									Toast.makeText(CirculationVer1Activity.this, "도서 대출 실패", Toast.LENGTH_LONG).show();
+								}
+							});
+						}
 					}
 					else if(service.equals("returnbook")){
-						
+						String ack = message.getString("ack");
+						synchronized (actor) {
+							actor.notify();
+							actor.leave();
+						}
+						if(ack.equals("true")){
+							runOnUiThread(new Runnable() {
+								@Override
+								public void run() {
+									// TODO Auto-generated method stub
+									SharedPreferences pref = PreferenceManager.getDefaultSharedPreferences(CirculationVer1Activity.this);
+									borrower = "null";
+									setBooktext(title, author, publisher, borrower);
+									Toast.makeText(CirculationVer1Activity.this, "도서 반납 성공", Toast.LENGTH_LONG).show();
+								}
+							});
+						}
+						else if(ack.equals("false")){
+							runOnUiThread(new Runnable() {
+								@Override
+								public void run() {
+									// TODO Auto-generated method stub
+									Toast.makeText(CirculationVer1Activity.this, "도서 반납 실패", Toast.LENGTH_LONG).show();
+								}
+							});
+						}
 					}
 
 				}
@@ -180,25 +242,7 @@ public class CirculationVer1Activity extends Activity implements OnClickListener
 			}
 		}
 	}
-	
 
-	private void showDialog(final CirculationVer1Activity activity, String title, String text) {
-			
-		AlertDialog.Builder ad = new AlertDialog.Builder(activity);
-		ad.setTitle(title);
-		ad.setMessage(text);
-		ad.setPositiveButton("ok", new DialogInterface.OnClickListener() {
-			public void onClick(DialogInterface dialog, int whichbutton) {
-				activity.setResult(Activity.RESULT_OK);
-			}
-		});
-		
-		ad.create();
-		ad.show();
-	
-	}
-
-	
     /**
      * 메뉴버튼을 눌렀을 때 설정메뉴를 출력함
      */
