@@ -15,6 +15,7 @@ import android.os.Bundle;
 import android.preference.PreferenceActivity;
 import android.preference.PreferenceManager;
 import android.view.KeyEvent;
+import android.widget.Toast;
 import edu.stanford.junction.JunctionException;
 import edu.stanford.junction.android.AndroidJunctionMaker;
 import edu.stanford.junction.api.activity.JunctionActor;
@@ -89,6 +90,13 @@ public class Settings extends PreferenceActivity{
 							actor.notify();
 							actor.leave();
 						}
+						runOnUiThread(new Runnable(){
+							@Override
+							public void run() {
+								// TODO Auto-generated method stub
+								Toast.makeText(Settings.this, "학사인증에 성공하였습니다.", Toast.LENGTH_SHORT).show();
+							}
+						});
 						Settings.this.finish();
 					} else if (message.getString("accept").equals("false")) {
 						SharedPreferences pref = PreferenceManager.getDefaultSharedPreferences(Settings.this);
@@ -97,6 +105,13 @@ public class Settings extends PreferenceActivity{
 							actor.notify();
 							actor.leave();
 						}
+						runOnUiThread(new Runnable(){
+							@Override
+							public void run() {
+								// TODO Auto-generated method stub
+								Toast.makeText(Settings.this, "학사인증에 성공하였습니다.", Toast.LENGTH_SHORT).show();
+							}
+						});
 						Settings.this.finish();
 					}
 				} catch (JSONException e) {

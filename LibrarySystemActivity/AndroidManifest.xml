@@ -30,6 +30,6 @@
         </activity>
         <activity android:name=".library.circulation.CirculationVer1Activity" android:clearTaskOnLaunch="true" android:launchMode="singleTop"></activity>
         <activity android:name=".library.Settings"></activity>
-
+		<activity android:name=".library.circulation.SearchBook"></activity>
     </application>
 </manifest>

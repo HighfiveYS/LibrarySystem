@@ -41,10 +41,8 @@ public class CirculationVer1Activity extends Activity implements OnClickListener
         // 버튼 초기화, 리스너 지정 //
         Button _borrow = (Button)findViewById(R.id.button_borrow);
         Button _return = (Button)findViewById(R.id.button_return);
-        Button _borrowedlist = (Button)findViewById(R.id.button_borrowedlist);
         _borrow.setOnClickListener(this);
         _return.setOnClickListener(this);
-        _borrowedlist.setOnClickListener(this);
         
         // BookSpec 생성
         book = new BookSpec();
@@ -82,6 +80,10 @@ public class CirculationVer1Activity extends Activity implements OnClickListener
 		try{
 			if(v.getId() == R.id.button_borrow){		// 대여 요청
 				SharedPreferences pref = PreferenceManager.getDefaultSharedPreferences(CirculationVer1Activity.this);
+				if(!pref.getBoolean("certification", false)){
+					Toast.makeText(this, "학사 인증이 되어있지 않습니다.", Toast.LENGTH_SHORT).show();
+					return;
+				}
 				JSONObject message = new JSONObject();
 				message.put("service", "borrowbook");
 				message.put("bookid", book.getBookid());
@@ -91,19 +93,15 @@ public class CirculationVer1Activity extends Activity implements OnClickListener
 			}
 			else if(v.getId() == R.id.button_return){	// 반납 요청
 				SharedPreferences pref = PreferenceManager.getDefaultSharedPreferences(CirculationVer1Activity.this);
+				if(!pref.getBoolean("certification", false)){
+					Toast.makeText(this, "학사 인증이 되어있지 않습니다.", Toast.LENGTH_SHORT).show();
+					return;
+				}
 				JSONObject message = new JSONObject();
 				message.put("service", "returnbook");
 				message.put("bookid", book.getBookid());
 				message.put("userid", pref.getString("id", ""));
 				AsyncTask<JSONObject, Void, Void> mJunctionBindingAsyncTask = new JunctionAsyncTask(CirculationVer1Activity.this, actor, "반납 요청중입니다.");
-				mJunctionBindingAsyncTask.execute(message);
-			}
-			else if(v.getId() == R.id.button_borrowedlist){// 대여 도서 목록 요청
-				SharedPreferences pref = PreferenceManager.getDefaultSharedPreferences(this);
-				JSONObject message = new JSONObject();
-				message.put("service", "checkborrowed");
-				message.put("userid", pref.getString("id", ""));
-				AsyncTask<JSONObject, Void, Void> mJunctionBindingAsyncTask = new JunctionAsyncTask(CirculationVer1Activity.this, actor, "목록을 불러오고 있습니다.");
 				mJunctionBindingAsyncTask.execute(message);
 			}
 		} catch(JSONException e){
@@ -115,7 +113,7 @@ public class CirculationVer1Activity extends Activity implements OnClickListener
 		SharedPreferences pref = PreferenceManager.getDefaultSharedPreferences(CirculationVer1Activity.this);
         Button _borrow = (Button)findViewById(R.id.button_borrow);
         Button _return = (Button)findViewById(R.id.button_return);
-	    TextView _bookid = (TextView)findViewById(R.id.book_id);
+        TextView _bookid = (TextView)findViewById(R.id.book_id);
         TextView _title =  (TextView)findViewById(R.id.title);
 	    TextView _author = (TextView)findViewById(R.id.author);
 	    TextView _publisher = (TextView)findViewById(R.id.publisher);
@@ -250,31 +248,6 @@ public class CirculationVer1Activity extends Activity implements OnClickListener
 							});
 						}
 					}
-					
-
-//===============================================대여 도서 목록 받음====================================================//
-					else if(service.equals("checkborrowed")){
-						JSONArray books = message.getJSONArray("book");
-						final ArrayList<BookSpec> booklist = new ArrayList<BookSpec>();
-						for(int i=0;i<books.length();i++){
-							BookSpec bs = new BookSpec(books.getJSONObject(i));
-							booklist.add(bs);
-						}
-						runOnUiThread(new Runnable(){
-							@Override
-							public void run() {
-								// TODO Auto-generated method stub
-								BookAdapter adapter = new BookAdapter(CirculationVer1Activity.this, R.layout.book, booklist);
-								ListView listview = (ListView)findViewById(R.id.listView);
-								listview.setAdapter(adapter);
-							}
-						});
-						synchronized (actor) {
-							actor.notify();
-							actor.leave();
-						}
-					}
-
 				}
 
 			} catch (JSONException e) {

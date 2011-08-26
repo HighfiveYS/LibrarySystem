@@ -15,10 +15,5 @@
     <LinearLayout android:layout_width="fill_parent" android:orientation="horizontal" android:layout_height="wrap_content">
         <Button android:layout_height="wrap_content" android:layout_width="wrap_content" android:text="대출" android:textSize="30dp" android:id="@+id/button_borrow"></Button>
         <Button android:layout_height="wrap_content" android:layout_width="wrap_content" android:text="반납" android:textSize="30dp" android:id="@+id/button_return"></Button>
-        <Button android:layout_width="wrap_content" android:text="대여목록" android:id="@+id/button_borrowedlist" android:textSize="30dp" android:layout_height="wrap_content"></Button>
-    </LinearLayout>
-    <LinearLayout android:id="@+id/linearLayout1" android:orientation="vertical" android:layout_width="match_parent" android:layout_height="match_parent">
-        <TextView android:layout_height="wrap_content" android:textAppearance="?android:attr/textAppearanceLarge" android:layout_width="wrap_content" android:id="@+id/textView1" android:text="@string/borrowed"></TextView>
-        <ListView android:id="@+id/listView" android:layout_height="wrap_content" android:layout_width="match_parent"></ListView>
     </LinearLayout>
 </LinearLayout>

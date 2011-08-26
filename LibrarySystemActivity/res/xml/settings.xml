@@ -10,6 +10,7 @@
     	android:key="pw"
     	android:title="비밀번호"
     	android:summary="비밀번호를 입력하세요."
+    	android:password="true"
 	/>
 	<EditTextPreference 
 		android:key="switchboard"

@@ -1,15 +1,22 @@
 package yonsei.highfive.library;
 
 import yonsei.highfive.R;
+import yonsei.highfive.library.circulation.SearchBook;
 import android.app.Activity;
+import android.app.AlertDialog;
+import android.app.AlertDialog.Builder;
+import android.content.DialogInterface;
 import android.content.Intent;
+import android.content.SharedPreferences;
 import android.net.Uri;
 import android.os.Bundle;
-import android.util.Log;
+import android.preference.PreferenceManager;
 import android.view.Menu;
 import android.view.MenuInflater;
 import android.view.MenuItem;
-import android.widget.Toast;
+import android.view.View;
+import android.view.View.OnClickListener;
+import android.widget.Button;
 
 public class LibrarySystemActivity extends Activity {
     /** Called when the activity is first created. */
@@ -38,7 +45,7 @@ public class LibrarySystemActivity extends Activity {
 				intent_data.putString("bookid", bookid);
 				intent.putExtras(intent_data);
 				startActivity(intent);
-				this.finish();
+				this.finish();	// 이경우 메인액티비티는 필요가 없으므로 바로 finish 해주었음.
 			} else if (service.equals("gateway")) {
 				/**
 				 * 출입 시나리오 Activity 호출
@@ -54,6 +61,37 @@ public class LibrarySystemActivity extends Activity {
 			/* 기타 시나리오 */
 
 		}
+		
+		Button button_book = (Button)findViewById(R.id.bookservice);
+		button_book.setOnClickListener(new OnClickListener() {
+			@Override
+			public void onClick(View v) {
+				// TODO Auto-generated method stub
+				Intent intent = new Intent(LibrarySystemActivity.this, SearchBook.class);
+				startActivity(intent);
+			}
+		});
+		
+		/**
+		 * 학사 인증 확인
+		 */
+		SharedPreferences pref = PreferenceManager.getDefaultSharedPreferences(this);
+		if(!pref.getBoolean("certification", false)){
+			AlertDialog.Builder builder = new Builder(this);
+			builder.setCancelable(true)
+				.setMessage("학사 인증이 되어있지 않습니다. 지금 인증하시겠습니까?")
+				.setPositiveButton("확인", new DialogInterface.OnClickListener() {
+						@Override
+						public void onClick(DialogInterface dialog, int which) {
+							// TODO Auto-generated method stub
+							Intent setintent = new Intent(LibrarySystemActivity.this, Settings.class);
+							startActivity(setintent);
+						}
+					})
+				.create().show();
+			
+		}
+		
 
     }
 
