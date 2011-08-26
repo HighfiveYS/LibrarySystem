@@ -4,17 +4,21 @@
     android:layout_width="fill_parent"
     android:layout_height="fill_parent"
     >
-    <TextView android:textSize="50dp" android:layout_width="wrap_content" android:textAppearance="?android:attr/textAppearanceLarge" android:id="@+id/bookid" android:layout_height="wrap_content" android:text="Book Info"></TextView>
-    <TextView android:textSize="20dp" android:text="책 ID : " android:id="@+id/book_id" android:layout_width="wrap_content" android:layout_height="wrap_content"></TextView>
-    <TextView android:textSize="20dp" android:text="제목 : " android:id="@+id/title" android:layout_width="wrap_content" android:layout_height="wrap_content"></TextView>
-    <TextView android:textSize="20dp" android:text="저자 : " android:id="@+id/author" android:layout_width="wrap_content" android:layout_height="wrap_content"></TextView>
-    <TextView android:textSize="20dp" android:text="출판사 : " android:id="@+id/publisher" android:layout_width="wrap_content" android:layout_height="wrap_content"></TextView>
-    <TextView android:textSize="20dp" android:text="대출 가능 여부 : " android:id="@+id/possible" android:layout_width="wrap_content" android:layout_height="wrap_content"></TextView>
-    <LinearLayout 
-    	android:orientation="horizontal"
-    	android:layout_width="fill_parent"
-    	android:layout_height="fill_parent">
-    	<Button android:textSize="30dp" android:text="대출" android:id="@+id/button_borrow" android:layout_width="wrap_content" android:layout_height="wrap_content"></Button>
-    	<Button android:textSize="30dp" android:text="반납" android:id="@+id/button_return" android:layout_width="wrap_content" android:layout_height="wrap_content"></Button>
-   	</LinearLayout>
+    <LinearLayout android:id="@+id/linearLayout3" android:layout_width="match_parent" android:orientation="vertical" android:layout_height="wrap_content">
+        <TextView android:layout_height="wrap_content" android:textAppearance="?android:attr/textAppearanceLarge" android:layout_width="wrap_content" android:id="@+id/bookid" android:textSize="50dp" android:text="@string/bookinfo"></TextView>
+        <TextView android:layout_height="wrap_content" android:text="책 ID : " android:layout_width="wrap_content" android:id="@+id/book_id" android:textSize="20dp"></TextView>
+        <TextView android:layout_height="wrap_content" android:text="제목 : " android:layout_width="wrap_content" android:id="@+id/title" android:textSize="20dp"></TextView>
+        <TextView android:layout_height="wrap_content" android:text="저자 : " android:layout_width="wrap_content" android:id="@+id/author" android:textSize="20dp"></TextView>
+        <TextView android:layout_height="wrap_content" android:text="출판사 : " android:layout_width="wrap_content" android:id="@+id/publisher" android:textSize="20dp"></TextView>
+        <TextView android:layout_height="wrap_content" android:text="대출 가능 여부 : " android:layout_width="wrap_content" android:id="@+id/possible" android:textSize="20dp"></TextView>
+    </LinearLayout>
+    <LinearLayout android:layout_width="fill_parent" android:orientation="horizontal" android:layout_height="wrap_content">
+        <Button android:layout_height="wrap_content" android:layout_width="wrap_content" android:text="대출" android:textSize="30dp" android:id="@+id/button_borrow"></Button>
+        <Button android:layout_height="wrap_content" android:layout_width="wrap_content" android:text="반납" android:textSize="30dp" android:id="@+id/button_return"></Button>
+        <Button android:layout_width="wrap_content" android:text="대여목록" android:id="@+id/button_borrowedlist" android:textSize="30dp" android:layout_height="wrap_content"></Button>
+    </LinearLayout>
+    <LinearLayout android:id="@+id/linearLayout1" android:orientation="vertical" android:layout_width="match_parent" android:layout_height="match_parent">
+        <TextView android:layout_height="wrap_content" android:textAppearance="?android:attr/textAppearanceLarge" android:layout_width="wrap_content" android:id="@+id/textView1" android:text="@string/borrowed"></TextView>
+        <ListView android:id="@+id/listView" android:layout_height="wrap_content" android:layout_width="match_parent"></ListView>
+    </LinearLayout>
 </LinearLayout>

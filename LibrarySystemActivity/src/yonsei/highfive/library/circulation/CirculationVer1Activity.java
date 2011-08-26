@@ -1,5 +1,8 @@
 package yonsei.highfive.library.circulation;
 
+import java.util.ArrayList;
+
+import org.json.JSONArray;
 import org.json.JSONException;
 import org.json.JSONObject;
 
@@ -7,8 +10,6 @@ import yonsei.highfive.R;
 import yonsei.highfive.junction.JunctionAsyncTask;
 import yonsei.highfive.library.Settings;
 import android.app.Activity;
-import android.app.AlertDialog;
-import android.content.DialogInterface;
 import android.content.Intent;
 import android.content.SharedPreferences;
 import android.os.AsyncTask;
@@ -20,20 +21,16 @@ import android.view.MenuItem;
 import android.view.View;
 import android.view.View.OnClickListener;
 import android.widget.Button;
+import android.widget.ListView;
 import android.widget.TextView;
 import android.widget.Toast;
 import edu.stanford.junction.api.activity.JunctionActor;
 import edu.stanford.junction.api.messaging.MessageHeader;
-import edu.stanford.junction.provider.xmpp.XMPPSwitchboardConfig;
 
 
 public class CirculationVer1Activity extends Activity implements OnClickListener {
-    String bookid = null;
-    String title = null;
-    String author = null;
-    String publisher = null;
-    String borrower = null;
-
+    BookSpec book = null;
+ 
 	@Override
     public void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -44,55 +41,69 @@ public class CirculationVer1Activity extends Activity implements OnClickListener
         // 버튼 초기화, 리스너 지정 //
         Button _borrow = (Button)findViewById(R.id.button_borrow);
         Button _return = (Button)findViewById(R.id.button_return);
+        Button _borrowedlist = (Button)findViewById(R.id.button_borrowedlist);
         _borrow.setOnClickListener(this);
         _return.setOnClickListener(this);
- 
-  
-        // 설정에서 Switchboard 호스트를 불러와 config 설정 
-		SharedPreferences pref = PreferenceManager.getDefaultSharedPreferences(this);
-		switchboard = pref.getString("switchboard", "165.132.214.212"); 
-		config = new XMPPSwitchboardConfig(switchboard);
-		
-	       
+        _borrowedlist.setOnClickListener(this);
+        
+        // BookSpec 생성
+        book = new BookSpec();
+        
         // Intent를 통해 bookid 가져오기 //
         Intent intent = getIntent();
         Bundle intent_data = intent.getExtras();
-        bookid = intent_data.getString("bookid");
+        book.setBookid(intent_data.getString("bookid"));
         
         JSONObject message = new JSONObject();
         
         try {
         	message.put("service", "checkbook");
-			message.put("bookid", bookid);
+			message.put("bookid", book.getBookid());
 		} catch (JSONException e1) {
 			// TODO Auto-generated catch block
 			e1.printStackTrace();
 		}
-        AsyncTask<JSONObject, Void, Void> mJunctionBindingAsyncTask = new JunctionAsyncTask(CirculationVer1Activity.this, switchboard, config, actor);
+        AsyncTask<JSONObject, Void, Void> mJunctionBindingAsyncTask = new JunctionAsyncTask(CirculationVer1Activity.this, actor, "책 정보를 읽어 오는 중입니다.");
 		mJunctionBindingAsyncTask.execute(message);
-
+		
     }
+
+	@Override
+	protected void onResume() {
+		// TODO Auto-generated method stub
+		super.onResume();
+		
+		
+	}
 
 	@Override
 	public void onClick(View v) {
 		// TODO Auto-generated method stub
 		try{
-			if(v.getId() == R.id.button_borrow){
-				SharedPreferences pref = PreferenceManager.getDefaultSharedPreferences(this);
+			if(v.getId() == R.id.button_borrow){		// 대여 요청
+				SharedPreferences pref = PreferenceManager.getDefaultSharedPreferences(CirculationVer1Activity.this);
 				JSONObject message = new JSONObject();
 				message.put("service", "borrowbook");
-				message.put("bookid", bookid);
+				message.put("bookid", book.getBookid());
 				message.put("userid", pref.getString("id", ""));
-				AsyncTask<JSONObject, Void, Void> mJunctionBindingAsyncTask = new JunctionAsyncTask(CirculationVer1Activity.this, switchboard, config, actor);
+				AsyncTask<JSONObject, Void, Void> mJunctionBindingAsyncTask = new JunctionAsyncTask(CirculationVer1Activity.this, actor, "대출 요청중입니다.");
 				mJunctionBindingAsyncTask.execute(message);
 			}
-			else if(v.getId() == R.id.button_return){
-				SharedPreferences pref = PreferenceManager.getDefaultSharedPreferences(this);
+			else if(v.getId() == R.id.button_return){	// 반납 요청
+				SharedPreferences pref = PreferenceManager.getDefaultSharedPreferences(CirculationVer1Activity.this);
 				JSONObject message = new JSONObject();
 				message.put("service", "returnbook");
-				message.put("bookid", bookid);
+				message.put("bookid", book.getBookid());
 				message.put("userid", pref.getString("id", ""));
-				AsyncTask<JSONObject, Void, Void> mJunctionBindingAsyncTask = new JunctionAsyncTask(CirculationVer1Activity.this, switchboard, config, actor);
+				AsyncTask<JSONObject, Void, Void> mJunctionBindingAsyncTask = new JunctionAsyncTask(CirculationVer1Activity.this, actor, "반납 요청중입니다.");
+				mJunctionBindingAsyncTask.execute(message);
+			}
+			else if(v.getId() == R.id.button_borrowedlist){// 대여 도서 목록 요청
+				SharedPreferences pref = PreferenceManager.getDefaultSharedPreferences(this);
+				JSONObject message = new JSONObject();
+				message.put("service", "checkborrowed");
+				message.put("userid", pref.getString("id", ""));
+				AsyncTask<JSONObject, Void, Void> mJunctionBindingAsyncTask = new JunctionAsyncTask(CirculationVer1Activity.this, actor, "목록을 불러오고 있습니다.");
 				mJunctionBindingAsyncTask.execute(message);
 			}
 		} catch(JSONException e){
@@ -100,12 +111,23 @@ public class CirculationVer1Activity extends Activity implements OnClickListener
 		}
 	}
 	
-	public void setBooktext(String title, String author, String publisher, String borrower){
-		
+	public void setBooktext(BookSpec book){
 		SharedPreferences pref = PreferenceManager.getDefaultSharedPreferences(CirculationVer1Activity.this);
         Button _borrow = (Button)findViewById(R.id.button_borrow);
         Button _return = (Button)findViewById(R.id.button_return);
-        if(borrower.equals("null")||borrower==null){
+	    TextView _bookid = (TextView)findViewById(R.id.book_id);
+        TextView _title =  (TextView)findViewById(R.id.title);
+	    TextView _author = (TextView)findViewById(R.id.author);
+	    TextView _publisher = (TextView)findViewById(R.id.publisher);
+	    TextView _possible = (TextView)findViewById(R.id.possible);
+
+	    String bookid = book.getBookid();
+	    String title = book.getTitle();
+	    String author = book.getAuthor();
+	    String publisher = book.getPublisher();
+	    String borrower = book.getBorrower();
+	    
+	    if(borrower.equals("null")||borrower==null){
         	_return.setEnabled(false);
         	_borrow.setEnabled(true);
         }
@@ -118,11 +140,6 @@ public class CirculationVer1Activity extends Activity implements OnClickListener
         	_borrow.setEnabled(false);
         }
         
-	    TextView _bookid = (TextView)CirculationVer1Activity.this.findViewById(R.id.book_id);
-        TextView _title =  (TextView)CirculationVer1Activity.this.findViewById(R.id.title);
-	    TextView _author = (TextView)CirculationVer1Activity.this.findViewById(R.id.author);
-	    TextView _publisher = (TextView)CirculationVer1Activity.this.findViewById(R.id.publisher);
-	    TextView _possible = (TextView)CirculationVer1Activity.this.findViewById(R.id.possible);
 
 	    _bookid.setText("책 ID : " + bookid);
 		_title.setText("제목 : " + title);
@@ -138,11 +155,7 @@ public class CirculationVer1Activity extends Activity implements OnClickListener
 
 
 	// Junction Setup
-	private String switchboard;
 	private UserJunction actor = new UserJunction();
-	private XMPPSwitchboardConfig config = null;
-	
-	
 	private class UserJunction extends JunctionActor {
 
 		public UserJunction() {
@@ -157,12 +170,12 @@ public class CirculationVer1Activity extends Activity implements OnClickListener
 			try {
 				if (message.has("service")) {
 					String service = message.getString("service");
+					
+//===============================================도서 정보 확인====================================================//
 					if(service.equals("checkbook")){
+						JSONObject bookspec = message.getJSONObject("book");
+						book.setBookSpec(bookspec);
 						
-						title = message.getString("title");
-						author = message.getString("author");
-						publisher = message.getString("publisher");
-						borrower = message.getString("borrower");
 						synchronized (actor) {
 							 actor.notify();
 							 actor.leave();
@@ -172,11 +185,13 @@ public class CirculationVer1Activity extends Activity implements OnClickListener
 							@Override
 							public void run() {
 								// TODO Auto-generated method stub
-								setBooktext(title, author, publisher, borrower);
+								setBooktext(book);
 							}
 						});
 
 					}
+
+//===============================================도서 대여 확인====================================================//					
 					else if(service.equals("borrowbook")){
 						String ack = message.getString("ack");
 						synchronized (actor) {
@@ -189,8 +204,8 @@ public class CirculationVer1Activity extends Activity implements OnClickListener
 								public void run() {
 									// TODO Auto-generated method stub
 									SharedPreferences pref = PreferenceManager.getDefaultSharedPreferences(CirculationVer1Activity.this);
-									borrower = pref.getString("id", "");
-									setBooktext(title, author, publisher, borrower);
+									book.setBorrower(pref.getString("id", ""));
+									setBooktext(book);
 									Toast.makeText(CirculationVer1Activity.this, "도서 대출 성공", Toast.LENGTH_LONG).show();
 								}
 							});
@@ -205,6 +220,8 @@ public class CirculationVer1Activity extends Activity implements OnClickListener
 							});
 						}
 					}
+
+//===============================================도서 반납 확인====================================================//
 					else if(service.equals("returnbook")){
 						String ack = message.getString("ack");
 						synchronized (actor) {
@@ -217,8 +234,8 @@ public class CirculationVer1Activity extends Activity implements OnClickListener
 								public void run() {
 									// TODO Auto-generated method stub
 									SharedPreferences pref = PreferenceManager.getDefaultSharedPreferences(CirculationVer1Activity.this);
-									borrower = "null";
-									setBooktext(title, author, publisher, borrower);
+									book.setBorrower("null");
+									setBooktext(book);
 									Toast.makeText(CirculationVer1Activity.this, "도서 반납 성공", Toast.LENGTH_LONG).show();
 								}
 							});
@@ -231,6 +248,30 @@ public class CirculationVer1Activity extends Activity implements OnClickListener
 									Toast.makeText(CirculationVer1Activity.this, "도서 반납 실패", Toast.LENGTH_LONG).show();
 								}
 							});
+						}
+					}
+					
+
+//===============================================대여 도서 목록 받음====================================================//
+					else if(service.equals("checkborrowed")){
+						JSONArray books = message.getJSONArray("book");
+						final ArrayList<BookSpec> booklist = new ArrayList<BookSpec>();
+						for(int i=0;i<books.length();i++){
+							BookSpec bs = new BookSpec(books.getJSONObject(i));
+							booklist.add(bs);
+						}
+						runOnUiThread(new Runnable(){
+							@Override
+							public void run() {
+								// TODO Auto-generated method stub
+								BookAdapter adapter = new BookAdapter(CirculationVer1Activity.this, R.layout.book, booklist);
+								ListView listview = (ListView)findViewById(R.id.listView);
+								listview.setAdapter(adapter);
+							}
+						});
+						synchronized (actor) {
+							actor.notify();
+							actor.leave();
 						}
 					}
 

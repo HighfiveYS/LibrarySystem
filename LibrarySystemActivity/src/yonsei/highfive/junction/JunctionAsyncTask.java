@@ -7,7 +7,9 @@ import org.json.JSONObject;
 import android.app.Activity;
 import android.app.ProgressDialog;
 import android.content.DialogInterface;
+import android.content.SharedPreferences;
 import android.os.AsyncTask;
+import android.preference.PreferenceManager;
 import edu.stanford.junction.JunctionException;
 import edu.stanford.junction.android.AndroidJunctionMaker;
 import edu.stanford.junction.api.activity.JunctionActor;
@@ -15,16 +17,20 @@ import edu.stanford.junction.provider.xmpp.XMPPSwitchboardConfig;
 
 public class JunctionAsyncTask extends AsyncTask<JSONObject, Void, Void> {
 	private ProgressDialog mDialog;
-	private String switchboard;
 	private XMPPSwitchboardConfig config;
 	private JunctionActor actor;
 	private Activity activity;
+	private String switchboard;
+	private String message;
 	
-	public JunctionAsyncTask(Activity activity, String switchboard, XMPPSwitchboardConfig config, JunctionActor actor){
-		this.switchboard = switchboard;
-		this.config = config;
+	public JunctionAsyncTask(Activity activity,  JunctionActor actor, String message){
 		this.actor = actor;
 		this.activity = activity;
+		SharedPreferences pref = PreferenceManager.getDefaultSharedPreferences(activity);
+		this.switchboard = pref.getString("switchboard", "165.132.214.212"); 
+		this.config =  new XMPPSwitchboardConfig(switchboard);
+		this.message = message;
+			
 	}
 	public JunctionAsyncTask(){
 		
@@ -54,7 +60,7 @@ public class JunctionAsyncTask extends AsyncTask<JSONObject, Void, Void> {
 	protected void onPreExecute() {
 		if (mDialog == null) {
 			mDialog = new ProgressDialog(activity);
-			mDialog.setMessage("서버로부터 데이터를 받는 중...");
+			mDialog.setMessage(message);
 			mDialog.setIndeterminate(true);
 			mDialog.setCancelable(true);
 			mDialog.setOnCancelListener(new DialogInterface.OnCancelListener() {

@@ -28,10 +28,6 @@ public class Settings extends PreferenceActivity{
 		// TODO Auto-generated method stub
 		super.onCreate(savedInstanceState);
 		addPreferencesFromResource(R.xml.settings);
-
-		SharedPreferences pref = PreferenceManager.getDefaultSharedPreferences(this);
-		switchboard = pref.getString("switchboard", "165.132.214.212"); 
-		config = new XMPPSwitchboardConfig(switchboard);
 	}
 
 	@Override
@@ -54,7 +50,7 @@ public class Settings extends PreferenceActivity{
 				e.printStackTrace();
 			}
 			
-			AsyncTask<JSONObject, Void, Void> mJunctionBindingAsyncTask = new JunctionAsyncTask(Settings.this, switchboard, config, actor);
+			AsyncTask<JSONObject, Void, Void> mJunctionBindingAsyncTask = new JunctionAsyncTask(Settings.this, actor, "학사정보 인증중입니다.");
 			
 			mJunctionBindingAsyncTask.execute(message); // AsyncTask Thread 시작
 		}
@@ -62,10 +58,7 @@ public class Settings extends PreferenceActivity{
 	}
     
 	// JunctionActor 정의
-
-	private String switchboard;
 	private UserJunction actor = new UserJunction();
-	private XMPPSwitchboardConfig config = null;
 	
 	/**
 	 * custom Junction Actor 클래스 생성
