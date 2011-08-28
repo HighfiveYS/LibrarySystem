@@ -1,7 +1,7 @@
 package yonsei.highfive.library;
 
 import yonsei.highfive.R;
-import yonsei.highfive.library.circulation.SearchBook;
+import yonsei.highfive.library.circulation.SearchBookActivity;
 import android.app.Activity;
 import android.app.AlertDialog;
 import android.app.AlertDialog.Builder;
@@ -67,7 +67,7 @@ public class LibrarySystemActivity extends Activity {
 			@Override
 			public void onClick(View v) {
 				// TODO Auto-generated method stub
-				Intent intent = new Intent(LibrarySystemActivity.this, SearchBook.class);
+				Intent intent = new Intent(LibrarySystemActivity.this, SearchBookActivity.class);
 				startActivity(intent);
 			}
 		});

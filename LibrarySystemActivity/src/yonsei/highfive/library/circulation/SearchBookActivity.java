@@ -24,7 +24,7 @@ import android.widget.TabHost;
 import android.widget.Toast;
 import android.widget.TabHost.OnTabChangeListener;
 
-public class SearchBook extends TabActivity implements OnTabChangeListener{
+public class SearchBookActivity extends TabActivity implements OnTabChangeListener{
 	@Override
 	public void onCreate(Bundle savedInstanceState){
 		super.onCreate(savedInstanceState);
@@ -52,7 +52,7 @@ public class SearchBook extends TabActivity implements OnTabChangeListener{
 					// TODO Auto-generated catch block
 					e.printStackTrace();
 				}
-				AsyncTask<JSONObject, Void, Void> mJunctionBindingAsyncTask = new JunctionAsyncTask(SearchBook.this, actor, "검색 중입니다.");
+				AsyncTask<JSONObject, Void, Void> mJunctionBindingAsyncTask = new JunctionAsyncTask(SearchBookActivity.this, actor, "검색 중입니다.");
 				mJunctionBindingAsyncTask.execute(message);
 			}
 		});
@@ -87,7 +87,7 @@ public class SearchBook extends TabActivity implements OnTabChangeListener{
 								@Override
 								public void run() {
 									// TODO Auto-generated method stub
-									BookAdapter adapter = new BookAdapter(SearchBook.this, R.layout.book, booklist);
+									BookAdapter adapter = new BookAdapter(SearchBookActivity.this, R.layout.book, booklist);
 									ListView listview = (ListView)findViewById(R.id.searchlist);
 									listview.setAdapter(adapter);
 								}
@@ -109,7 +109,7 @@ public class SearchBook extends TabActivity implements OnTabChangeListener{
 								@Override
 								public void run() {
 									// TODO Auto-generated method stub
-									BookAdapter adapter = new BookAdapter(SearchBook.this, R.layout.book, booklist);
+									BookAdapter adapter = new BookAdapter(SearchBookActivity.this, R.layout.book, booklist);
 									ListView listview = (ListView)findViewById(R.id.borrowlist);
 									listview.setAdapter(adapter);
 								}
@@ -144,7 +144,7 @@ public class SearchBook extends TabActivity implements OnTabChangeListener{
 					// TODO Auto-generated catch block
 					e.printStackTrace();
 				}
-				AsyncTask<JSONObject, Void, Void> mJunctionBindingAsyncTask = new JunctionAsyncTask(SearchBook.this, actor, "목록을 불러오고 있습니다.");
+				AsyncTask<JSONObject, Void, Void> mJunctionBindingAsyncTask = new JunctionAsyncTask(SearchBookActivity.this, actor, "목록을 불러오고 있습니다.");
 				mJunctionBindingAsyncTask.execute(message);
 			}
 		}
