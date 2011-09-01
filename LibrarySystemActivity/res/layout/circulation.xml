@@ -5,7 +5,7 @@
     android:layout_height="fill_parent"
     >
     <LinearLayout android:id="@+id/linearLayout3" android:layout_width="match_parent" android:orientation="vertical" android:layout_height="wrap_content">
-        <TextView android:layout_height="wrap_content" android:textAppearance="?android:attr/textAppearanceLarge" android:layout_width="wrap_content" android:id="@+id/bookid" android:textSize="50dp" android:text="@string/bookinfo"></TextView>
+        <TextView android:layout_height="wrap_content" android:textAppearance="?android:attr/textAppearanceLarge" android:layout_width="wrap_content" android:id="@+id/bookid" android:textSize="50dp" android:text="bookinfo"></TextView>
         <TextView android:layout_height="wrap_content" android:text="책 ID : " android:layout_width="wrap_content" android:id="@+id/book_id" android:textSize="20dp"></TextView>
         <TextView android:layout_height="wrap_content" android:text="제목 : " android:layout_width="wrap_content" android:id="@+id/title" android:textSize="20dp"></TextView>
         <TextView android:layout_height="wrap_content" android:text="저자 : " android:layout_width="wrap_content" android:id="@+id/author" android:textSize="20dp"></TextView>

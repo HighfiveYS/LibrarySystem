@@ -1,0 +1,23 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:orientation="vertical"
+    android:layout_width="fill_parent"
+    android:layout_height="fill_parent"
+    >
+    <TextView android:textSize="50dp" android:layout_width="wrap_content" android:textAppearance="?android:attr/textAppearanceLarge" android:id="@+id/SeatID" android:layout_height="wrap_content" android:text="Seat Info"></TextView>
+    <TextView android:textSize="20dp" android:text="좌석 번호 : " android:id="@+id/SeatID" android:layout_width="wrap_content" android:layout_height="wrap_content"></TextView>
+    <TextView android:textSize="20dp" android:text="이용자 : " android:id="@+id/UserID" android:layout_width="wrap_content" android:layout_height="wrap_content"></TextView>
+    <TextView android:textSize="20dp" android:text="시작 시간 : " android:id="@+id/StartTime" android:layout_width="wrap_content" android:layout_height="wrap_content"></TextView>
+    <TextView android:textSize="20dp" android:text="종료 시간 : " android:id="@+id/EndTime" android:layout_width="wrap_content" android:layout_height="wrap_content"></TextView>
+    <TextView android:textSize="20dp" android:text="이용 가능 여부 : " android:id="@+id/Possible" android:layout_width="wrap_content" android:layout_height="wrap_content"></TextView>
+    <LinearLayout 
+    	android:orientation="horizontal"
+    	android:layout_width="fill_parent" android:layout_height="wrap_content">
+        <Button android:textSize="30dp" android:layout_height="wrap_content" android:id="@+id/button_occupy" android:layout_width="wrap_content" android:text="이용"></Button>
+    	<Button android:textSize="30dp" android:text="반납" android:id="@+id/button_return2" android:layout_width="wrap_content" android:layout_height="wrap_content"></Button>  	
+   	</LinearLayout>
+    <LinearLayout android:layout_height="wrap_content" android:orientation="horizontal" android:layout_width="fill_parent">
+        <Spinner android:prompt="@string/hour_prompt" android:layout_height="wrap_content" android:id="@+id/spinner_hour" android:layout_width="wrap_content"></Spinner>
+        <Button android:textSize="30dp" android:layout_height="wrap_content" android:id="@+id/button_extent" android:text="연장" android:layout_width="wrap_content"></Button>
+    </LinearLayout>
+</LinearLayout>

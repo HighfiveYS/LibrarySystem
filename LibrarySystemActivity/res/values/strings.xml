@@ -2,6 +2,5 @@
 <resources>
     <string name="hello">This is LibrarySystem\'s Main Activity!!</string>
     <string name="app_name">LibrarySystem</string>
-    <string name="bookinfo">Book Info</string>
-    <string name="borrowed">대여목록</string>
+    <string name="hour_prompt">Choose</string>
 </resources>
