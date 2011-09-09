@@ -47,6 +47,7 @@ public class SeatVer1Activity extends Activity implements OnClickListener {
         _hour.setAdapter(adapter);
         
      
+        seat = new SeatSpec();
         Hour = 1;
         /////////////////////////////////////////////////////////////////////////////
 //        Context temp = _hour.getContext();
@@ -171,9 +172,29 @@ public class SeatVer1Activity extends Activity implements OnClickListener {
 	    TextView _Possible = (TextView)SeatVer1Activity.this.findViewById(R.id.Possible);
 
 	    _SeatID.setText("좌석 번호 : " + SeatID);
-		_UserID.setText("이용자 : " + UserID);
-		_StartTime.setText("시작 시간 : " + StartTime);
-		_EndTime.setText("종료 시간 : " + EndTime);
+	    
+	    if(UserID.equals("null")){
+			_UserID.setText("이용자 : University");
+	    }
+	    else{
+			_UserID.setText("이용자 : " + UserID);
+	    }
+	    
+	    if(StartTime.equals("1000-01-01 10:00:00")){
+			_StartTime.setText("시작 시간 : -");
+	    }
+	    else{
+			_StartTime.setText("시작 시간 : " + StartTime);
+	    }
+	    
+	    if(EndTime.equals("1000-01-01 10:00:00")){
+			_EndTime.setText("종료 시간 : -");
+	    }
+	    else{
+			_EndTime.setText("종료 시간 : " + EndTime);
+	    }
+
+
 		if(UserID==null || UserID.equals("null"))
 			_Possible.setText("이용 가능 여부 : 가능");
 		else if(UserID.equals(pref.getString("id", "")))
@@ -223,6 +244,9 @@ public class SeatVer1Activity extends Activity implements OnClickListener {
 					}
 					else if(service.equals("occupyseat")){
 						String ack = message.getString("ack");
+						JSONObject seatspec = message.getJSONObject("seat");
+						seat.setSeatSpec(seatspec);
+
 						synchronized (actor) {
 							actor.notify();
 							actor.leave();
@@ -251,6 +275,9 @@ public class SeatVer1Activity extends Activity implements OnClickListener {
 					}
 					else if(service.equals("returnseat")){
 						String ack = message.getString("ack");
+						JSONObject seatspec = message.getJSONObject("seat");
+						seat.setSeatSpec(seatspec);
+
 						synchronized (actor) {
 							actor.notify();
 							actor.leave();
@@ -278,6 +305,9 @@ public class SeatVer1Activity extends Activity implements OnClickListener {
 					}
 					else if(service.equals("extentseat")){
 						String ack = message.getString("ack");
+						JSONObject seatspec = message.getJSONObject("seat");
+						seat.setSeatSpec(seatspec);
+
 						synchronized (actor) {
 							actor.notify();
 							actor.leave();
@@ -288,7 +318,6 @@ public class SeatVer1Activity extends Activity implements OnClickListener {
 								public void run() {
 									// TODO Auto-generated method stub
 									SharedPreferences pref = PreferenceManager.getDefaultSharedPreferences(SeatVer1Activity.this);
-									seat.setUserID(pref.getString("id", ""));
 									setSeattext(seat);
 									Toast.makeText(SeatVer1Activity.this, "좌석 연장 성공", Toast.LENGTH_LONG).show();
 								}

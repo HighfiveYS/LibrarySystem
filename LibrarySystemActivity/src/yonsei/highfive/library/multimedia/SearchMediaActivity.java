@@ -33,7 +33,7 @@ public class SearchMediaActivity extends TabActivity implements OnTabChangeListe
 		TabHost clsTabHost = getTabHost();
 		
 		clsTabHost.addTab(clsTabHost.newTabSpec("자료 검색").setIndicator("자료 검색").setContent(R.id.searchmedia));
-		clsTabHost.addTab(clsTabHost.newTabSpec("대여 목록").setIndicator("대여 목록").setContent(R.id.checkborrowed));
+		clsTabHost.addTab(clsTabHost.newTabSpec("대여 목록").setIndicator("대여 목록").setContent(R.id.checkborrowedmedia));
 		
 		clsTabHost.setCurrentTab(0);
 		clsTabHost.setOnTabChangedListener(this);

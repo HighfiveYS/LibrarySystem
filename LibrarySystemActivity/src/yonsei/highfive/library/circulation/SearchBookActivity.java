@@ -33,7 +33,7 @@ public class SearchBookActivity extends TabActivity implements OnTabChangeListen
 		TabHost clsTabHost = getTabHost();
 		
 		clsTabHost.addTab(clsTabHost.newTabSpec("도서 검색").setIndicator("도서 검색").setContent(R.id.searchbook));
-		clsTabHost.addTab(clsTabHost.newTabSpec("대여 목록").setIndicator("대여 목록").setContent(R.id.checkborrowed));
+		clsTabHost.addTab(clsTabHost.newTabSpec("대여 목록").setIndicator("대여 목록").setContent(R.id.checkborrowedbook));
 		
 		clsTabHost.setCurrentTab(0);
 		clsTabHost.setOnTabChangedListener(this);

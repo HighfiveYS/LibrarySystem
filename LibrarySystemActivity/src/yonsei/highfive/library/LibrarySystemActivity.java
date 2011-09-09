@@ -19,83 +19,92 @@ import android.view.View.OnClickListener;
 import android.widget.Button;
 
 public class LibrarySystemActivity extends Activity {
-    /** Called when the activity is first created. */
-	
-	//NFC변수는 나중에 Activity가 태그를 Share할 일이 생길 때 사용이 됩니다.
-	//private Nfc mNfc;
+	/** Called when the activity is first created. */
 
-    @Override
-    public void onCreate(Bundle savedInstanceState) {
-        super.onCreate(savedInstanceState);
-        setContentView(R.layout.main);
-        
-  
-     SharedPreferences pref = PreferenceManager.getDefaultSharedPreferences(this); 
-       if(!pref.getBoolean("certification", false)){ 
-          AlertDialog.Builder builder = new Builder(this); 
-            builder.setCancelable(true) 
-             .setMessage("학사인증이 되어있지 않습니다. 지금 인증하시겠습니까?") 
-             .setPositiveButton("확인", new DialogInterface.OnClickListener() { 
-                   @Override 
-                public void onClick(DialogInterface dialog, int which) { 
-                 // TODO Auto-generated method stub 
-                  Intent setintent = new Intent(LibrarySystemActivity.this, Settings.class); 
-               startActivity(setintent); 
-                  } 
-              }) 
-     .create().show(); 
+	// NFC변수는 나중에 Activity가 태그를 Share할 일이 생길 때 사용이 됩니다.
+	// private Nfc mNfc;
 
+	@Override
+	public void onCreate(Bundle savedInstanceState) {
+		super.onCreate(savedInstanceState);
+		setContentView(R.layout.main);
 
-	/**
-	 * NFC핸들러에 의한 Intent를 받아 그 안에 있는 URI를 통하여
-	 * 해당 service에 맞는 Activity를 시작하는 Intent를 보냄.
-	 * 여기서 각 service에 필요한 추가적인 parameters를 Extra를 이용해 같이 보내줌. 
-	 */
-		if (getIntent().getData() != null && getIntent().getData().toString().startsWith("http://165.132.214.212")) {
-		    Uri data = getIntent().getData();
-		    String service = data.getQueryParameter("service");
-		    
-		    if(service.equals("circulation")){
-		    	String bookid = data.getQueryParameter("bookid");
-		    	Intent intent = new Intent(this, yonsei.highfive.library.circulation.CirculationVer1Activity.class);
+		SharedPreferences pref = PreferenceManager
+				.getDefaultSharedPreferences(this);
+		if (!pref.getBoolean("certification", false)) {
+			AlertDialog.Builder builder = new Builder(this);
+			builder.setCancelable(true)
+					.setMessage("학사인증이 되어있지 않습니다. 지금 인증하시겠습니까?")
+					.setPositiveButton("확인",
+							new DialogInterface.OnClickListener() {
+								@Override
+								public void onClick(DialogInterface dialog,
+										int which) {
+									// TODO Auto-generated method stub
+									Intent setintent = new Intent(
+											LibrarySystemActivity.this,
+											Settings.class);
+									startActivity(setintent);
+								}
+							}).create().show();
+		}
+
+		/**
+		 * NFC핸들러에 의한 Intent를 받아 그 안에 있는 URI를 통하여 해당 service에 맞는 Activity를 시작하는
+		 * Intent를 보냄. 여기서 각 service에 필요한 추가적인 parameters를 Extra를 이용해 같이 보내줌.
+		 */
+		if (getIntent().getData() != null
+				&& getIntent().getData().toString()
+						.startsWith("http://165.132.214.212")) {
+			Uri data = getIntent().getData();
+			String service = data.getQueryParameter("service");
+
+			if (service.equals("circulation")) {
+				String bookid = data.getQueryParameter("bookid");
+				Intent intent = new Intent(
+						this,
+						yonsei.highfive.library.circulation.CirculationVer1Activity.class);
+				Bundle intent_data = new Bundle();
+				intent_data.putString("bookid", bookid);
+				intent.putExtras(intent_data);
+				startActivity(intent);
+			} else if (service.equals("seat")) {
+				String SeatID = data.getQueryParameter("SeatID");
+				Intent intent = new Intent(this,
+						yonsei.highfive.library.seat.SeatVer1Activity.class);
+				Bundle intent_data = new Bundle();
+				intent_data.putString("SeatID", SeatID);
+				intent.putExtras(intent_data);
+				startActivity(intent);
+			}else if(service.equals("gateway")){
+		    	String UserID = data.getQueryParameter("UserID");
+		    	Intent intent = new Intent(this, yonsei.highfive.library.gate.GatewayVer1Activity.class);
 		    	Bundle intent_data = new Bundle();
-		    	intent_data.putString("bookid", bookid);
+		    	intent_data.putString("UserID", UserID);
 		    	intent.putExtras(intent_data);
 		    	startActivity(intent);
-		    }
-		    else if(service.equals("seat")){
-		    	String SeatID = data.getQueryParameter("SeatID");
-		    	Intent intent = new Intent(this, yonsei.highfive.library.seat.SeatVer1Activity.class);
-		    	Bundle intent_data = new Bundle();
-		    	intent_data.putString("SeatID", SeatID);
-		    	intent.putExtras(intent_data);
-		    	startActivity(intent);
-		    }
-		    else if(service.equals("gateway")){
-		    	/**
-		    	 * 출입 시나리오 Activity 호출
-		    	 */
-		    }
-		    else if(service.equals("slideshow")){
-		    	/**
-		    	 * Junction Show Activity 호출
-		    	 */
-		    	
-		    }
-		    /*
-		     *  멀티미디어 자료 대출 시나리오
-		     */
-		    else if(service.equals("media_circulation")){
-		    	String mediaid = data.getQueryParameter("mediaid");
-		    	Intent intent = new Intent(this, yonsei.highfive.library.multimedia.Media_CirculationVer1Activity.class);
-		    	Bundle intent_data = new Bundle();
-		    	intent_data.putString("mediaid", mediaid);
-		    	intent.putExtras(intent_data);
-		    	startActivity(intent);
-		    }
-		    
-		    /* 기타 시나리오 */
-		
+		    } else if (service.equals("slideshow")) {
+				/**
+				 * Junction Show Activity 호출
+				 */
+
+			}
+			/*
+			 * 멀티미디어 자료 대출 시나리오
+			 */
+			else if (service.equals("media_circulation")) {
+				String mediaid = data.getQueryParameter("mediaid");
+				Intent intent = new Intent(
+						this,
+						yonsei.highfive.library.multimedia.Media_CirculationVer1Activity.class);
+				Bundle intent_data = new Bundle();
+				intent_data.putString("mediaid", mediaid);
+				intent.putExtras(intent_data);
+				startActivity(intent);
+			}
+
+			/* 기타 시나리오 */
+
 		}
 
 		Button button_book = (Button) findViewById(R.id.bookservice);
@@ -109,9 +118,7 @@ public class LibrarySystemActivity extends Activity {
 			}
 		});
 
-       }
-       
-    }
+	}
 
 	/**
 	 * 메뉴버튼을 눌렀을 때 설정메뉴를 출력함
@@ -141,5 +148,5 @@ public class LibrarySystemActivity extends Activity {
 		}
 		return false;
 	}
-	
+
 }

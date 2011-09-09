@@ -1,0 +1,13 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout
+  xmlns:android="http://schemas.android.com/apk/res/android"
+  android:orientation="vertical"
+  android:layout_width="match_parent"
+  android:layout_height="match_parent">
+    <Button android:layout_height="wrap_content" android:text="재생" android:id="@+id/play_button" android:layout_width="wrap_content"></Button>
+    <Button android:layout_height="wrap_content" android:text="정지" android:id="@+id/stop_button" android:layout_width="wrap_content"></Button>
+    <Button android:layout_height="wrap_content" android:text="볼륨업" android:id="@+id/up_button" android:layout_width="wrap_content"></Button>
+    <Button android:layout_width="wrap_content" android:text="볼륨다운" android:id="@+id/down_button"  android:layout_height="wrap_content"></Button>
+    <ToggleButton android:layout_height="wrap_content" android:layout_gravity="center" android:text="ToggleButton" android:id="@+id/toggleButton1" android:layout_width="244dp"></ToggleButton>
+    
+</LinearLayout>

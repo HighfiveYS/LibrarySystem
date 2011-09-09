@@ -4,7 +4,7 @@
     android:layout_width="fill_parent"
     android:layout_height="fill_parent"
     >
-    <TextView android:textSize="50dp" android:layout_width="wrap_content" android:textAppearance="?android:attr/textAppearanceLarge" android:id="@+id/SeatID" android:layout_height="wrap_content" android:text="Seat Info"></TextView>
+    <TextView android:textSize="50dp" android:layout_width="wrap_content" android:textAppearance="?android:attr/textAppearanceLarge" android:id="@+id/Seatinfo" android:layout_height="wrap_content" android:text="Seat Info"></TextView>
     <TextView android:textSize="20dp" android:text="좌석 번호 : " android:id="@+id/SeatID" android:layout_width="wrap_content" android:layout_height="wrap_content"></TextView>
     <TextView android:textSize="20dp" android:text="이용자 : " android:id="@+id/UserID" android:layout_width="wrap_content" android:layout_height="wrap_content"></TextView>
     <TextView android:textSize="20dp" android:text="시작 시간 : " android:id="@+id/StartTime" android:layout_width="wrap_content" android:layout_height="wrap_content"></TextView>
