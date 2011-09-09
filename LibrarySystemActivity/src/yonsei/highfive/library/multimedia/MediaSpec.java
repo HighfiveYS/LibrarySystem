@@ -9,6 +9,7 @@ public class MediaSpec {
 	private String director;
 	private String production;
 	private String borrower;
+	private String medialink;
 	
 	public MediaSpec(){
 	}
@@ -19,6 +20,7 @@ public class MediaSpec {
 		this.director = director;
 		this.production = production;
 		this.borrower = borrower;
+		this.medialink = medialink;
 	}
 	
 	public MediaSpec(JSONObject json){
@@ -28,6 +30,7 @@ public class MediaSpec {
 			this.director = json.getString("director");
 			this.production = json.getString("production");
 			this.borrower = json.getString("borrower");
+			this.medialink = json.getString("medialink");
 		} catch (JSONException e) {
 			// TODO Auto-generated catch block
 			e.printStackTrace();
@@ -41,18 +44,20 @@ public class MediaSpec {
 			this.director = json.getString("director");
 			this.production = json.getString("production");
 			this.borrower = json.getString("borrower");
+			this.medialink = json.getString("medialink");
 		} catch (JSONException e) {
 			// TODO Auto-generated catch block
 			e.printStackTrace();
 		}
 	}
 	
-	public void setmediaSpec(String mediaid, String title, String director, String production, String borrower){
+	public void setmediaSpec(String mediaid, String title, String director, String production, String borrower, String medialink){
 		this.mediaid = mediaid;
 		this.title = title;
 		this.director = director;
 		this.production = production;
 		this.borrower = borrower;
+		this.medialink = medialink;
 	}
 	
 	public void setmediaid(String mediaid){
@@ -70,6 +75,7 @@ public class MediaSpec {
 			json.put("director", director);
 			json.put("production", production);
 			json.put("borrower", borrower);
+			json.put("medialink", medialink);
 		} catch (JSONException e) {
 			// TODO Auto-generated catch block
 			e.printStackTrace();
@@ -92,6 +98,9 @@ public class MediaSpec {
 	}
 	public String getBorrower(){
 		return this.borrower;
+	}
+	public String getMedialink(){
+		return this.medialink;
 	}
 
 }

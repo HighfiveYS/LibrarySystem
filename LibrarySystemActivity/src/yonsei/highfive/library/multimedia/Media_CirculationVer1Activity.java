@@ -1,5 +1,6 @@
 package yonsei.highfive.library.multimedia;
 
+import java.net.URI;
 import java.util.ArrayList;
 
 import org.json.JSONArray;
@@ -12,6 +13,7 @@ import yonsei.highfive.library.Settings;
 import android.app.Activity;
 import android.content.Intent;
 import android.content.SharedPreferences;
+import android.net.Uri;
 import android.os.AsyncTask;
 import android.os.Bundle;
 import android.preference.PreferenceManager;
@@ -43,6 +45,9 @@ public class Media_CirculationVer1Activity extends Activity implements OnClickLi
         Button _return = (Button)findViewById(R.id.button_return);
         _borrow.setOnClickListener(this);
         _return.setOnClickListener(this);
+        //coding by JYP
+        Button _play = (Button)findViewById(R.id.button_play);
+        _play.setOnClickListener(this);
         
         // MediaSpec 생성
         media = new MediaSpec();
@@ -104,6 +109,23 @@ public class Media_CirculationVer1Activity extends Activity implements OnClickLi
 				AsyncTask<JSONObject, Void, Void> mJunctionBindingAsyncTask = new JunctionAsyncTask(Media_CirculationVer1Activity.this, actor, "반납 요청중입니다.");
 				mJunctionBindingAsyncTask.execute(message);
 			}
+			
+			// coding by JYP
+			else if(v.getId() == R.id.button_play){	// 테스트 재생 
+				SharedPreferences pref = PreferenceManager.getDefaultSharedPreferences(Media_CirculationVer1Activity.this);
+				if(!pref.getBoolean("certification", false)){
+					Toast.makeText(this, "학사 인증이 되어있지 않습니다.", Toast.LENGTH_SHORT).show();
+					return;
+				}
+				
+				Intent intent = new Intent(Intent.ACTION_VIEW, Uri.parse("http://www.youtube.com/watch?v=OZlekwtVfA4"));
+				startActivity(intent);
+				
+				
+				
+				
+			}
+			
 		} catch(JSONException e){
 			e.printStackTrace();
 		}
@@ -113,6 +135,7 @@ public class Media_CirculationVer1Activity extends Activity implements OnClickLi
 		SharedPreferences pref = PreferenceManager.getDefaultSharedPreferences(Media_CirculationVer1Activity.this);
         Button _borrow = (Button)findViewById(R.id.button_borrow);
         Button _return = (Button)findViewById(R.id.button_return);
+        Button _play = (Button)findViewById(R.id.button_play);
         TextView _mediaid = (TextView)findViewById(R.id.media_id);
         TextView _title =  (TextView)findViewById(R.id.title);
 	    TextView _director = (TextView)findViewById(R.id.director);
@@ -128,14 +151,17 @@ public class Media_CirculationVer1Activity extends Activity implements OnClickLi
 	    if(borrower.equals("null")||borrower==null){
         	_return.setEnabled(false);
         	_borrow.setEnabled(true);
+        	_play.setEnabled(false);
         }
         else if(borrower.equals(pref.getString("id",""))){
         	_return.setEnabled(true);
         	_borrow.setEnabled(false);
+        	_play.setEnabled(true);
         }
         else{
         	_return.setEnabled(false);
         	_borrow.setEnabled(false);
+        	_play.setEnabled(false);
         }
         
 

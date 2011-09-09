@@ -32,5 +32,6 @@
         <activity android:name=".library.Settings"></activity>
 		<activity android:name=".library.circulation.SearchBookActivity"></activity>
 		<activity android:name=".library.seat.SeatVer1Activity"></activity>
+		<activity android:name=".library.multimedia.Media_CirculationVer1Activity"></activity>
     </application>
 </manifest>

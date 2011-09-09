@@ -7,6 +7,7 @@ import yonsei.highfive.R;
 import yonsei.highfive.junction.JunctionAsyncTask;
 import yonsei.highfive.library.Settings;
 import android.app.Activity;
+import android.content.Context;
 import android.content.Intent;
 import android.content.SharedPreferences;
 import android.os.AsyncTask;
@@ -28,10 +29,7 @@ import edu.stanford.junction.provider.xmpp.XMPPSwitchboardConfig;
 
 
 public class SeatVer1Activity extends Activity implements OnClickListener {
-    String SeatID = null;
-    String UserID = null;
-    String StartTime = null;
-    String EndTime = null;
+    SeatSpec seat = null;
     int Hour = 0;
 
 	@Override
@@ -48,6 +46,25 @@ public class SeatVer1Activity extends Activity implements OnClickListener {
         adapter.setDropDownViewResource(android.R.layout.simple_spinner_dropdown_item);
         _hour.setAdapter(adapter);
         
+     
+        Hour = 1;
+        /////////////////////////////////////////////////////////////////////////////
+//        Context temp = _hour.getContext();
+//        if(temp.equals("1시간") == true){
+//        	Hour = 1;
+//        }
+//        else if(temp.equals("2시간") == true){
+//        	Hour = 2;
+//        }
+//        else if(temp.equals("3시간") == true){
+//        	Hour = 3;
+//        }
+//        else if(temp.equals("4시간") == true){
+//        	Hour = 4;
+//        }
+        /////////////////////////////////////////////////////////////////////////////
+
+        
         Button _occupy = (Button)findViewById(R.id.button_occupy);
         Button _return2 = (Button)findViewById(R.id.button_return2);
         Button _extent = (Button)findViewById(R.id.button_extent);
@@ -55,7 +72,6 @@ public class SeatVer1Activity extends Activity implements OnClickListener {
         _occupy.setOnClickListener(this);
         _return2.setOnClickListener(this);
         _extent.setOnClickListener(this);
- 
   
         // 설정에서 Switchboard 호스트를 불러와 config 설정 
 		SharedPreferences pref = PreferenceManager.getDefaultSharedPreferences(this);
@@ -66,14 +82,13 @@ public class SeatVer1Activity extends Activity implements OnClickListener {
         // Intent를 통해 bookid 가져오기 //
         Intent intent = getIntent();
         Bundle intent_data = intent.getExtras();
-        
-        SeatID = intent_data.getString("SeatID");
+        seat.setSeatID(intent_data.getString("SeatID"));
         
         JSONObject message = new JSONObject();
         
         try {
         	message.put("service", "checkseat");
-			message.put("SeatID", SeatID);
+			message.put("SeatID", seat.getSeatID());
 		} catch (JSONException e1) {
 			// TODO Auto-generated catch block
 			e1.printStackTrace();
@@ -91,7 +106,7 @@ public class SeatVer1Activity extends Activity implements OnClickListener {
 				SharedPreferences pref = PreferenceManager.getDefaultSharedPreferences(this);
 				JSONObject message = new JSONObject();
 				message.put("service", "occupyseat");
-				message.put("SeatID", SeatID);
+				message.put("SeatID", seat.getSeatID());
 				message.put("UserID", pref.getString("id", ""));
 				message.put("Hour", Hour);
 				AsyncTask<JSONObject, Void, Void> mJunctionBindingAsyncTask = new JunctionAsyncTask(SeatVer1Activity.this, actor,"로딩중입니다.");
@@ -101,7 +116,7 @@ public class SeatVer1Activity extends Activity implements OnClickListener {
 				SharedPreferences pref = PreferenceManager.getDefaultSharedPreferences(this);
 				JSONObject message = new JSONObject();
 				message.put("service", "returnseat");
-				message.put("SeatID", SeatID);
+				message.put("SeatID", seat.getSeatID());
 				message.put("UserID", pref.getString("id", ""));
 				AsyncTask<JSONObject, Void, Void> mJunctionBindingAsyncTask = new JunctionAsyncTask(SeatVer1Activity.this, actor,"로딩중입니다.");
 				mJunctionBindingAsyncTask.execute(message);
@@ -110,7 +125,7 @@ public class SeatVer1Activity extends Activity implements OnClickListener {
 				SharedPreferences pref = PreferenceManager.getDefaultSharedPreferences(this);
 				JSONObject message = new JSONObject();
 				message.put("service", "extentseat");
-				message.put("SeatID", SeatID);
+				message.put("SeatID", seat.getSeatID());
 				message.put("UserID", pref.getString("id", ""));
 				message.put("Hour", Hour);
 				AsyncTask<JSONObject, Void, Void> mJunctionBindingAsyncTask = new JunctionAsyncTask(SeatVer1Activity.this, actor,"로딩중입니다.");
@@ -121,13 +136,18 @@ public class SeatVer1Activity extends Activity implements OnClickListener {
 		}
 	}
 	
-	public void setSeattext(String SeatID, String UserID, String StartTime, String EndTime){
+	public void setSeattext(SeatSpec seat){
 		
 		SharedPreferences pref = PreferenceManager.getDefaultSharedPreferences(SeatVer1Activity.this);
         Button _occupy = (Button)findViewById(R.id.button_occupy);
         Button _return2 = (Button)findViewById(R.id.button_return2);
         Button _extent = (Button)findViewById(R.id.button_extent);
   
+        String SeatID = seat.getSeatID();
+        String UserID = seat.getUserID();
+        String StartTime = seat.getStartTime();
+        String EndTime = seat.getEndTime();
+        
         if(UserID.equals("null")||UserID==null){
         	_occupy.setEnabled(true);
         	_return2.setEnabled(false);
@@ -184,11 +204,9 @@ public class SeatVer1Activity extends Activity implements OnClickListener {
 				if (message.has("service")) {
 					String service = message.getString("service");
 					if(service.equals("checkseat")){
+						JSONObject seatspec = message.getJSONObject("seat");
+						seat.setSeatSpec(seatspec);
 						
-						SeatID = message.getString("SeatID");
-						UserID = message.getString("UserID");
-						StartTime = message.getString("StartTime");
-						EndTime = message.getString("EndTime");
 						synchronized (actor) {
 							 actor.notify();
 							 actor.leave();
@@ -198,7 +216,7 @@ public class SeatVer1Activity extends Activity implements OnClickListener {
 							@Override
 							public void run() {
 								// TODO Auto-generated method stub
-								setSeattext(SeatID, UserID, StartTime, EndTime);
+								setSeattext(seat);
 							}
 						});
 
@@ -215,8 +233,8 @@ public class SeatVer1Activity extends Activity implements OnClickListener {
 								public void run() {
 									// TODO Auto-generated method stub
 									SharedPreferences pref = PreferenceManager.getDefaultSharedPreferences(SeatVer1Activity.this);
-									UserID = pref.getString("id", "");
-									setSeattext(SeatID, UserID, StartTime, EndTime);
+									seat.setUserID(pref.getString("id", ""));
+									setSeattext(seat);
 									Toast.makeText(SeatVer1Activity.this, "좌석 배정 성공", Toast.LENGTH_LONG).show();
 								}
 							});
@@ -242,8 +260,8 @@ public class SeatVer1Activity extends Activity implements OnClickListener {
 								@Override
 								public void run() {
 									// TODO Auto-generated method stub
-									UserID = "null";
-									setSeattext(SeatID, UserID, StartTime, EndTime);
+									seat.setUserID("null");
+									setSeattext(seat);
 									Toast.makeText(SeatVer1Activity.this, "좌석 반납 성공", Toast.LENGTH_LONG).show();
 								}
 							});
@@ -270,8 +288,8 @@ public class SeatVer1Activity extends Activity implements OnClickListener {
 								public void run() {
 									// TODO Auto-generated method stub
 									SharedPreferences pref = PreferenceManager.getDefaultSharedPreferences(SeatVer1Activity.this);
-									UserID = pref.getString("id", "");
-									setSeattext(SeatID, UserID, StartTime, EndTime);
+									seat.setUserID(pref.getString("id", ""));
+									setSeattext(seat);
 									Toast.makeText(SeatVer1Activity.this, "좌석 연장 성공", Toast.LENGTH_LONG).show();
 								}
 							});
