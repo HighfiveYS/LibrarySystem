@@ -65,7 +65,7 @@ public class LibrarySystemActivity extends Activity {
 				String bookid = data.getQueryParameter("bookid");
 				Intent intent = new Intent(
 						this,
-						yonsei.highfive.library.circulation.CirculationVer1Activity.class);
+						yonsei.highfive.library.circulation.CirculationActivity.class);
 				Bundle intent_data = new Bundle();
 				intent_data.putString("bookid", bookid);
 				intent.putExtras(intent_data);
@@ -73,14 +73,14 @@ public class LibrarySystemActivity extends Activity {
 			} else if (service.equals("seat")) {
 				String SeatID = data.getQueryParameter("SeatID");
 				Intent intent = new Intent(this,
-						yonsei.highfive.library.seat.SeatVer1Activity.class);
+						yonsei.highfive.library.seat.SeatActivity.class);
 				Bundle intent_data = new Bundle();
 				intent_data.putString("SeatID", SeatID);
 				intent.putExtras(intent_data);
 				startActivity(intent);
 			}else if(service.equals("gateway")){
 		    	String UserID = data.getQueryParameter("UserID");
-		    	Intent intent = new Intent(this, yonsei.highfive.library.gate.GatewayVer1Activity.class);
+		    	Intent intent = new Intent(this, yonsei.highfive.library.gate.GatewayActivity.class);
 		    	Bundle intent_data = new Bundle();
 		    	intent_data.putString("UserID", UserID);
 		    	intent.putExtras(intent_data);
@@ -100,7 +100,7 @@ public class LibrarySystemActivity extends Activity {
 				String mediaid = data.getQueryParameter("mediaid");
 				Intent intent = new Intent(
 						this,
-						yonsei.highfive.library.multimedia.Media_CirculationVer1Activity.class);
+						yonsei.highfive.library.multimedia.MediaCirculationActivity.class);
 				Bundle intent_data = new Bundle();
 				intent_data.putString("mediaid", mediaid);
 				intent.putExtras(intent_data);

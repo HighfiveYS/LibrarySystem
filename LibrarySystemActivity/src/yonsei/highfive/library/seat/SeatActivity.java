@@ -28,7 +28,7 @@ import edu.stanford.junction.api.messaging.MessageHeader;
 import edu.stanford.junction.provider.xmpp.XMPPSwitchboardConfig;
 
 
-public class SeatVer1Activity extends Activity implements OnClickListener {
+public class SeatActivity extends Activity implements OnClickListener {
     SeatSpec seat = null;
     int Hour = 0;
 
@@ -94,7 +94,7 @@ public class SeatVer1Activity extends Activity implements OnClickListener {
 			// TODO Auto-generated catch block
 			e1.printStackTrace();
 		}
-        AsyncTask<JSONObject, Void, Void> mJunctionBindingAsyncTask = new JunctionAsyncTask(SeatVer1Activity.this, actor, "db", "로딩중입니다.");
+        AsyncTask<JSONObject, Void, Void> mJunctionBindingAsyncTask = new JunctionAsyncTask(SeatActivity.this, actor, "db", "로딩중입니다.");
 		mJunctionBindingAsyncTask.execute(message);
 
     }
@@ -110,7 +110,7 @@ public class SeatVer1Activity extends Activity implements OnClickListener {
 				message.put("SeatID", seat.getSeatID());
 				message.put("UserID", pref.getString("id", ""));
 				message.put("Hour", Hour);
-				AsyncTask<JSONObject, Void, Void> mJunctionBindingAsyncTask = new JunctionAsyncTask(SeatVer1Activity.this, actor, "db", "로딩중입니다.");
+				AsyncTask<JSONObject, Void, Void> mJunctionBindingAsyncTask = new JunctionAsyncTask(SeatActivity.this, actor, "db", "로딩중입니다.");
 				mJunctionBindingAsyncTask.execute(message);
 			}
 			else if(v.getId() == R.id.button_return2){
@@ -119,7 +119,7 @@ public class SeatVer1Activity extends Activity implements OnClickListener {
 				message.put("service", "returnseat");
 				message.put("SeatID", seat.getSeatID());
 				message.put("UserID", pref.getString("id", ""));
-				AsyncTask<JSONObject, Void, Void> mJunctionBindingAsyncTask = new JunctionAsyncTask(SeatVer1Activity.this, actor, "db", "로딩중입니다.");
+				AsyncTask<JSONObject, Void, Void> mJunctionBindingAsyncTask = new JunctionAsyncTask(SeatActivity.this, actor, "db", "로딩중입니다.");
 				mJunctionBindingAsyncTask.execute(message);
 			}
 			else if(v.getId() == R.id.button_extent){
@@ -129,7 +129,7 @@ public class SeatVer1Activity extends Activity implements OnClickListener {
 				message.put("SeatID", seat.getSeatID());
 				message.put("UserID", pref.getString("id", ""));
 				message.put("Hour", Hour);
-				AsyncTask<JSONObject, Void, Void> mJunctionBindingAsyncTask = new JunctionAsyncTask(SeatVer1Activity.this, actor, "db", "로딩중입니다.");
+				AsyncTask<JSONObject, Void, Void> mJunctionBindingAsyncTask = new JunctionAsyncTask(SeatActivity.this, actor, "db", "로딩중입니다.");
 				mJunctionBindingAsyncTask.execute(message);
 			}
 		} catch(JSONException e){
@@ -139,7 +139,7 @@ public class SeatVer1Activity extends Activity implements OnClickListener {
 	
 	public void setSeattext(SeatSpec seat){
 		
-		SharedPreferences pref = PreferenceManager.getDefaultSharedPreferences(SeatVer1Activity.this);
+		SharedPreferences pref = PreferenceManager.getDefaultSharedPreferences(SeatActivity.this);
         Button _occupy = (Button)findViewById(R.id.button_occupy);
         Button _return2 = (Button)findViewById(R.id.button_return2);
         Button _extent = (Button)findViewById(R.id.button_extent);
@@ -165,11 +165,11 @@ public class SeatVer1Activity extends Activity implements OnClickListener {
         	_extent.setEnabled(false);
         }
         
-	    TextView _SeatID= (TextView)SeatVer1Activity.this.findViewById(R.id.SeatID);
-        TextView _UserID =  (TextView)SeatVer1Activity.this.findViewById(R.id.UserID);
-	    TextView _StartTime = (TextView)SeatVer1Activity.this.findViewById(R.id.StartTime);
-	    TextView _EndTime = (TextView)SeatVer1Activity.this.findViewById(R.id.EndTime);
-	    TextView _Possible = (TextView)SeatVer1Activity.this.findViewById(R.id.Possible);
+	    TextView _SeatID= (TextView)SeatActivity.this.findViewById(R.id.SeatID);
+        TextView _UserID =  (TextView)SeatActivity.this.findViewById(R.id.UserID);
+	    TextView _StartTime = (TextView)SeatActivity.this.findViewById(R.id.StartTime);
+	    TextView _EndTime = (TextView)SeatActivity.this.findViewById(R.id.EndTime);
+	    TextView _Possible = (TextView)SeatActivity.this.findViewById(R.id.Possible);
 
 	    _SeatID.setText("좌석 번호 : " + SeatID);
 	    
@@ -256,10 +256,10 @@ public class SeatVer1Activity extends Activity implements OnClickListener {
 								@Override
 								public void run() {
 									// TODO Auto-generated method stub
-									SharedPreferences pref = PreferenceManager.getDefaultSharedPreferences(SeatVer1Activity.this);
+									SharedPreferences pref = PreferenceManager.getDefaultSharedPreferences(SeatActivity.this);
 									seat.setUserID(pref.getString("id", ""));
 									setSeattext(seat);
-									Toast.makeText(SeatVer1Activity.this, "좌석 배정 성공", Toast.LENGTH_LONG).show();
+									Toast.makeText(SeatActivity.this, "좌석 배정 성공", Toast.LENGTH_LONG).show();
 								}
 							});
 						}
@@ -268,7 +268,7 @@ public class SeatVer1Activity extends Activity implements OnClickListener {
 								@Override
 								public void run() {
 									// TODO Auto-generated method stub
-									Toast.makeText(SeatVer1Activity.this, "좌석 배정 실패", Toast.LENGTH_LONG).show();
+									Toast.makeText(SeatActivity.this, "좌석 배정 실패", Toast.LENGTH_LONG).show();
 								}
 							});
 						}
@@ -289,7 +289,7 @@ public class SeatVer1Activity extends Activity implements OnClickListener {
 									// TODO Auto-generated method stub
 									seat.setUserID("null");
 									setSeattext(seat);
-									Toast.makeText(SeatVer1Activity.this, "좌석 반납 성공", Toast.LENGTH_LONG).show();
+									Toast.makeText(SeatActivity.this, "좌석 반납 성공", Toast.LENGTH_LONG).show();
 								}
 							});
 						}
@@ -298,7 +298,7 @@ public class SeatVer1Activity extends Activity implements OnClickListener {
 								@Override
 								public void run() {
 									// TODO Auto-generated method stub
-									Toast.makeText(SeatVer1Activity.this, "좌석 반납 실패", Toast.LENGTH_LONG).show();
+									Toast.makeText(SeatActivity.this, "좌석 반납 실패", Toast.LENGTH_LONG).show();
 								}
 							});
 						}
@@ -317,9 +317,9 @@ public class SeatVer1Activity extends Activity implements OnClickListener {
 								@Override
 								public void run() {
 									// TODO Auto-generated method stub
-									SharedPreferences pref = PreferenceManager.getDefaultSharedPreferences(SeatVer1Activity.this);
+									SharedPreferences pref = PreferenceManager.getDefaultSharedPreferences(SeatActivity.this);
 									setSeattext(seat);
-									Toast.makeText(SeatVer1Activity.this, "좌석 연장 성공", Toast.LENGTH_LONG).show();
+									Toast.makeText(SeatActivity.this, "좌석 연장 성공", Toast.LENGTH_LONG).show();
 								}
 							});
 						}
@@ -328,7 +328,7 @@ public class SeatVer1Activity extends Activity implements OnClickListener {
 								@Override
 								public void run() {
 									// TODO Auto-generated method stub
-									Toast.makeText(SeatVer1Activity.this, "좌석 연장 실패", Toast.LENGTH_LONG).show();
+									Toast.makeText(SeatActivity.this, "좌석 연장 실패", Toast.LENGTH_LONG).show();
 								}
 							});
 						}

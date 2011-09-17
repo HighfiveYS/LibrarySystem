@@ -28,7 +28,7 @@ import edu.stanford.junction.api.messaging.MessageHeader;
 import edu.stanford.junction.provider.xmpp.XMPPSwitchboardConfig;
 
 
-public class GatewayVer1Activity extends Activity{
+public class GatewayActivity extends Activity{
 
 	@Override
     public void onCreate(Bundle savedInstanceState) {
@@ -56,7 +56,7 @@ public class GatewayVer1Activity extends Activity{
 			// TODO Auto-generated catch block
 			e1.printStackTrace();
 		}
-        AsyncTask<JSONObject, Void, Void> mJunctionBindingAsyncTask = new JunctionAsyncTask(GatewayVer1Activity.this, actor, "db", "정보확인중입니다.");
+        AsyncTask<JSONObject, Void, Void> mJunctionBindingAsyncTask = new JunctionAsyncTask(GatewayActivity.this, actor, "db", "정보확인중입니다.");
 		mJunctionBindingAsyncTask.execute(message);
 
     }
@@ -95,7 +95,7 @@ public class GatewayVer1Activity extends Activity{
 							@Override
 							public void run() {
 								// TODO Auto-generated method stub
-								Toast.makeText(GatewayVer1Activity.this, "입관처리 되었습니다.", Toast.LENGTH_SHORT);
+								Toast.makeText(GatewayActivity.this, "입관처리 되었습니다.", Toast.LENGTH_SHORT);
 							}
 						});
 
@@ -112,7 +112,7 @@ public class GatewayVer1Activity extends Activity{
 							@Override
 							public void run() {
 								// TODO Auto-generated method stub
-								Toast.makeText(GatewayVer1Activity.this, "퇴관처리 되었습니다.", Toast.LENGTH_SHORT);
+								Toast.makeText(GatewayActivity.this, "퇴관처리 되었습니다.", Toast.LENGTH_SHORT);
 							}
 						});
 					}
@@ -128,7 +128,7 @@ public class GatewayVer1Activity extends Activity{
 							@Override
 							public void run() {
 								// TODO Auto-generated method stub
-								Toast.makeText(GatewayVer1Activity.this, "등록된 데이터가 없습니다.", Toast.LENGTH_SHORT);
+								Toast.makeText(GatewayActivity.this, "등록된 데이터가 없습니다.", Toast.LENGTH_SHORT);
 							}
 						});
 					}

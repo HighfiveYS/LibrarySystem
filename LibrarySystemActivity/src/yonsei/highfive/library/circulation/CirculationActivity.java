@@ -28,7 +28,7 @@ import edu.stanford.junction.api.activity.JunctionActor;
 import edu.stanford.junction.api.messaging.MessageHeader;
 
 
-public class CirculationVer1Activity extends Activity implements OnClickListener {
+public class CirculationActivity extends Activity implements OnClickListener {
     BookSpec book = null;
  
 	@Override
@@ -61,7 +61,7 @@ public class CirculationVer1Activity extends Activity implements OnClickListener
 			// TODO Auto-generated catch block
 			e1.printStackTrace();
 		}
-        AsyncTask<JSONObject, Void, Void> mJunctionBindingAsyncTask = new JunctionAsyncTask(CirculationVer1Activity.this, actor, "db", "책 정보를 읽어 오는 중입니다.");
+        AsyncTask<JSONObject, Void, Void> mJunctionBindingAsyncTask = new JunctionAsyncTask(CirculationActivity.this, actor, "db", "책 정보를 읽어 오는 중입니다.");
 		mJunctionBindingAsyncTask.execute(message);
 		
     }
@@ -79,7 +79,7 @@ public class CirculationVer1Activity extends Activity implements OnClickListener
 		// TODO Auto-generated method stub
 		try{
 			if(v.getId() == R.id.button_borrow){		// 대여 요청
-				SharedPreferences pref = PreferenceManager.getDefaultSharedPreferences(CirculationVer1Activity.this);
+				SharedPreferences pref = PreferenceManager.getDefaultSharedPreferences(CirculationActivity.this);
 				if(!pref.getBoolean("certification", false)){
 					Toast.makeText(this, "학사 인증이 되어있지 않습니다.", Toast.LENGTH_SHORT).show();
 					return;
@@ -88,11 +88,11 @@ public class CirculationVer1Activity extends Activity implements OnClickListener
 				message.put("service", "borrowbook");
 				message.put("bookid", book.getBookid());
 				message.put("userid", pref.getString("id", ""));
-				AsyncTask<JSONObject, Void, Void> mJunctionBindingAsyncTask = new JunctionAsyncTask(CirculationVer1Activity.this, actor, "db", "대출 요청중입니다.");
+				AsyncTask<JSONObject, Void, Void> mJunctionBindingAsyncTask = new JunctionAsyncTask(CirculationActivity.this, actor, "db", "대출 요청중입니다.");
 				mJunctionBindingAsyncTask.execute(message);
 			}
 			else if(v.getId() == R.id.button_return){	// 반납 요청
-				SharedPreferences pref = PreferenceManager.getDefaultSharedPreferences(CirculationVer1Activity.this);
+				SharedPreferences pref = PreferenceManager.getDefaultSharedPreferences(CirculationActivity.this);
 				if(!pref.getBoolean("certification", false)){
 					Toast.makeText(this, "학사 인증이 되어있지 않습니다.", Toast.LENGTH_SHORT).show();
 					return;
@@ -101,7 +101,7 @@ public class CirculationVer1Activity extends Activity implements OnClickListener
 				message.put("service", "returnbook");
 				message.put("bookid", book.getBookid());
 				message.put("userid", pref.getString("id", ""));
-				AsyncTask<JSONObject, Void, Void> mJunctionBindingAsyncTask = new JunctionAsyncTask(CirculationVer1Activity.this, actor, "db", "반납 요청중입니다.");
+				AsyncTask<JSONObject, Void, Void> mJunctionBindingAsyncTask = new JunctionAsyncTask(CirculationActivity.this, actor, "db", "반납 요청중입니다.");
 				mJunctionBindingAsyncTask.execute(message);
 			}
 		} catch(JSONException e){
@@ -110,7 +110,7 @@ public class CirculationVer1Activity extends Activity implements OnClickListener
 	}
 	
 	public void setBooktext(BookSpec book){
-		SharedPreferences pref = PreferenceManager.getDefaultSharedPreferences(CirculationVer1Activity.this);
+		SharedPreferences pref = PreferenceManager.getDefaultSharedPreferences(CirculationActivity.this);
         Button _borrow = (Button)findViewById(R.id.button_borrow);
         Button _return = (Button)findViewById(R.id.button_return);
         TextView _bookid = (TextView)findViewById(R.id.book_id);
@@ -207,9 +207,9 @@ public class CirculationVer1Activity extends Activity implements OnClickListener
 								@Override
 								public void run() {
 									// TODO Auto-generated method stub
-									SharedPreferences pref = PreferenceManager.getDefaultSharedPreferences(CirculationVer1Activity.this);
+									SharedPreferences pref = PreferenceManager.getDefaultSharedPreferences(CirculationActivity.this);
 									book.setBorrower(pref.getString("id", ""));
-									Toast.makeText(CirculationVer1Activity.this, "도서 대출 성공", Toast.LENGTH_LONG).show();
+									Toast.makeText(CirculationActivity.this, "도서 대출 성공", Toast.LENGTH_LONG).show();
 									finish();
 								}
 							});
@@ -219,7 +219,7 @@ public class CirculationVer1Activity extends Activity implements OnClickListener
 								@Override
 								public void run() {
 									// TODO Auto-generated method stub
-									Toast.makeText(CirculationVer1Activity.this, "도서 대출 실패", Toast.LENGTH_LONG).show();
+									Toast.makeText(CirculationActivity.this, "도서 대출 실패", Toast.LENGTH_LONG).show();
 								}
 							});
 						}
@@ -237,8 +237,8 @@ public class CirculationVer1Activity extends Activity implements OnClickListener
 								@Override
 								public void run() {
 									// TODO Auto-generated method stub
-									SharedPreferences pref = PreferenceManager.getDefaultSharedPreferences(CirculationVer1Activity.this);
-									Toast.makeText(CirculationVer1Activity.this, "도서 반납 성공", Toast.LENGTH_LONG).show();
+									SharedPreferences pref = PreferenceManager.getDefaultSharedPreferences(CirculationActivity.this);
+									Toast.makeText(CirculationActivity.this, "도서 반납 성공", Toast.LENGTH_LONG).show();
 									finish();
 								}
 							});
@@ -248,7 +248,7 @@ public class CirculationVer1Activity extends Activity implements OnClickListener
 								@Override
 								public void run() {
 									// TODO Auto-generated method stub
-									Toast.makeText(CirculationVer1Activity.this, "도서 반납 실패", Toast.LENGTH_LONG).show();
+									Toast.makeText(CirculationActivity.this, "도서 반납 실패", Toast.LENGTH_LONG).show();
 								}
 							});
 						}

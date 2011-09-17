@@ -30,7 +30,7 @@ import edu.stanford.junction.api.activity.JunctionActor;
 import edu.stanford.junction.api.messaging.MessageHeader;
 
 
-public class Media_CirculationVer1Activity extends Activity implements OnClickListener {
+public class MediaCirculationActivity extends Activity implements OnClickListener {
     MediaSpec media = null;
  
 	@Override
@@ -66,7 +66,7 @@ public class Media_CirculationVer1Activity extends Activity implements OnClickLi
 			// TODO Auto-generated catch block
 			e1.printStackTrace();
 		}
-        AsyncTask<JSONObject, Void, Void> mJunctionBindingAsyncTask = new JunctionAsyncTask(Media_CirculationVer1Activity.this, actor, "db", "멀티미디어 정보를 읽어 오는 중입니다.");
+        AsyncTask<JSONObject, Void, Void> mJunctionBindingAsyncTask = new JunctionAsyncTask(MediaCirculationActivity.this, actor, "db", "멀티미디어 정보를 읽어 오는 중입니다.");
 		mJunctionBindingAsyncTask.execute(message);
 		
     }
@@ -84,7 +84,7 @@ public class Media_CirculationVer1Activity extends Activity implements OnClickLi
 		// TODO Auto-generated method stub
 		try{
 			if(v.getId() == R.id.button_borrow){		// 대여 요청
-				SharedPreferences pref = PreferenceManager.getDefaultSharedPreferences(Media_CirculationVer1Activity.this);
+				SharedPreferences pref = PreferenceManager.getDefaultSharedPreferences(MediaCirculationActivity.this);
 				if(!pref.getBoolean("certification", false)){
 					Toast.makeText(this, "학사 인증이 되어있지 않습니다.", Toast.LENGTH_SHORT).show();
 					return;
@@ -93,11 +93,11 @@ public class Media_CirculationVer1Activity extends Activity implements OnClickLi
 				message.put("service", "borrowmedia");
 				message.put("mediaid", media.getmediaid());
 				message.put("userid", pref.getString("id", ""));
-				AsyncTask<JSONObject, Void, Void> mJunctionBindingAsyncTask = new JunctionAsyncTask(Media_CirculationVer1Activity.this, actor, "db", "대출 요청중입니다.");
+				AsyncTask<JSONObject, Void, Void> mJunctionBindingAsyncTask = new JunctionAsyncTask(MediaCirculationActivity.this, actor, "db", "대출 요청중입니다.");
 				mJunctionBindingAsyncTask.execute(message);
 			}
 			else if(v.getId() == R.id.button_return){	// 반납 요청
-				SharedPreferences pref = PreferenceManager.getDefaultSharedPreferences(Media_CirculationVer1Activity.this);
+				SharedPreferences pref = PreferenceManager.getDefaultSharedPreferences(MediaCirculationActivity.this);
 				if(!pref.getBoolean("certification", false)){
 					Toast.makeText(this, "학사 인증이 되어있지 않습니다.", Toast.LENGTH_SHORT).show();
 					return;
@@ -106,13 +106,13 @@ public class Media_CirculationVer1Activity extends Activity implements OnClickLi
 				message.put("service", "returnmedia");
 				message.put("mediaid", media.getmediaid());
 				message.put("userid", pref.getString("id", ""));
-				AsyncTask<JSONObject, Void, Void> mJunctionBindingAsyncTask = new JunctionAsyncTask(Media_CirculationVer1Activity.this, actor, "db", "반납 요청중입니다.");
+				AsyncTask<JSONObject, Void, Void> mJunctionBindingAsyncTask = new JunctionAsyncTask(MediaCirculationActivity.this, actor, "db", "반납 요청중입니다.");
 				mJunctionBindingAsyncTask.execute(message);
 			}
 			
 			// coding by JYP
 			else if(v.getId() == R.id.button_play){	// 테스트 재생 
-				SharedPreferences pref = PreferenceManager.getDefaultSharedPreferences(Media_CirculationVer1Activity.this);
+				SharedPreferences pref = PreferenceManager.getDefaultSharedPreferences(MediaCirculationActivity.this);
 				if(!pref.getBoolean("certification", false)){
 					Toast.makeText(this, "학사 인증이 되어있지 않습니다.", Toast.LENGTH_SHORT).show();
 					return;
@@ -132,7 +132,7 @@ public class Media_CirculationVer1Activity extends Activity implements OnClickLi
 	}
 	
 	public void setmediatext(MediaSpec media){
-		SharedPreferences pref = PreferenceManager.getDefaultSharedPreferences(Media_CirculationVer1Activity.this);
+		SharedPreferences pref = PreferenceManager.getDefaultSharedPreferences(MediaCirculationActivity.this);
         Button _borrow = (Button)findViewById(R.id.button_borrow);
         Button _return = (Button)findViewById(R.id.button_return);
         Button _play = (Button)findViewById(R.id.button_play);
@@ -227,10 +227,10 @@ public class Media_CirculationVer1Activity extends Activity implements OnClickLi
 								@Override
 								public void run() {
 									// TODO Auto-generated method stub
-									SharedPreferences pref = PreferenceManager.getDefaultSharedPreferences(Media_CirculationVer1Activity.this);
+									SharedPreferences pref = PreferenceManager.getDefaultSharedPreferences(MediaCirculationActivity.this);
 									media.setBorrower(pref.getString("id", ""));
 									setmediatext(media);
-									Toast.makeText(Media_CirculationVer1Activity.this, "자료 대출 성공", Toast.LENGTH_LONG).show();
+									Toast.makeText(MediaCirculationActivity.this, "자료 대출 성공", Toast.LENGTH_LONG).show();
 								}
 							});
 						}
@@ -239,7 +239,7 @@ public class Media_CirculationVer1Activity extends Activity implements OnClickLi
 								@Override
 								public void run() {
 									// TODO Auto-generated method stub
-									Toast.makeText(Media_CirculationVer1Activity.this, "자료 대출 실패", Toast.LENGTH_LONG).show();
+									Toast.makeText(MediaCirculationActivity.this, "자료 대출 실패", Toast.LENGTH_LONG).show();
 								}
 							});
 						}
@@ -257,10 +257,10 @@ public class Media_CirculationVer1Activity extends Activity implements OnClickLi
 								@Override
 								public void run() {
 									// TODO Auto-generated method stub
-									SharedPreferences pref = PreferenceManager.getDefaultSharedPreferences(Media_CirculationVer1Activity.this);
+									SharedPreferences pref = PreferenceManager.getDefaultSharedPreferences(MediaCirculationActivity.this);
 									media.setBorrower("null");
 									setmediatext(media);
-									Toast.makeText(Media_CirculationVer1Activity.this, "자료 반납 성공", Toast.LENGTH_LONG).show();
+									Toast.makeText(MediaCirculationActivity.this, "자료 반납 성공", Toast.LENGTH_LONG).show();
 								}
 							});
 						}
@@ -269,7 +269,7 @@ public class Media_CirculationVer1Activity extends Activity implements OnClickLi
 								@Override
 								public void run() {
 									// TODO Auto-generated method stub
-									Toast.makeText(Media_CirculationVer1Activity.this, "자료 반납 실패", Toast.LENGTH_LONG).show();
+									Toast.makeText(MediaCirculationActivity.this, "자료 반납 실패", Toast.LENGTH_LONG).show();
 								}
 							});
 						}
