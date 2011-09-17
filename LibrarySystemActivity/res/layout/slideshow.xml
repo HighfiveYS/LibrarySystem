@@ -5,8 +5,8 @@
   android:layout_width="match_parent"
   android:layout_height="match_parent" android:gravity="center">
     <LinearLayout android:id="@+id/linearLayout1" android:layout_height="wrap_content" android:gravity="center" android:layout_width="wrap_content">
-        <Button android:id="@+id/button_prev" android:layout_height="wrap_content" android:text="Prev" android:layout_width="wrap_content" android:padding="20dp"></Button>
-        <Button android:id="@+id/button_next" android:layout_height="wrap_content" android:text="Next" android:layout_weight="1" android:layout_width="wrap_content" android:padding="20dp"></Button>
+        <Button android:id="@+id/button_prev" android:layout_height="wrap_content" android:text="Prev" android:layout_width="wrap_content" android:padding="40dp"></Button>
+        <Button android:id="@+id/button_next" android:layout_height="wrap_content" android:text="Next" android:layout_weight="1" android:layout_width="wrap_content" android:padding="40dp"></Button>
     </LinearLayout>
     
 </LinearLayout>

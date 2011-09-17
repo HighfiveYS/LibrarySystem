@@ -128,10 +128,9 @@ public class LibrarySystemActivity extends Activity {
 			@Override
 			public void onClick(View v) {
 				// TODO Auto-generated method stub
-				ImageView image = new ImageView(LibrarySystemActivity.this);
-				image.setImageResource(R.drawable.touch);
-				LinearLayout l = (LinearLayout)findViewById(R.id.mainlayout);
-				l.addView(image);
+				ImageView image = (ImageView)findViewById(R.id.touchimage);
+				if(!image.isShown())
+					image.setVisibility(View.VISIBLE);
 			}
 		});
 
