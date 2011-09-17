@@ -52,7 +52,7 @@ public class SearchBookActivity extends TabActivity implements OnTabChangeListen
 					// TODO Auto-generated catch block
 					e.printStackTrace();
 				}
-				AsyncTask<JSONObject, Void, Void> mJunctionBindingAsyncTask = new JunctionAsyncTask(SearchBookActivity.this, actor, "검색 중입니다.");
+				AsyncTask<JSONObject, Void, Void> mJunctionBindingAsyncTask = new JunctionAsyncTask(SearchBookActivity.this, actor, "db", "검색 중입니다.");
 				mJunctionBindingAsyncTask.execute(message);
 			}
 		});
@@ -144,7 +144,7 @@ public class SearchBookActivity extends TabActivity implements OnTabChangeListen
 					// TODO Auto-generated catch block
 					e.printStackTrace();
 				}
-				AsyncTask<JSONObject, Void, Void> mJunctionBindingAsyncTask = new JunctionAsyncTask(SearchBookActivity.this, actor, "목록을 불러오고 있습니다.");
+				AsyncTask<JSONObject, Void, Void> mJunctionBindingAsyncTask = new JunctionAsyncTask(SearchBookActivity.this, actor, "db", "목록을 불러오고 있습니다.");
 				mJunctionBindingAsyncTask.execute(message);
 			}
 		}

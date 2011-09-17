@@ -61,7 +61,7 @@ public class CirculationVer1Activity extends Activity implements OnClickListener
 			// TODO Auto-generated catch block
 			e1.printStackTrace();
 		}
-        AsyncTask<JSONObject, Void, Void> mJunctionBindingAsyncTask = new JunctionAsyncTask(CirculationVer1Activity.this, actor, "책 정보를 읽어 오는 중입니다.");
+        AsyncTask<JSONObject, Void, Void> mJunctionBindingAsyncTask = new JunctionAsyncTask(CirculationVer1Activity.this, actor, "db", "책 정보를 읽어 오는 중입니다.");
 		mJunctionBindingAsyncTask.execute(message);
 		
     }
@@ -88,7 +88,7 @@ public class CirculationVer1Activity extends Activity implements OnClickListener
 				message.put("service", "borrowbook");
 				message.put("bookid", book.getBookid());
 				message.put("userid", pref.getString("id", ""));
-				AsyncTask<JSONObject, Void, Void> mJunctionBindingAsyncTask = new JunctionAsyncTask(CirculationVer1Activity.this, actor, "대출 요청중입니다.");
+				AsyncTask<JSONObject, Void, Void> mJunctionBindingAsyncTask = new JunctionAsyncTask(CirculationVer1Activity.this, actor, "db", "대출 요청중입니다.");
 				mJunctionBindingAsyncTask.execute(message);
 			}
 			else if(v.getId() == R.id.button_return){	// 반납 요청
@@ -101,7 +101,7 @@ public class CirculationVer1Activity extends Activity implements OnClickListener
 				message.put("service", "returnbook");
 				message.put("bookid", book.getBookid());
 				message.put("userid", pref.getString("id", ""));
-				AsyncTask<JSONObject, Void, Void> mJunctionBindingAsyncTask = new JunctionAsyncTask(CirculationVer1Activity.this, actor, "반납 요청중입니다.");
+				AsyncTask<JSONObject, Void, Void> mJunctionBindingAsyncTask = new JunctionAsyncTask(CirculationVer1Activity.this, actor, "db", "반납 요청중입니다.");
 				mJunctionBindingAsyncTask.execute(message);
 			}
 		} catch(JSONException e){
@@ -118,12 +118,16 @@ public class CirculationVer1Activity extends Activity implements OnClickListener
 	    TextView _author = (TextView)findViewById(R.id.author);
 	    TextView _publisher = (TextView)findViewById(R.id.publisher);
 	    TextView _possible = (TextView)findViewById(R.id.possible);
-
+	    TextView _starttime = (TextView)findViewById(R.id.starttime);
+	    TextView _endtime = (TextView)findViewById(R.id.endtime);
+	    
 	    String bookid = book.getBookid();
 	    String title = book.getTitle();
 	    String author = book.getAuthor();
 	    String publisher = book.getPublisher();
 	    String borrower = book.getBorrower();
+	    String StartTime = book.getStartTime();
+	    String EndTime = book.getEndTime();
 	    
 	    if(borrower.equals("null")||borrower==null){
         	_return.setEnabled(false);
@@ -143,6 +147,8 @@ public class CirculationVer1Activity extends Activity implements OnClickListener
 		_title.setText("제목 : " + title);
 		_author.setText("저자 : " + author);
 		_publisher.setText("출판사 : " + publisher);
+		_starttime.setText("대출기간 : " + StartTime);
+		_endtime.setText("반납기간 : " + EndTime);
 		if(borrower==null || borrower.equals("null"))
 			_possible.setText("대출 가능 여부 : 가능");
 		else if(borrower.equals(pref.getString("id", "")))
@@ -203,8 +209,8 @@ public class CirculationVer1Activity extends Activity implements OnClickListener
 									// TODO Auto-generated method stub
 									SharedPreferences pref = PreferenceManager.getDefaultSharedPreferences(CirculationVer1Activity.this);
 									book.setBorrower(pref.getString("id", ""));
-									setBooktext(book);
 									Toast.makeText(CirculationVer1Activity.this, "도서 대출 성공", Toast.LENGTH_LONG).show();
+									finish();
 								}
 							});
 						}
@@ -232,9 +238,8 @@ public class CirculationVer1Activity extends Activity implements OnClickListener
 								public void run() {
 									// TODO Auto-generated method stub
 									SharedPreferences pref = PreferenceManager.getDefaultSharedPreferences(CirculationVer1Activity.this);
-									book.setBorrower("null");
-									setBooktext(book);
 									Toast.makeText(CirculationVer1Activity.this, "도서 반납 성공", Toast.LENGTH_LONG).show();
+									finish();
 								}
 							});
 						}

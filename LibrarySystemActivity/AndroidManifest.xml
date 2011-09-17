@@ -25,7 +25,7 @@
 				<action android:name="android.intent.action.VIEW" />
 				<category android:name="android.intent.category.DEFAULT" />
 				<category android:name="android.intent.category.BROWSABLE" />
-				<data android:scheme="http" android:host="165.132.214.212"/>
+				<data android:scheme="http" android:host="mobilesw.yonsei.ac.kr"/>
 			 </intent-filter>
         </activity>
         <activity android:name=".library.circulation.CirculationVer1Activity" android:clearTaskOnLaunch="true" android:launchMode="singleTop"></activity>
@@ -33,5 +33,6 @@
 		<activity android:name=".library.circulation.SearchBookActivity"></activity>
 		<activity android:name=".library.seat.SeatVer1Activity"></activity>
 		<activity android:name=".library.multimedia.Media_CirculationVer1Activity"></activity>
+		<activity android:name=".slideshow.SlideShowActivity"></activity>
     </application>
 </manifest>

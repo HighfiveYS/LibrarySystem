@@ -66,7 +66,7 @@ public class Media_CirculationVer1Activity extends Activity implements OnClickLi
 			// TODO Auto-generated catch block
 			e1.printStackTrace();
 		}
-        AsyncTask<JSONObject, Void, Void> mJunctionBindingAsyncTask = new JunctionAsyncTask(Media_CirculationVer1Activity.this, actor, "멀티미디어 정보를 읽어 오는 중입니다.");
+        AsyncTask<JSONObject, Void, Void> mJunctionBindingAsyncTask = new JunctionAsyncTask(Media_CirculationVer1Activity.this, actor, "db", "멀티미디어 정보를 읽어 오는 중입니다.");
 		mJunctionBindingAsyncTask.execute(message);
 		
     }
@@ -93,7 +93,7 @@ public class Media_CirculationVer1Activity extends Activity implements OnClickLi
 				message.put("service", "borrowmedia");
 				message.put("mediaid", media.getmediaid());
 				message.put("userid", pref.getString("id", ""));
-				AsyncTask<JSONObject, Void, Void> mJunctionBindingAsyncTask = new JunctionAsyncTask(Media_CirculationVer1Activity.this, actor, "대출 요청중입니다.");
+				AsyncTask<JSONObject, Void, Void> mJunctionBindingAsyncTask = new JunctionAsyncTask(Media_CirculationVer1Activity.this, actor, "db", "대출 요청중입니다.");
 				mJunctionBindingAsyncTask.execute(message);
 			}
 			else if(v.getId() == R.id.button_return){	// 반납 요청
@@ -106,7 +106,7 @@ public class Media_CirculationVer1Activity extends Activity implements OnClickLi
 				message.put("service", "returnmedia");
 				message.put("mediaid", media.getmediaid());
 				message.put("userid", pref.getString("id", ""));
-				AsyncTask<JSONObject, Void, Void> mJunctionBindingAsyncTask = new JunctionAsyncTask(Media_CirculationVer1Activity.this, actor, "반납 요청중입니다.");
+				AsyncTask<JSONObject, Void, Void> mJunctionBindingAsyncTask = new JunctionAsyncTask(Media_CirculationVer1Activity.this, actor, "db", "반납 요청중입니다.");
 				mJunctionBindingAsyncTask.execute(message);
 			}
 			

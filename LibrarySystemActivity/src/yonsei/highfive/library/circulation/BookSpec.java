@@ -9,16 +9,20 @@ public class BookSpec {
 	private String author;
 	private String publisher;
 	private String borrower;
+	private String StartTime;
+	private String EndTime;
 	
 	public BookSpec(){
 	}
 	
-	public BookSpec(String bookid, String title, String author, String publisher, String borrower){
+	public BookSpec(String bookid, String title, String author, String publisher, String borrower, String StartTime, String EndTime){
 		this.bookid = bookid;
 		this.title = title;
 		this.author = author;
 		this.publisher = publisher;
 		this.borrower = borrower;
+		this.StartTime = StartTime;
+		this.EndTime = EndTime;
 	}
 	
 	public BookSpec(JSONObject json){
@@ -28,6 +32,8 @@ public class BookSpec {
 			this.author = json.getString("author");
 			this.publisher = json.getString("publisher");
 			this.borrower = json.getString("borrower");
+			this.StartTime = json.getString("StartTime");
+			this.EndTime = json.getString("EndTime");
 		} catch (JSONException e) {
 			// TODO Auto-generated catch block
 			e.printStackTrace();
@@ -41,18 +47,22 @@ public class BookSpec {
 			this.author = json.getString("author");
 			this.publisher = json.getString("publisher");
 			this.borrower = json.getString("borrower");
+			this.StartTime = json.getString("StartTime");
+			this.EndTime = json.getString("EndTime");
 		} catch (JSONException e) {
 			// TODO Auto-generated catch block
 			e.printStackTrace();
 		}
 	}
 	
-	public void setBookSpec(String bookid, String title, String author, String publisher, String borrower){
+	public void setBookSpec(String bookid, String title, String author, String publisher, String borrower, String StartTime, String EndTime){
 		this.bookid = bookid;
 		this.title = title;
 		this.author = author;
 		this.publisher = publisher;
 		this.borrower = borrower;
+		this.StartTime = StartTime;
+		this.EndTime = EndTime;
 	}
 	
 	public void setBookid(String bookid){
@@ -70,6 +80,8 @@ public class BookSpec {
 			json.put("author", author);
 			json.put("publisher", publisher);
 			json.put("borrower", borrower);
+			json.put("StartTime", StartTime);
+			json.put("EndTime", EndTime);
 		} catch (JSONException e) {
 			// TODO Auto-generated catch block
 			e.printStackTrace();
@@ -93,5 +105,10 @@ public class BookSpec {
 	public String getBorrower(){
 		return this.borrower;
 	}
-
+	public String getStartTime(){
+		return this.StartTime;
+	}
+	public String getEndTime(){
+		return this.EndTime;
+	}
 }

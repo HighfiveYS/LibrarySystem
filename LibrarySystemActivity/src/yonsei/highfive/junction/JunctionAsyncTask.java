@@ -22,22 +22,23 @@ public class JunctionAsyncTask extends AsyncTask<JSONObject, Void, Void> {
 	private Activity activity;
 	private String switchboard;
 	private String message;
+	private String sessionID;
 	
-	public JunctionAsyncTask(Activity activity,  JunctionActor actor, String message){
+	public JunctionAsyncTask(Activity activity,  JunctionActor actor, String sessionID, String message){
 		this.actor = actor;
 		this.activity = activity;
 		SharedPreferences pref = PreferenceManager.getDefaultSharedPreferences(activity);
 		this.switchboard = pref.getString("switchboard", "165.132.214.212"); 
 		this.config =  new XMPPSwitchboardConfig(switchboard);
+		this.sessionID = sessionID;
 		this.message = message;
-			
 	}
 	public JunctionAsyncTask(){
 		
 	}
 	protected Void doInBackground(JSONObject... params) {
 		try {
-			URI jxSession = URI.create("junction://"+switchboard+"/db");
+			URI jxSession = URI.create("junction://"+switchboard+"/"+sessionID);
 			AndroidJunctionMaker.getInstance(config).newJunction(jxSession,	actor);
 			synchronized (actor) {
 				try {

@@ -17,6 +17,8 @@ import android.view.MenuItem;
 import android.view.View;
 import android.view.View.OnClickListener;
 import android.widget.Button;
+import android.widget.ImageView;
+import android.widget.LinearLayout;
 
 public class LibrarySystemActivity extends Activity {
 	/** Called when the activity is first created. */
@@ -55,7 +57,7 @@ public class LibrarySystemActivity extends Activity {
 		 */
 		if (getIntent().getData() != null
 				&& getIntent().getData().toString()
-						.startsWith("http://165.132.214.212")) {
+						.startsWith("http://mobilesw.yonsei.ac.kr")) {
 			Uri data = getIntent().getData();
 			String service = data.getQueryParameter("service");
 
@@ -84,10 +86,12 @@ public class LibrarySystemActivity extends Activity {
 		    	intent.putExtras(intent_data);
 		    	startActivity(intent);
 		    } else if (service.equals("slideshow")) {
-				/**
-				 * Junction Show Activity 호출
-				 */
-
+				String SessionID = data.getQueryParameter("SessionID");
+				Intent intent = new Intent(this, yonsei.highfive.slideshow.SlideShowActivity.class);
+				Bundle intent_data = new Bundle();
+				intent_data.putString("SessionID", SessionID);
+				intent.putExtras(intent_data);
+				startActivity(intent);
 			}
 			/*
 			 * 멀티미디어 자료 대출 시나리오
@@ -115,6 +119,19 @@ public class LibrarySystemActivity extends Activity {
 				Intent intent = new Intent(LibrarySystemActivity.this,
 						SearchBookActivity.class);
 				startActivity(intent);
+			}
+		});
+		
+		Button button_slideshow = (Button)findViewById(R.id.slideshow);
+		button_slideshow.setOnClickListener(new OnClickListener() {
+			
+			@Override
+			public void onClick(View v) {
+				// TODO Auto-generated method stub
+				ImageView image = new ImageView(LibrarySystemActivity.this);
+				image.setImageResource(R.drawable.touch);
+				LinearLayout l = (LinearLayout)findViewById(R.id.mainlayout);
+				l.addView(image);
 			}
 		});
 

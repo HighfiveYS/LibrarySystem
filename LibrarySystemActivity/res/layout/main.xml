@@ -3,6 +3,7 @@
     android:orientation="vertical"
     android:layout_width="fill_parent"
     android:layout_height="fill_parent"
+    android:id="@+id/mainlayout"
     >
 <TextView  
     android:layout_width="fill_parent" 
@@ -10,4 +11,5 @@
     android:text="HighFive"
     />
 <Button android:text="Book Service" android:id="@+id/bookservice" android:layout_width="wrap_content" android:layout_height="wrap_content"></Button>
+<Button android:text="SlideShow Controller" android:id="@+id/slideshow" android:layout_width="wrap_content" android:layout_height="wrap_content"></Button>
 </LinearLayout>

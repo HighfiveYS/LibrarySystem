@@ -56,7 +56,7 @@ public class GatewayVer1Activity extends Activity{
 			// TODO Auto-generated catch block
 			e1.printStackTrace();
 		}
-        AsyncTask<JSONObject, Void, Void> mJunctionBindingAsyncTask = new JunctionAsyncTask(GatewayVer1Activity.this, actor,"정보확인중입니다.");
+        AsyncTask<JSONObject, Void, Void> mJunctionBindingAsyncTask = new JunctionAsyncTask(GatewayVer1Activity.this, actor, "db", "정보확인중입니다.");
 		mJunctionBindingAsyncTask.execute(message);
 
     }

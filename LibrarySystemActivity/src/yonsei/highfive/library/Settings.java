@@ -51,7 +51,7 @@ public class Settings extends PreferenceActivity{
 				e.printStackTrace();
 			}
 			
-			AsyncTask<JSONObject, Void, Void> mJunctionBindingAsyncTask = new JunctionAsyncTask(Settings.this, actor, "학사정보 인증중입니다.");
+			AsyncTask<JSONObject, Void, Void> mJunctionBindingAsyncTask = new JunctionAsyncTask(Settings.this, actor, "db", "학사정보 인증중입니다.");
 			
 			mJunctionBindingAsyncTask.execute(message); // AsyncTask Thread 시작
 		}

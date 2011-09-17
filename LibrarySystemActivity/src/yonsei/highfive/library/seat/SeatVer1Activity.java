@@ -94,7 +94,7 @@ public class SeatVer1Activity extends Activity implements OnClickListener {
 			// TODO Auto-generated catch block
 			e1.printStackTrace();
 		}
-        AsyncTask<JSONObject, Void, Void> mJunctionBindingAsyncTask = new JunctionAsyncTask(SeatVer1Activity.this, actor,"로딩중입니다.");
+        AsyncTask<JSONObject, Void, Void> mJunctionBindingAsyncTask = new JunctionAsyncTask(SeatVer1Activity.this, actor, "db", "로딩중입니다.");
 		mJunctionBindingAsyncTask.execute(message);
 
     }
@@ -110,7 +110,7 @@ public class SeatVer1Activity extends Activity implements OnClickListener {
 				message.put("SeatID", seat.getSeatID());
 				message.put("UserID", pref.getString("id", ""));
 				message.put("Hour", Hour);
-				AsyncTask<JSONObject, Void, Void> mJunctionBindingAsyncTask = new JunctionAsyncTask(SeatVer1Activity.this, actor,"로딩중입니다.");
+				AsyncTask<JSONObject, Void, Void> mJunctionBindingAsyncTask = new JunctionAsyncTask(SeatVer1Activity.this, actor, "db", "로딩중입니다.");
 				mJunctionBindingAsyncTask.execute(message);
 			}
 			else if(v.getId() == R.id.button_return2){
@@ -119,7 +119,7 @@ public class SeatVer1Activity extends Activity implements OnClickListener {
 				message.put("service", "returnseat");
 				message.put("SeatID", seat.getSeatID());
 				message.put("UserID", pref.getString("id", ""));
-				AsyncTask<JSONObject, Void, Void> mJunctionBindingAsyncTask = new JunctionAsyncTask(SeatVer1Activity.this, actor,"로딩중입니다.");
+				AsyncTask<JSONObject, Void, Void> mJunctionBindingAsyncTask = new JunctionAsyncTask(SeatVer1Activity.this, actor, "db", "로딩중입니다.");
 				mJunctionBindingAsyncTask.execute(message);
 			}
 			else if(v.getId() == R.id.button_extent){
@@ -129,7 +129,7 @@ public class SeatVer1Activity extends Activity implements OnClickListener {
 				message.put("SeatID", seat.getSeatID());
 				message.put("UserID", pref.getString("id", ""));
 				message.put("Hour", Hour);
-				AsyncTask<JSONObject, Void, Void> mJunctionBindingAsyncTask = new JunctionAsyncTask(SeatVer1Activity.this, actor,"로딩중입니다.");
+				AsyncTask<JSONObject, Void, Void> mJunctionBindingAsyncTask = new JunctionAsyncTask(SeatVer1Activity.this, actor, "db", "로딩중입니다.");
 				mJunctionBindingAsyncTask.execute(message);
 			}
 		} catch(JSONException e){
