@@ -1,6 +1,8 @@
 package yonsei.highfive.junction;
 
 import java.net.URI;
+import java.util.Timer;
+import java.util.TimerTask;
 
 import org.json.JSONObject;
 
@@ -10,6 +12,7 @@ import android.content.DialogInterface;
 import android.content.SharedPreferences;
 import android.os.AsyncTask;
 import android.preference.PreferenceManager;
+import android.widget.Toast;
 import edu.stanford.junction.JunctionException;
 import edu.stanford.junction.android.AndroidJunctionMaker;
 import edu.stanford.junction.api.activity.JunctionActor;
@@ -28,7 +31,7 @@ public class JunctionAsyncTask extends AsyncTask<JSONObject, Void, Void> {
 		this.actor = actor;
 		this.activity = activity;
 		SharedPreferences pref = PreferenceManager.getDefaultSharedPreferences(activity);
-		this.switchboard = pref.getString("switchboard", "165.132.214.212"); 
+		this.switchboard = pref.getString("switchboard", "mobilesw.yonsei.ac.kr"); 
 		this.config =  new XMPPSwitchboardConfig(switchboard);
 		this.sessionID = sessionID;
 		this.message = message;
@@ -67,9 +70,38 @@ public class JunctionAsyncTask extends AsyncTask<JSONObject, Void, Void> {
 			mDialog.setOnCancelListener(new DialogInterface.OnCancelListener() {
 				@Override
 				public void onCancel(DialogInterface arg0) {
+					actor.leave();
 				}
 			});
-			mDialog.show();
+			mDialog.show();	
+			
+			/*
+			 * implements Junction Connection Timeout
+			 */
+			TimerTask task = new TimerTask() {
+				@Override
+				public void run() {
+					// TODO Auto-generated method stub
+					try {
+						Thread.sleep(5000);
+						mDialog.cancel();
+						activity.runOnUiThread(new Runnable() {
+							@Override
+							public void run() {
+								// TODO Auto-generated method stub
+								if(activity.getLocalClassName().equals("library.Settings"))
+										activity.finish();
+								Toast.makeText(activity, "Timeout", Toast.LENGTH_LONG).show();
+							}
+						});
+					} catch (InterruptedException e) {
+						// TODO Auto-generated catch block
+						e.printStackTrace();
+					}
+				}
+			};
+			Timer timer = new Timer();
+			timer.schedule(task, 0);
 		}
 	}
 
