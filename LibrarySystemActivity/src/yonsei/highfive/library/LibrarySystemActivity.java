@@ -56,8 +56,8 @@ public class LibrarySystemActivity extends Activity {
 		 * Intent를 보냄. 여기서 각 service에 필요한 추가적인 parameters를 Extra를 이용해 같이 보내줌.
 		 */
 		if (getIntent().getData() != null
-				&& getIntent().getData().toString()
-						.startsWith("http://mobilesw.yonsei.ac.kr")) {
+				/*&& getIntent().getData().toString()
+						.startsWith("http://mobilesw.yonsei.ac.kr")*/) {
 			Uri data = getIntent().getData();
 			String service = data.getQueryParameter("service");
 
