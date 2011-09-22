@@ -109,7 +109,7 @@ public class Settings extends PreferenceActivity{
 							@Override
 							public void run() {
 								// TODO Auto-generated method stub
-								Toast.makeText(Settings.this, "학사인증에 성공하였습니다.", Toast.LENGTH_SHORT).show();
+								Toast.makeText(Settings.this, "학사인증에 실패하였습니다.", Toast.LENGTH_SHORT).show();
 							}
 						});
 						Settings.this.finish();
