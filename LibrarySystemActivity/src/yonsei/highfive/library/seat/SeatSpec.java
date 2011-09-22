@@ -8,15 +8,18 @@ public class SeatSpec {
 	private String UserID;
 	private String StartTime;
 	private String EndTime;
+	private String DoubleSeat;
 	
 	public SeatSpec(){
+		this.DoubleSeat = "Yes";
 	}
 	
-	public SeatSpec(String SeatID, String UserID, String StartTime, String EndTime){
+	public SeatSpec(String SeatID, String UserID, String StartTime, String EndTime, String DoubleSeat){
 		this.SeatID = SeatID;
 		this.UserID = UserID;
 		this.StartTime = StartTime;
 		this.EndTime = EndTime;
+		this.DoubleSeat = DoubleSeat;
 	}
 	
 	public SeatSpec(JSONObject json){
@@ -25,6 +28,7 @@ public class SeatSpec {
 			this.UserID = json.getString("UserID");
 			this.StartTime = json.getString("StartTime");
 			this.EndTime = json.getString("EndTime");
+			this.DoubleSeat = json.getString("DoubleSeat");
 		} catch (JSONException e) {
 			// TODO Auto-generated catch block
 			e.printStackTrace();
@@ -37,17 +41,19 @@ public class SeatSpec {
 			this.UserID = json.getString("UserID");
 			this.StartTime = json.getString("StartTime");
 			this.EndTime = json.getString("EndTime");
+			this.DoubleSeat = json.getString("DoubleSeat");
 		} catch (JSONException e) {
 			// TODO Auto-generated catch block
 			e.printStackTrace();
 		}
 	}
 	
-	public void setSeatSpec(String SeatID, String UserID, String StartTime, String EndTime){
+	public void setSeatSpec(String SeatID, String UserID, String StartTime, String EndTime, String DoubleSeat){
 		this.SeatID = SeatID;
 		this.UserID = UserID;
 		this.StartTime = StartTime;
 		this.EndTime = EndTime;
+		this.DoubleSeat = DoubleSeat;
 	}
 	
 	public void setSeatID(String SeatID){
@@ -62,6 +68,9 @@ public class SeatSpec {
 	public void setEndTime(String EndTime){
 		this.EndTime = EndTime;
 	}
+	public void setDoubleSeat(String DoubleSeat){
+		this.DoubleSeat = DoubleSeat;
+	}
 	
 	public JSONObject getJSON(){
 		JSONObject json = new JSONObject();
@@ -70,6 +79,7 @@ public class SeatSpec {
 			json.put("UserID", UserID);
 			json.put("StartTime", StartTime);
 			json.put("EndTime", EndTime);
+			json.put("DoubleSeat", DoubleSeat);
 		} catch (JSONException e) {
 			// TODO Auto-generated catch block
 			e.printStackTrace();
@@ -89,6 +99,9 @@ public class SeatSpec {
 	}
 	public String getEndTime(){
 		return this.EndTime;
+	}
+	public String getDoubleSeat(){
+		return this.DoubleSeat;
 	}
 
 }

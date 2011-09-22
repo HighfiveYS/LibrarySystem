@@ -78,6 +78,7 @@ public class JunctionAsyncTask extends AsyncTask<JSONObject, Void, Void> {
 			/*
 			 * implements Junction Connection Timeout
 			 */
+			/*
 			TimerTask task = new TimerTask() {
 				@Override
 				public void run() {
@@ -102,6 +103,7 @@ public class JunctionAsyncTask extends AsyncTask<JSONObject, Void, Void> {
 			};
 			Timer timer = new Timer();
 			timer.schedule(task, 0);
+			*/
 		}
 	}
 
