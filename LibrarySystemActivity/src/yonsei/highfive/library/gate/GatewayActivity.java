@@ -5,6 +5,7 @@ import org.json.JSONObject;
 
 import yonsei.highfive.R;
 import yonsei.highfive.junction.JunctionAsyncTask;
+import yonsei.highfive.library.LibrarySystemActivity;
 import yonsei.highfive.library.Settings;
 import android.app.Activity;
 import android.content.Context;
@@ -96,9 +97,10 @@ public class GatewayActivity extends Activity{
 								@Override
 								public void run() {
 									// TODO Auto-generated method stub
-									Toast.makeText(GatewayActivity.this, "입관처리 되었습니다.", Toast.LENGTH_SHORT);
+									Toast.makeText(GatewayActivity.this, "입관처리 되었습니다.", Toast.LENGTH_SHORT).show();
 								}
 							});
+							finish();
 						}
 					}
 					else if(service.equals("outgate")){
@@ -114,9 +116,11 @@ public class GatewayActivity extends Activity{
 								@Override
 								public void run() {
 									// TODO Auto-generated method stub
-									Toast.makeText(GatewayActivity.this, "퇴관처리 되었습니다.", Toast.LENGTH_SHORT);
+									Toast.makeText(GatewayActivity.this, "퇴관처리 되었습니다.", Toast.LENGTH_SHORT).show();
 								}
 							});
+
+							finish();
 						}
 					}
 					else if(service.equals("errorgate")){

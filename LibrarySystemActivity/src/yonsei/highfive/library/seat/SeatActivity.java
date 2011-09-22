@@ -280,7 +280,7 @@ public class SeatActivity extends Activity implements OnClickListener {
 									SharedPreferences pref = PreferenceManager.getDefaultSharedPreferences(SeatActivity.this);
 									seat.setUserID(pref.getString("id", ""));
 									setSeattext(seat);
-									Toast.makeText(SeatActivity.this, "좌석 배정 성공", Toast.LENGTH_LONG).show();
+									Toast.makeText(SeatActivity.this, "좌석 배정 성공", Toast.LENGTH_SHORT).show();
 								}
 							});
 						}
@@ -289,7 +289,7 @@ public class SeatActivity extends Activity implements OnClickListener {
 								@Override
 								public void run() {
 									// TODO Auto-generated method stub
-									Toast.makeText(SeatActivity.this, "좌석 배정 실패", Toast.LENGTH_LONG).show();
+									Toast.makeText(SeatActivity.this, "좌석 배정 실패", Toast.LENGTH_SHORT).show();
 								}
 							});
 						}
