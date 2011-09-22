@@ -2,6 +2,7 @@ package yonsei.highfive.library;
 
 import yonsei.highfive.R;
 import yonsei.highfive.library.circulation.SearchBookActivity;
+import yonsei.highfive.library.seat.SearchSeatActivity;
 import android.app.Activity;
 import android.app.AlertDialog;
 import android.app.AlertDialog.Builder;
@@ -18,7 +19,6 @@ import android.view.View;
 import android.view.View.OnClickListener;
 import android.widget.Button;
 import android.widget.ImageView;
-import android.widget.LinearLayout;
 
 public class LibrarySystemActivity extends Activity {
 	/** Called when the activity is first created. */
@@ -131,6 +131,17 @@ public class LibrarySystemActivity extends Activity {
 				ImageView image = (ImageView)findViewById(R.id.touchimage);
 				if(!image.isShown())
 					image.setVisibility(View.VISIBLE);
+			}
+		});
+	
+		Button button_seat = (Button) findViewById(R.id.seatservice);
+		button_seat.setOnClickListener(new OnClickListener() {
+			@Override
+			public void onClick(View v) {
+				// TODO Auto-generated method stub
+				Intent intent = new Intent(LibrarySystemActivity.this,
+						SearchSeatActivity.class);
+				startActivity(intent);
 			}
 		});
 

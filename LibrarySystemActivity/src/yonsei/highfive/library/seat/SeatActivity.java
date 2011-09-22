@@ -18,6 +18,8 @@ import android.view.MenuInflater;
 import android.view.MenuItem;
 import android.view.View;
 import android.view.View.OnClickListener;
+import android.widget.AdapterView;
+import android.widget.AdapterView.OnItemSelectedListener;
 import android.widget.ArrayAdapter;
 import android.widget.Button;
 import android.widget.Spinner;
@@ -40,31 +42,42 @@ public class SeatActivity extends Activity implements OnClickListener {
         setContentView(R.layout.seat);
         
         // 버튼 초기화, 리스너 지정 //
-        Spinner _hour = (Spinner)findViewById(R.id.spinner_hour);
+        final Spinner _hour = (Spinner)findViewById(R.id.spinner_hour);
       
         ArrayAdapter adapter = ArrayAdapter.createFromResource(this, R.array.hours, android.R.layout.simple_spinner_item);
         adapter.setDropDownViewResource(android.R.layout.simple_spinner_dropdown_item);
         _hour.setAdapter(adapter);
+        _hour.setOnItemSelectedListener(new OnItemSelectedListener(){
+
+
+        	@Override
+        	public void onItemSelected(AdapterView<?> arg0, View arg1,
+        			int arg2, long arg3) {
+        		// TODO Auto-generated method stub
+        		String selItem = (String)_hour.getSelectedItem();
+        		if(selItem.equals("1시간") == true){
+        			Hour = 1;
+        		}
+        		else if(selItem.equals("2시간") == true){
+        			Hour = 2;
+        		}
+        		else if(selItem.equals("3시간") == true){
+        			Hour = 3;
+        		}
+        		else if(selItem.equals("4시간") == true){
+        			Hour = 4;
+        		}
+        	}
+
+			@Override
+			public void onNothingSelected(AdapterView<?> arg0) {
+				// TODO Auto-generated method stub
+				
+			} 
+        });
         
      
         seat = new SeatSpec();
-        Hour = 1;
-        /////////////////////////////////////////////////////////////////////////////
-//        Context temp = _hour.getContext();
-//        if(temp.equals("1시간") == true){
-//        	Hour = 1;
-//        }
-//        else if(temp.equals("2시간") == true){
-//        	Hour = 2;
-//        }
-//        else if(temp.equals("3시간") == true){
-//        	Hour = 3;
-//        }
-//        else if(temp.equals("4시간") == true){
-//        	Hour = 4;
-//        }
-        /////////////////////////////////////////////////////////////////////////////
-
         
         Button _occupy = (Button)findViewById(R.id.button_occupy);
         Button _return2 = (Button)findViewById(R.id.button_return2);
@@ -76,7 +89,7 @@ public class SeatActivity extends Activity implements OnClickListener {
   
         // 설정에서 Switchboard 호스트를 불러와 config 설정 
 		SharedPreferences pref = PreferenceManager.getDefaultSharedPreferences(this);
-		switchboard = pref.getString("switchboard", "165.132.214.212"); 
+		switchboard = pref.getString("switchboard", "mobilesw.yonsei.ac.kr"); 
 		config = new XMPPSwitchboardConfig(switchboard);
 		
 	       
@@ -90,6 +103,7 @@ public class SeatActivity extends Activity implements OnClickListener {
         try {
         	message.put("service", "checkseat");
 			message.put("SeatID", seat.getSeatID());
+			message.put("UserID", pref.getString("id", ""));
 		} catch (JSONException e1) {
 			// TODO Auto-generated catch block
 			e1.printStackTrace();
@@ -148,8 +162,15 @@ public class SeatActivity extends Activity implements OnClickListener {
         String UserID = seat.getUserID();
         String StartTime = seat.getStartTime();
         String EndTime = seat.getEndTime();
+        String DoubleSeat = seat.getDoubleSeat();
         
-        if(UserID.equals("null")||UserID==null){
+        if(DoubleSeat.equals("Yes")){
+        	Toast.makeText(SeatActivity.this, "좌석 이용 불가", Toast.LENGTH_LONG).show();
+        	_occupy.setEnabled(false);
+        	_return2.setEnabled(false);
+        	_extent.setEnabled(false);
+        }
+        else if(UserID.equals("null")||UserID==null){
         	_occupy.setEnabled(true);
         	_return2.setEnabled(false);
         	_extent.setEnabled(false);
@@ -180,14 +201,14 @@ public class SeatActivity extends Activity implements OnClickListener {
 			_UserID.setText("이용자 : " + UserID);
 	    }
 	    
-	    if(StartTime.equals("1000-01-01 10:00:00")){
+	    if(StartTime.equals("1000-01-01 00:00:00")){
 			_StartTime.setText("시작 시간 : -");
 	    }
 	    else{
 			_StartTime.setText("시작 시간 : " + StartTime);
 	    }
 	    
-	    if(EndTime.equals("1000-01-01 10:00:00")){
+	    if(EndTime.equals("1000-01-01 00:00:00")){
 			_EndTime.setText("종료 시간 : -");
 	    }
 	    else{
@@ -256,12 +277,10 @@ public class SeatActivity extends Activity implements OnClickListener {
 								@Override
 								public void run() {
 									// TODO Auto-generated method stub
-									if(seat.getDoubleSeat().equals("No")){
-										SharedPreferences pref = PreferenceManager.getDefaultSharedPreferences(SeatActivity.this);
-										seat.setUserID(pref.getString("id", ""));
-										setSeattext(seat);
-										Toast.makeText(SeatActivity.this, "좌석 배정 성공", Toast.LENGTH_LONG).show();
-									}
+									SharedPreferences pref = PreferenceManager.getDefaultSharedPreferences(SeatActivity.this);
+									seat.setUserID(pref.getString("id", ""));
+									setSeattext(seat);
+									Toast.makeText(SeatActivity.this, "좌석 배정 성공", Toast.LENGTH_LONG).show();
 								}
 							});
 						}

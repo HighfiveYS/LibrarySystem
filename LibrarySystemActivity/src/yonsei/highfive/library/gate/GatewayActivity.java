@@ -31,43 +31,43 @@ import edu.stanford.junction.provider.xmpp.XMPPSwitchboardConfig;
 public class GatewayActivity extends Activity{
 
 	@Override
-    public void onCreate(Bundle savedInstanceState) {
-        super.onCreate(savedInstanceState);
-        
-        setContentView(R.layout.main);
-        
-        // 설정에서 Switchboard 호스트를 불러와 config 설정 
-		SharedPreferences pref = PreferenceManager.getDefaultSharedPreferences(this);
-		switchboard = pref.getString("switchboard", "165.132.214.212"); 
-		config = new XMPPSwitchboardConfig(switchboard);
-		
-	       
-        // Intent를 통해 bookid 가져오기 //
-        Intent intent = getIntent();
-        Bundle intent_data = intent.getExtras();
-        
+	public void onCreate(Bundle savedInstanceState) {
+		super.onCreate(savedInstanceState);
 
-        JSONObject message = new JSONObject();
-        
-        try {
-        	message.put("service", "managegate");
+		setContentView(R.layout.main);
+
+		// 설정에서 Switchboard 호스트를 불러와 config 설정 
+		SharedPreferences pref = PreferenceManager.getDefaultSharedPreferences(this);
+		switchboard = pref.getString("switchboard", "mobilesw.yonsei.ac.kr"); 
+		config = new XMPPSwitchboardConfig(switchboard);
+
+
+		// Intent를 통해 bookid 가져오기 //
+		Intent intent = getIntent();
+		Bundle intent_data = intent.getExtras();
+
+
+		JSONObject message = new JSONObject();
+
+		try {
+			message.put("service", "managegate");
 			message.put("UserID", pref.getString("id", ""));
 		} catch (JSONException e1) {
 			// TODO Auto-generated catch block
 			e1.printStackTrace();
 		}
-        AsyncTask<JSONObject, Void, Void> mJunctionBindingAsyncTask = new JunctionAsyncTask(GatewayActivity.this, actor, "db", "정보확인중입니다.");
+		AsyncTask<JSONObject, Void, Void> mJunctionBindingAsyncTask = new JunctionAsyncTask(GatewayActivity.this, actor, "db", "정보확인중입니다.");
 		mJunctionBindingAsyncTask.execute(message);
 
-    }
+	}
 
-		
+
 	// Junction Setup
 	private String switchboard;
 	private UserJunction actor = new UserJunction();
 	private XMPPSwitchboardConfig config = null;
-	
-	
+
+
 	private class UserJunction extends JunctionActor {
 
 		public UserJunction() {
@@ -84,55 +84,60 @@ public class GatewayActivity extends Activity{
 					String service = message.getString("service");
 					if(service.equals("ingate")){
 						String ack = message.getString("ack");
-												
+
 						synchronized (actor) {
-							 actor.notify();
-							 actor.leave();
+							actor.notify();
+							actor.leave();
 						}
 						System.out.println("ingate");
 						// 안드로이드 위젯에 접근해 사용하기 위해서는 UI Thread인 Main Thread에서 작업이 이루어져야한다.
-						runOnUiThread(new Runnable() {
-							@Override
-							public void run() {
-								// TODO Auto-generated method stub
-								Toast.makeText(GatewayActivity.this, "입관처리 되었습니다.", Toast.LENGTH_SHORT);
-							}
-						});
-
+						if(ack.equals("true")){
+							runOnUiThread(new Runnable() {
+								@Override
+								public void run() {
+									// TODO Auto-generated method stub
+									Toast.makeText(GatewayActivity.this, "입관처리 되었습니다.", Toast.LENGTH_SHORT);
+								}
+							});
+						}
 					}
-					else if(service.equals("closegate")){
+					else if(service.equals("outgate")){
 						String ack = message.getString("ack");
-						
+
 						synchronized (actor) {
-							 actor.notify();
-							 actor.leave();
+							actor.notify();
+							actor.leave();
 						}
 						// 안드로이드 위젯에 접근해 사용하기 위해서는 UI Thread인 Main Thread에서 작업이 이루어져야한다.
-						runOnUiThread(new Runnable() {
-							@Override
-							public void run() {
-								// TODO Auto-generated method stub
-								Toast.makeText(GatewayActivity.this, "퇴관처리 되었습니다.", Toast.LENGTH_SHORT);
-							}
-						});
+						if(ack.equals("true")){
+							runOnUiThread(new Runnable() {
+								@Override
+								public void run() {
+									// TODO Auto-generated method stub
+									Toast.makeText(GatewayActivity.this, "퇴관처리 되었습니다.", Toast.LENGTH_SHORT);
+								}
+							});
+						}
 					}
 					else if(service.equals("errorgate")){
 						String ack = message.getString("ack");
-						
+
 						synchronized (actor) {
-							 actor.notify();
-							 actor.leave();
+							actor.notify();
+							actor.leave();
 						}
 						// 안드로이드 위젯에 접근해 사용하기 위해서는 UI Thread인 Main Thread에서 작업이 이루어져야한다.
-						runOnUiThread(new Runnable() {
-							@Override
-							public void run() {
-								// TODO Auto-generated method stub
-								Toast.makeText(GatewayActivity.this, "등록된 데이터가 없습니다.", Toast.LENGTH_SHORT);
-							}
-						});
+						if(ack.equals("true")){
+							runOnUiThread(new Runnable() {
+								@Override
+								public void run() {
+									// TODO Auto-generated method stub
+									Toast.makeText(GatewayActivity.this, "등록된 데이터가 없습니다.", Toast.LENGTH_SHORT);
+								}
+							});
+						}
 					}
-					
+
 				}
 
 			} catch (JSONException e) {
@@ -142,24 +147,24 @@ public class GatewayActivity extends Activity{
 		}
 	}
 
-    /**
-     * 메뉴버튼을 눌렀을 때 설정메뉴를 출력함
-     */
-    @Override
+	/**
+	 * 메뉴버튼을 눌렀을 때 설정메뉴를 출력함
+	 */
+	@Override
 	public boolean onCreateOptionsMenu(Menu menu) {
 		// TODO Auto-generated method stub
 		super.onCreateOptionsMenu(menu);
-		
+
 		MenuInflater inflater = getMenuInflater();
 		inflater.inflate(R.menu.menu, menu);
-		
+
 		return true;
-		
+
 	}
-    
-    /**
-     * 설정메뉴를 클릭했을 때 Settings 액티비티를 시작하는 Intent 발생
-     */
+
+	/**
+	 * 설정메뉴를 클릭했을 때 Settings 액티비티를 시작하는 Intent 발생
+	 */
 	@Override
 	public boolean onOptionsItemSelected(MenuItem item) {
 		// TODO Auto-generated method stub

@@ -11,7 +11,7 @@ public class SeatSpec {
 	private String DoubleSeat;
 	
 	public SeatSpec(){
-		this.DoubleSeat = "Yes";
+		DoubleSeat = "No";
 	}
 	
 	public SeatSpec(String SeatID, String UserID, String StartTime, String EndTime, String DoubleSeat){

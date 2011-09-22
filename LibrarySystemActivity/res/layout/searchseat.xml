@@ -1,0 +1,66 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout
+  xmlns:android="http://schemas.android.com/apk/res/android"
+  android:orientation="vertical"
+  android:layout_width="match_parent"
+  android:layout_height="match_parent">
+    <TabHost android:id="@android:id/tabhost" android:layout_width="match_parent" android:layout_height="match_parent">
+        <LinearLayout android:id="@+id/linearLayout1" android:layout_width="match_parent" android:layout_height="match_parent" android:orientation="vertical">
+            <TabWidget android:layout_width="match_parent" android:layout_height="wrap_content" android:id="@android:id/tabs"></TabWidget>
+            <FrameLayout android:layout_width="match_parent" android:layout_height="match_parent" android:id="@android:id/tabcontent">
+                <RelativeLayout android:layout_width="match_parent" android:layout_height="match_parent" android:id="@+id/tab1" >
+                    <Button android:id="@+id/Button10" android:text="1_1_12" android:layout_height="wrap_content" android:layout_width="wrap_content" android:layout_below="@+id/Button7" android:layout_alignLeft="@+id/Button15"></Button>
+                    <Button android:id="@+id/Button12" android:text="1_1_11" android:layout_height="wrap_content" android:layout_width="wrap_content" android:layout_alignTop="@+id/Button10" android:layout_centerHorizontal="true"></Button>
+                    <Button android:id="@+id/Button11" android:text="1_1_10" android:layout_height="wrap_content" android:layout_width="wrap_content" android:layout_below="@+id/Button7" android:layout_alignLeft="@+id/Button13"></Button>
+                    <Button android:id="@+id/Button8" android:text="1_1_8" android:layout_height="wrap_content" android:layout_width="wrap_content" android:layout_alignTop="@+id/Button7" android:layout_alignLeft="@+id/Button12"></Button>
+                    <Button android:id="@+id/Button9" android:text="1_1_9" android:layout_height="wrap_content" android:layout_width="wrap_content" android:layout_above="@+id/Button10" android:layout_alignRight="@+id/Button10"></Button>
+                    <Button android:id="@+id/Button13" android:text="1_1_13" android:layout_height="wrap_content" android:layout_width="wrap_content" android:layout_below="@+id/Button11" android:layout_alignRight="@+id/Button1"></Button>
+                    <Button android:id="@+id/Button14" android:text="1_1_14" android:layout_height="wrap_content" android:layout_width="wrap_content" android:layout_below="@+id/Button12" android:layout_alignLeft="@+id/Button12"></Button>
+                    <Button android:id="@+id/Button15" android:text="1_1_15" android:layout_height="wrap_content" android:layout_width="wrap_content" android:layout_below="@+id/Button10" android:layout_toRightOf="@+id/Button12" android:layout_marginLeft="20dp"></Button>
+                    <Button android:id="@+id/Button5" android:text="1_1_5" android:layout_height="wrap_content" android:layout_width="wrap_content" android:layout_alignTop="@+id/Button6" android:layout_alignLeft="@+id/Button8"></Button>
+                    <Button android:id="@+id/Button7" android:text="1_1_7" android:layout_height="wrap_content" android:layout_width="wrap_content" android:layout_below="@+id/Button1" android:layout_alignLeft="@+id/Button11" android:layout_marginTop="121dp"></Button>
+                    <Button android:id="@+id/Button6" android:text="1_1_6" android:layout_height="wrap_content" android:layout_width="wrap_content" android:layout_below="@+id/Button1" android:layout_alignLeft="@+id/Button9" android:layout_marginTop="24dp"></Button>
+                    <Button android:id="@+id/Button4" android:text="1_1_4" android:layout_height="wrap_content" android:layout_width="wrap_content" android:layout_alignTop="@+id/Button5" android:layout_alignLeft="@+id/Button7"></Button>
+                    <Button android:id="@+id/Button3" android:text="1_1_3" android:layout_height="wrap_content" android:layout_width="wrap_content" android:layout_above="@+id/Button6" android:layout_alignLeft="@+id/Button6"></Button>
+                    <Button android:id="@+id/Button2" android:text="1_1_2" android:layout_height="wrap_content" android:layout_width="wrap_content" android:layout_alignTop="@+id/Button1" android:layout_alignLeft="@+id/Button5"></Button>
+                    <Button android:id="@+id/Button1" android:text="1_1_1" android:layout_height="wrap_content" android:layout_width="wrap_content" android:layout_alignParentTop="true" android:layout_toLeftOf="@+id/Button2" android:layout_marginRight="26dp" android:layout_marginTop="40dp"></Button>
+                </RelativeLayout>
+                <RelativeLayout android:layout_width="match_parent" android:layout_height="match_parent" android:id="@+id/tab2">
+                    <Button android:text="1_2_1" android:layout_width="wrap_content" android:layout_marginLeft="43dp" android:id="@+id/Button16" android:layout_height="wrap_content" android:layout_marginTop="35dp"></Button>
+                    <Button android:text="1_2_2" android:layout_width="wrap_content" android:id="@+id/Button17" android:layout_height="wrap_content"></Button>
+                    <Button android:text="1_2_3" android:layout_width="wrap_content" android:layout_marginLeft="28dp" android:id="@+id/Button18" android:layout_height="wrap_content"></Button>
+                    <Button android:text="1_2_4" android:layout_width="wrap_content" android:id="@+id/Button19" android:layout_height="wrap_content" android:layout_marginTop="28dp"></Button>
+                    <Button android:text="1_2_5" android:layout_width="wrap_content" android:id="@+id/Button20" android:layout_height="wrap_content"></Button>
+                    <Button android:text="1_2_6" android:layout_width="wrap_content" android:id="@+id/Button21" android:layout_height="wrap_content"></Button>
+                    <Button android:text="1_2_7" android:layout_width="wrap_content" android:id="@+id/Button22" android:layout_height="wrap_content"></Button>
+                    <Button android:text="1_2_8" android:layout_width="wrap_content" android:id="@+id/Button23" android:layout_height="wrap_content"></Button>
+                    <Button android:text="1_2_9" android:layout_width="wrap_content" android:id="@+id/Button24" android:layout_height="wrap_content"></Button>
+                    <Button android:text="1_2_10" android:layout_width="wrap_content" android:id="@+id/Button25" android:layout_height="wrap_content"></Button>
+                    <Button android:text="1_2_11" android:layout_width="wrap_content" android:id="@+id/Button26" android:layout_height="wrap_content"></Button>
+                    <Button android:text="1_2_12" android:layout_width="wrap_content" android:id="@+id/Button27" android:layout_height="wrap_content" android:layout_marginTop="25dp"></Button>
+                    <Button android:text="1_2_13" android:layout_width="wrap_content" android:id="@+id/Button28" android:layout_height="wrap_content" android:layout_marginTop="29dp"></Button>
+                    <Button android:text="1_2_14" android:layout_width="wrap_content" android:id="@+id/Button29" android:layout_height="wrap_content"></Button>
+                    <Button android:text="1_2_15" android:layout_width="wrap_content" android:id="@+id/Button30" android:layout_height="wrap_content"></Button>
+                </RelativeLayout>
+                <RelativeLayout android:layout_width="match_parent" android:layout_height="match_parent" android:id="@+id/tab3">
+                    <Button android:text="2_3_1" android:layout_width="wrap_content" android:layout_marginLeft="43dp" android:id="@+id/Button31" android:layout_height="wrap_content" android:layout_marginTop="35dp"></Button>
+                    <Button android:text="2_3_2" android:layout_width="wrap_content" android:id="@+id/Button32" android:layout_height="wrap_content"></Button>
+                    <Button android:text="2_3_3" android:layout_width="wrap_content" android:layout_marginLeft="28dp" android:id="@+id/Button33" android:layout_height="wrap_content"></Button>
+                    <Button android:text="2_3_4" android:layout_width="wrap_content" android:id="@+id/Button34" android:layout_height="wrap_content" android:layout_marginTop="28dp"></Button>
+                    <Button android:text="2_3_5" android:layout_width="wrap_content" android:id="@+id/Button35" android:layout_height="wrap_content"></Button>
+                    <Button android:text="2_3_6" android:layout_width="wrap_content" android:id="@+id/Button36" android:layout_height="wrap_content"></Button>
+                    <Button android:text="2_3_7" android:layout_width="wrap_content" android:id="@+id/Button37" android:layout_height="wrap_content"></Button>
+                    <Button android:text="2_3_8" android:layout_width="wrap_content" android:id="@+id/Button38" android:layout_height="wrap_content"></Button>
+                    <Button android:text="2_3_9" android:layout_width="wrap_content" android:id="@+id/Button39" android:layout_height="wrap_content"></Button>
+                    <Button android:text="2_3_10" android:layout_width="wrap_content" android:id="@+id/Button40" android:layout_height="wrap_content"></Button>
+                    <Button android:text="2_3_11" android:layout_width="wrap_content" android:id="@+id/Button41" android:layout_height="wrap_content"></Button>
+                    <Button android:text="2_3_12" android:layout_width="wrap_content" android:id="@+id/Button42" android:layout_height="wrap_content" android:layout_marginTop="25dp"></Button>
+                    <Button android:text="2_3_13" android:layout_width="wrap_content" android:id="@+id/Button43" android:layout_height="wrap_content" android:layout_marginTop="29dp"></Button>
+                    <Button android:text="2_3_14" android:layout_width="wrap_content" android:id="@+id/Button44" android:layout_height="wrap_content"></Button>
+                    <Button android:text="2_3_15" android:layout_width="wrap_content" android:id="@+id/Button45" android:layout_height="wrap_content"></Button>
+                </RelativeLayout>
+            </FrameLayout>
+        </LinearLayout>
+    </TabHost>
+    
+</LinearLayout>
