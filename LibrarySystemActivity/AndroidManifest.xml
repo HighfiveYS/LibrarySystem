@@ -33,6 +33,7 @@
 		<activity android:name=".library.circulation.SearchBookActivity"></activity>
 		<activity android:name=".library.seat.SeatActivity"></activity>
 		<activity android:name=".library.multimedia.MediaCirculationActivity"></activity>
+		<activity android:name=".library.multimedia.MediaControllerActivity" android:screenOrientation="landscape"></activity>
 		<activity android:name=".slideshow.SlideShowActivity"></activity>
 		<activity android:name=".library.gate.GatewayActivity"></activity>
 		<activity android:name=".library.seat.SearchSeatActivity"></activity>

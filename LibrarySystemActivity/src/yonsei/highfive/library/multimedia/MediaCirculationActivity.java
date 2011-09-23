@@ -117,12 +117,16 @@ public class MediaCirculationActivity extends Activity implements OnClickListene
 					Toast.makeText(this, "학사 인증이 되어있지 않습니다.", Toast.LENGTH_SHORT).show();
 					return;
 				}
-				
+				/*
 				Intent intent = new Intent(Intent.ACTION_VIEW, Uri.parse("http://www.youtube.com/watch?v=OZlekwtVfA4"));
 				startActivity(intent);
-				
-				
-				
+				*/
+				String url = media.getMedialink();
+				Intent intent = new Intent(this, yonsei.highfive.library.multimedia.MediaControllerActivity.class);
+				Bundle intent_data = new Bundle();
+				intent_data.putString("url", url);
+				intent.putExtras(intent_data);
+				startActivity(intent);
 				
 			}
 			
