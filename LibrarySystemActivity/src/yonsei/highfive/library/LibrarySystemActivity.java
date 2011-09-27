@@ -1,6 +1,7 @@
 package yonsei.highfive.library;
 
 import yonsei.highfive.R;
+import yonsei.highfive.game.CardReverseGameActivity;
 import yonsei.highfive.library.circulation.SearchBookActivity;
 import yonsei.highfive.library.seat.SearchSeatActivity;
 import android.app.Activity;
@@ -60,7 +61,9 @@ public class LibrarySystemActivity extends Activity {
 						.startsWith("http://mobilesw.yonsei.ac.kr")*/) {
 			Uri data = getIntent().getData();
 			String service = data.getQueryParameter("service");
-
+			if(service==null){
+				finish();
+			}
 			if (service.equals("circulation")) {
 				String bookid = data.getQueryParameter("bookid");
 				Intent intent = new Intent(
@@ -106,7 +109,19 @@ public class LibrarySystemActivity extends Activity {
 				intent.putExtras(intent_data);
 				startActivity(intent);
 			}
-
+			else if (service.equals("cardgame")){
+				Intent intent = new Intent(this, yonsei.highfive.game.CardReverseGameActivity.class);
+				startActivity(intent);
+			}
+			else if (service.equals("player")){
+				Intent intent = new Intent(Intent.ACTION_VIEW, Uri.parse("http://mobilesw.yonsei.ac.kr/player"));
+				startActivity(intent);
+			}
+			else if (service.equals("showviewer")){
+				String SessionID = data.getQueryParameter("SessionID");
+				Intent intent = new Intent(Intent.ACTION_VIEW, Uri.parse("http://mobilesw.yonsei.ac.kr/slideshow?jxsessionid="+SessionID));
+				startActivity(intent);
+			}
 			/* 기타 시나리오 */
 
 		}
@@ -141,6 +156,17 @@ public class LibrarySystemActivity extends Activity {
 				// TODO Auto-generated method stub
 				Intent intent = new Intent(LibrarySystemActivity.this,
 						SearchSeatActivity.class);
+				startActivity(intent);
+			}
+		});
+		
+		Button button_game = (Button) findViewById(R.id.cardgame);
+		button_game.setOnClickListener(new OnClickListener() {
+			
+			@Override
+			public void onClick(View v) {
+				// TODO Auto-generated method stub
+				Intent intent = new Intent(LibrarySystemActivity.this, CardReverseGameActivity.class);
 				startActivity(intent);
 			}
 		});

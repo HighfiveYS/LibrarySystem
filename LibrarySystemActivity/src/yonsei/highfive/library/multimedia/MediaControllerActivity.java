@@ -2,6 +2,8 @@ package yonsei.highfive.library.multimedia;
 
 import java.net.URI;
 
+import mobisocial.nfc.Nfc;
+
 import org.json.JSONException;
 import org.json.JSONObject;
 
@@ -9,6 +11,8 @@ import yonsei.highfive.R;
 import android.app.Activity;
 import android.content.Intent;
 import android.content.SharedPreferences;
+import android.nfc.NdefMessage;
+import android.nfc.NdefRecord;
 import android.os.Bundle;
 import android.preference.PreferenceManager;
 import android.view.View;
@@ -23,10 +27,25 @@ import edu.stanford.junction.provider.xmpp.XMPPSwitchboardConfig;
 
 public class MediaControllerActivity extends Activity{
 
+	private Nfc mNfc = null;
+	
 	@Override
     public void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.mediacontroller);
+        
+        /*
+         * NFC 공유를 설정하는 부분
+         * ( onPause와 onResume을 오버라이딩 해야한다. )
+         */
+        mNfc = new Nfc(this);
+        String uri = "http://mobilesw.yonsei.ac.kr/player/?service=player";
+        NdefRecord uriRecord = new NdefRecord(NdefRecord.TNF_ABSOLUTE_URI, NdefRecord.RTD_URI, new byte[] {}, uri.getBytes());
+        NdefMessage uriMessage = new NdefMessage(new NdefRecord[] {uriRecord});
+        
+        mNfc.share(uriMessage);
+        
+        
         
         Button _play = (Button)findViewById(R.id.play);
         Button _pause = (Button)findViewById(R.id.pause);
@@ -35,6 +54,8 @@ public class MediaControllerActivity extends Activity{
         Button _volup = (Button)findViewById(R.id.volup);
         Button _mute = (Button)findViewById(R.id.mute);
         Button _unmute = (Button)findViewById(R.id.unmute);
+        
+        
         
         OnClickListener listener = new OnClickListener() {
 			
@@ -115,6 +136,20 @@ public class MediaControllerActivity extends Activity{
         controller.sendMessageToSession(msg);
         
         
+	}
+
+	@Override
+	protected void onPause() {
+		// TODO Auto-generated method stub
+		super.onPause();
+		mNfc.onPause(this);
+	}
+
+	@Override
+	protected void onResume() {
+		// TODO Auto-generated method stub
+		super.onResume();
+		mNfc.onResume(this);
 	}
 
 	Controller controller = new Controller();

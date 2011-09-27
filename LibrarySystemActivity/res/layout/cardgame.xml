@@ -1,0 +1,18 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:orientation="vertical"
+    android:layout_width="fill_parent"
+    android:layout_height="fill_parent"
+    >
+<TextView  
+    android:layout_width="fill_parent" 
+    android:layout_height="wrap_content" 
+    android:text="다른 핸드폰과 터치하면 URI를 공유할 수 있습니다."
+    />
+<WebView android:id="@+id/viewer" 
+				android:layout_width="match_parent" 
+				android:layout_height="match_parent"
+				android:focusable="true"
+       			android:focusableInTouchMode="true">
+</WebView>
+</LinearLayout>

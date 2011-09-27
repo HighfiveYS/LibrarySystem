@@ -2,6 +2,8 @@ package yonsei.highfive.slideshow;
 
 import java.net.URI;
 
+import mobisocial.nfc.Nfc;
+
 import org.json.JSONException;
 import org.json.JSONObject;
 
@@ -9,6 +11,8 @@ import yonsei.highfive.R;
 import android.app.Activity;
 import android.content.Intent;
 import android.content.SharedPreferences;
+import android.nfc.NdefMessage;
+import android.nfc.NdefRecord;
 import android.os.Bundle;
 import android.preference.PreferenceManager;
 import android.view.View;
@@ -23,6 +27,8 @@ import edu.stanford.junction.provider.xmpp.XMPPSwitchboardConfig;
 
 public class SlideShowActivity extends Activity implements OnClickListener{
 
+	private Nfc mNfc = null;
+	
 	@Override
 	protected void onCreate(Bundle savedInstanceState) {
 		// TODO Auto-generated method stub
@@ -33,7 +39,7 @@ public class SlideShowActivity extends Activity implements OnClickListener{
 		Bundle intent_data = intent.getExtras();
 	    String SessionID = intent_data.getString("SessionID");
 	    SharedPreferences pref = PreferenceManager.getDefaultSharedPreferences(this);
-	    String switchboard = pref.getString("switchboard", "165.132.214.212"); 
+	    String switchboard = pref.getString("switchboard", "mobilesw.yonsei.ac.kr"); 
 		XMPPSwitchboardConfig config =  new XMPPSwitchboardConfig(switchboard);
 	    URI jxSession = URI.create("junction://"+switchboard+"/"+SessionID);
 		try {
@@ -45,12 +51,45 @@ public class SlideShowActivity extends Activity implements OnClickListener{
 		}
 		Toast.makeText(this, "세션 연결 성공!", Toast.LENGTH_LONG).show();
 		
+
+		 /*
+        * NFC 공유를 설정하는 부분
+        * ( onPause와 onResume을 오버라이딩 해야한다. )
+        */
+       mNfc = new Nfc(this);
+       String uri = "http://mobilesw.yonsei.ac.kr/slideshow/?service=showviewer&SessionID=";
+       
+       if(SessionID==null)
+    	   finish();
+       else
+    	   uri += SessionID;
+       
+       NdefRecord uriRecord = new NdefRecord(NdefRecord.TNF_ABSOLUTE_URI, NdefRecord.RTD_URI, new byte[] {}, uri.getBytes());
+       NdefMessage uriMessage = new NdefMessage(new NdefRecord[] {uriRecord});
+       
+       mNfc.share(uriMessage);
+		
+		
 		Button _prev = (Button)findViewById(R.id.button_prev);
 		Button _next = (Button)findViewById(R.id.button_next);
 		_prev.setOnClickListener(this);
 		_next.setOnClickListener(this);
 	}
 	
+	@Override
+	protected void onPause() {
+		// TODO Auto-generated method stub
+		super.onPause();
+		mNfc.onPause(this);
+	}
+
+	@Override
+	protected void onResume() {
+		// TODO Auto-generated method stub
+		super.onResume();
+		mNfc.onResume(this);
+	}
+
 	class Controller extends JunctionActor{
 		public Controller(String role) {
 			super(role);
