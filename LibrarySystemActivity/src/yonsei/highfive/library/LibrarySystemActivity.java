@@ -18,8 +18,12 @@ import android.view.MenuInflater;
 import android.view.MenuItem;
 import android.view.View;
 import android.view.View.OnClickListener;
+import android.widget.AdapterView;
+import android.widget.AdapterView.OnItemClickListener;
 import android.widget.Button;
+import android.widget.Gallery;
 import android.widget.ImageView;
+import android.widget.Toast;
 
 public class LibrarySystemActivity extends Activity {
 	/** Called when the activity is first created. */
@@ -126,51 +130,45 @@ public class LibrarySystemActivity extends Activity {
 
 		}
 
-		Button button_book = (Button) findViewById(R.id.bookservice);
-		button_book.setOnClickListener(new OnClickListener() {
-			@Override
-			public void onClick(View v) {
-				// TODO Auto-generated method stub
-				Intent intent = new Intent(LibrarySystemActivity.this,
-						SearchBookActivity.class);
-				startActivity(intent);
-			}
-		});
-		
-		Button button_slideshow = (Button)findViewById(R.id.slideshow);
-		button_slideshow.setOnClickListener(new OnClickListener() {
-			
-			@Override
-			public void onClick(View v) {
-				// TODO Auto-generated method stub
-				ImageView image = (ImageView)findViewById(R.id.touchimage);
-				if(!image.isShown())
-					image.setVisibility(View.VISIBLE);
-			}
-		});
-	
-		Button button_seat = (Button) findViewById(R.id.seatservice);
-		button_seat.setOnClickListener(new OnClickListener() {
-			@Override
-			public void onClick(View v) {
-				// TODO Auto-generated method stub
-				Intent intent = new Intent(LibrarySystemActivity.this,
-						SearchSeatActivity.class);
-				startActivity(intent);
-			}
-		});
-		
-		Button button_game = (Button) findViewById(R.id.cardgame);
-		button_game.setOnClickListener(new OnClickListener() {
-			
-			@Override
-			public void onClick(View v) {
-				// TODO Auto-generated method stub
-				Intent intent = new Intent(LibrarySystemActivity.this, CardReverseGameActivity.class);
-				startActivity(intent);
-			}
-		});
 
+		/*
+		 * 갤러리를 이용한 메뉴
+		 */
+		int[] image = {R.drawable.book, R.drawable.seat, R.drawable.presentation, R.drawable.multimedia, R.drawable.game, R.drawable.help};
+		String[] text = {"Book Service", "Seat Service", "Presentation", "Multimedia",  "Card Game", "Help"};
+		
+		Gallery gallery = (Gallery)findViewById(R.id.gallerymenu);
+		GalleryMenu gm = new GalleryMenu(this, R.layout.gallerymenu, image, text);
+		gallery.setAdapter(gm);
+		gallery.setOnItemClickListener(new OnItemClickListener() {
+
+			@Override
+			public void onItemClick(AdapterView parent, View v, int pos, long id) {
+				// TODO Auto-generated method stub
+				switch(pos){
+				case 0:
+					Intent intent = new Intent(LibrarySystemActivity.this,
+							SearchBookActivity.class);
+					startActivity(intent);
+					break;
+				case 1:
+					intent = new Intent(LibrarySystemActivity.this,
+							SearchSeatActivity.class);
+					startActivity(intent);
+					break;
+				case 2:
+					break;
+				case 3:
+					break;
+				case 4:
+					intent = new Intent(LibrarySystemActivity.this, CardReverseGameActivity.class);
+					startActivity(intent);
+					break;
+				case 5:
+					break;
+				}
+			}
+		});
 	}
 
 	/**

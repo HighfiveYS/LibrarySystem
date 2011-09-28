@@ -10,9 +10,6 @@
     android:layout_height="wrap_content" 
     android:text="HighFive"
     />
-<Button android:text="Book Service" android:id="@+id/bookservice" android:layout_width="wrap_content" android:layout_height="wrap_content"></Button>
-<Button android:text="SlideShow Controller" android:id="@+id/slideshow" android:layout_width="wrap_content" android:layout_height="wrap_content"></Button>
-<Button android:text="Seat Service" android:id="@+id/seatservice" android:layout_width="wrap_content" android:layout_height="wrap_content"></Button>
-<Button android:text="Card Game" android:id="@+id/cardgame" android:layout_width="wrap_content" android:layout_height="wrap_content"></Button>
+<Gallery android:layout_width="match_parent" android:id="@+id/gallerymenu" android:layout_height="wrap_content"></Gallery>
 <ImageView android:src="@drawable/touch" android:id="@+id/touchimage" android:layout_height="match_parent" android:layout_width="match_parent" android:visibility="invisible"></ImageView>
 </LinearLayout>
