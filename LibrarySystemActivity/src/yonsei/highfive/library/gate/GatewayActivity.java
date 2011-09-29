@@ -98,6 +98,8 @@ public class GatewayActivity extends Activity{
 								public void run() {
 									// TODO Auto-generated method stub
 									Toast.makeText(GatewayActivity.this, "입관처리 되었습니다.", Toast.LENGTH_SHORT).show();
+									SharedPreferences pref = PreferenceManager.getDefaultSharedPreferences(GatewayActivity.this);
+									pref.edit().putBoolean("inlibrary", true).commit();
 								}
 							});
 							finish();
@@ -117,6 +119,8 @@ public class GatewayActivity extends Activity{
 								public void run() {
 									// TODO Auto-generated method stub
 									Toast.makeText(GatewayActivity.this, "퇴관처리 되었습니다.", Toast.LENGTH_SHORT).show();
+									SharedPreferences pref = PreferenceManager.getDefaultSharedPreferences(GatewayActivity.this);
+									pref.edit().putBoolean("inlibrary", false).commit();
 								}
 							});
 

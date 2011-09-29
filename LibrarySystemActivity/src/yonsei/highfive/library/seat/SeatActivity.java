@@ -116,9 +116,13 @@ public class SeatActivity extends Activity implements OnClickListener {
 	@Override
 	public void onClick(View v) {
 		// TODO Auto-generated method stub
+		SharedPreferences pref = PreferenceManager.getDefaultSharedPreferences(SeatActivity.this);
+		if(!pref.getBoolean("inlibrary", false)){
+			Toast.makeText(this, "도서관에 입장한 상태가 아닙니다.", Toast.LENGTH_SHORT).show();
+			return;
+		}
 		try{
 			if(v.getId() == R.id.button_occupy){
-				SharedPreferences pref = PreferenceManager.getDefaultSharedPreferences(this);
 				JSONObject message = new JSONObject();
 				message.put("service", "occupyseat");
 				message.put("SeatID", seat.getSeatID());
@@ -128,7 +132,6 @@ public class SeatActivity extends Activity implements OnClickListener {
 				mJunctionBindingAsyncTask.execute(message);
 			}
 			else if(v.getId() == R.id.button_return2){
-				SharedPreferences pref = PreferenceManager.getDefaultSharedPreferences(this);
 				JSONObject message = new JSONObject();
 				message.put("service", "returnseat");
 				message.put("SeatID", seat.getSeatID());
@@ -137,7 +140,6 @@ public class SeatActivity extends Activity implements OnClickListener {
 				mJunctionBindingAsyncTask.execute(message);
 			}
 			else if(v.getId() == R.id.button_extent){
-				SharedPreferences pref = PreferenceManager.getDefaultSharedPreferences(this);
 				JSONObject message = new JSONObject();
 				message.put("service", "extentseat");
 				message.put("SeatID", seat.getSeatID());

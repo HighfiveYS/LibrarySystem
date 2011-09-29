@@ -9,18 +9,18 @@ import android.widget.BaseAdapter;
 import android.widget.ImageView;
 import android.widget.TextView;
 
-public class GalleryMenu extends BaseAdapter{
+public class GalleryMenuAdapter extends BaseAdapter{
 
 	private Context context;
 	private int[] imageRes;
-	private String[] textRes;
+	//private String[] textRes;
 	private LayoutInflater inflater;
 	private int layout;
 	
-	public GalleryMenu(Context c, int layout, int[] imageRes, String[] textRes){
+	public GalleryMenuAdapter(Context c, int layout, int[] imageRes){
 		this.context = c;
 		this.imageRes = imageRes;
-		this.textRes = textRes;
+		//this.textRes = textRes;
 		this.inflater = (LayoutInflater)context.getSystemService(Context.LAYOUT_INFLATER_SERVICE);
 		this.layout = layout;
 	}
@@ -51,10 +51,10 @@ public class GalleryMenu extends BaseAdapter{
 			convertView = inflater.inflate(layout, parent, false);
 		}
 		ImageView image = (ImageView)convertView.findViewById(R.id.menu_image);
-		TextView text = (TextView)convertView.findViewById(R.id.menu_text);
+		//TextView text = (TextView)convertView.findViewById(R.id.menu_text);
 		
 		image.setImageResource(imageRes[pos]);
-		text.setText(textRes[pos]);
+		//text.setText(textRes[pos]);
 		return convertView;
 	}
 

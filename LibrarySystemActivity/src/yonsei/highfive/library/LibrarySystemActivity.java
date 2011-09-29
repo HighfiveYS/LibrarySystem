@@ -134,11 +134,10 @@ public class LibrarySystemActivity extends Activity {
 		/*
 		 * 갤러리를 이용한 메뉴
 		 */
-		int[] image = {R.drawable.book, R.drawable.seat, R.drawable.presentation, R.drawable.multimedia, R.drawable.game, R.drawable.help};
-		String[] text = {"Book Service", "Seat Service", "Presentation", "Multimedia",  "Card Game", "Help"};
+		int[] image = {R.drawable.book, R.drawable.seat,  R.drawable.game, R.drawable.setting, R.drawable.help};
 		
-		Gallery gallery = (Gallery)findViewById(R.id.gallerymenu);
-		GalleryMenu gm = new GalleryMenu(this, R.layout.gallerymenu, image, text);
+		GalleryForOneFling gallery = (GalleryForOneFling)findViewById(R.id.gallerymenu);
+		GalleryMenuAdapter gm = new GalleryMenuAdapter(this, R.layout.gallerymenu, image);
 		gallery.setAdapter(gm);
 		gallery.setOnItemClickListener(new OnItemClickListener() {
 
@@ -147,22 +146,22 @@ public class LibrarySystemActivity extends Activity {
 				// TODO Auto-generated method stub
 				switch(pos){
 				case 0:
-					Intent intent = new Intent(LibrarySystemActivity.this,
-							SearchBookActivity.class);
+					Intent intent = new Intent(LibrarySystemActivity.this, SearchBookActivity.class);
 					startActivity(intent);
 					break;
 				case 1:
-					intent = new Intent(LibrarySystemActivity.this,
-							SearchSeatActivity.class);
+					intent = new Intent(LibrarySystemActivity.this, SearchSeatActivity.class);
 					startActivity(intent);
 					break;
 				case 2:
-					break;
-				case 3:
-					break;
-				case 4:
 					intent = new Intent(LibrarySystemActivity.this, CardReverseGameActivity.class);
 					startActivity(intent);
+					break;
+				case 3:
+					startActivity(new Intent(LibrarySystemActivity.this, Settings.class));
+					break;
+				case 4:
+					startActivity(new Intent(LibrarySystemActivity.this, HelpActivity.class));
 					break;
 				case 5:
 					break;

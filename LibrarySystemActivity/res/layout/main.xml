@@ -4,13 +4,8 @@
     android:layout_width="fill_parent"
     android:layout_height="fill_parent"
     android:id="@+id/mainlayout"
-    android:background="@android:color/background_light"
-    >
-<TextView  
-    android:layout_width="fill_parent" 
-    android:layout_height="wrap_content" 
-    android:text="HighFive"
-    />
-<Gallery android:layout_width="match_parent" android:id="@+id/gallerymenu" android:layout_height="wrap_content"></Gallery>
-<ImageView android:src="@drawable/touch" android:id="@+id/touchimage" android:layout_height="match_parent" android:layout_width="match_parent" android:visibility="invisible"></ImageView>
+	android:background="@android:color/background_light"
+	android:baselineAligned="true"
+	android:gravity="center">
+<yonsei.highfive.library.GalleryForOneFling android:overScrollMode="always" android:layout_width="match_parent" android:id="@+id/gallerymenu" android:layout_height="wrap_content"></yonsei.highfive.library.GalleryForOneFling>
 </LinearLayout>

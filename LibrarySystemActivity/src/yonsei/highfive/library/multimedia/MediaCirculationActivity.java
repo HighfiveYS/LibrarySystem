@@ -89,6 +89,10 @@ public class MediaCirculationActivity extends Activity implements OnClickListene
 					Toast.makeText(this, "학사 인증이 되어있지 않습니다.", Toast.LENGTH_SHORT).show();
 					return;
 				}
+				if(!pref.getBoolean("inlibrary", false)){
+					Toast.makeText(this, "도서관에 입장한 상태가 아닙니다.", Toast.LENGTH_SHORT).show();
+					return;
+				}
 				JSONObject message = new JSONObject();
 				message.put("service", "borrowmedia");
 				message.put("mediaid", media.getmediaid());
@@ -100,6 +104,10 @@ public class MediaCirculationActivity extends Activity implements OnClickListene
 				SharedPreferences pref = PreferenceManager.getDefaultSharedPreferences(MediaCirculationActivity.this);
 				if(!pref.getBoolean("certification", false)){
 					Toast.makeText(this, "학사 인증이 되어있지 않습니다.", Toast.LENGTH_SHORT).show();
+					return;
+				}
+				if(!pref.getBoolean("inlibrary", false)){
+					Toast.makeText(this, "도서관에 입장한 상태가 아닙니다.", Toast.LENGTH_SHORT).show();
 					return;
 				}
 				JSONObject message = new JSONObject();
@@ -115,6 +123,10 @@ public class MediaCirculationActivity extends Activity implements OnClickListene
 				SharedPreferences pref = PreferenceManager.getDefaultSharedPreferences(MediaCirculationActivity.this);
 				if(!pref.getBoolean("certification", false)){
 					Toast.makeText(this, "학사 인증이 되어있지 않습니다.", Toast.LENGTH_SHORT).show();
+					return;
+				}
+				if(!pref.getBoolean("inlibrary", false)){
+					Toast.makeText(this, "도서관에 입장한 상태가 아닙니다.", Toast.LENGTH_SHORT).show();
 					return;
 				}
 				/*

@@ -8,7 +8,7 @@
 	<uses-permission android:name="android.permission.NFC" />
 	
     <application android:icon="@drawable/icon" android:label="@string/app_name">
-        <activity android:name=".library.LibrarySystemActivity"
+        <activity android:name=".library.LibrarySystemActivity" android:screenOrientation="portrait"
                   android:label="@string/app_name" android:launchMode="standard">
             <intent-filter>
                 <action android:name="android.intent.action.MAIN" />
@@ -26,15 +26,16 @@
 				<data android:scheme="http" android:host="mobilesw.yonsei.ac.kr"/>
 			 </intent-filter>
         </activity>
-        <activity android:name=".library.circulation.CirculationActivity" android:clearTaskOnLaunch="true" android:launchMode="singleTop"></activity>
-        <activity android:name=".library.Settings"></activity>
-		<activity android:name=".library.circulation.SearchBookActivity"></activity>
-		<activity android:name=".library.seat.SeatActivity"></activity>
-		<activity android:name=".library.multimedia.MediaCirculationActivity"></activity>
+        <activity android:name=".library.circulation.CirculationActivity" android:screenOrientation="portrait" android:clearTaskOnLaunch="true" android:launchMode="singleTop"></activity>
+        <activity android:name=".library.Settings" android:screenOrientation="portrait"></activity>
+		<activity android:name=".library.circulation.SearchBookActivity" android:screenOrientation="portrait"></activity>
+		<activity android:name=".library.seat.SeatActivity" android:screenOrientation="portrait"></activity>
+		<activity android:name=".library.multimedia.MediaCirculationActivity" android:screenOrientation="portrait"></activity>
 		<activity android:name=".library.multimedia.MediaControllerActivity" android:screenOrientation="landscape"></activity>
-		<activity android:name=".slideshow.SlideShowActivity"></activity>
-		<activity android:name=".library.gate.GatewayActivity"></activity>
-		<activity android:name=".library.seat.SearchSeatActivity"></activity>
-		<activity android:name=".game.CardReverseGameActivity"></activity>
+		<activity android:name=".slideshow.SlideShowActivity" android:screenOrientation="portrait"></activity>
+		<activity android:name=".library.gate.GatewayActivity" android:screenOrientation="portrait"></activity>
+		<activity android:name=".library.seat.SearchSeatActivity" android:screenOrientation="portrait"></activity>
+		<activity android:name=".game.CardReverseGameActivity" android:screenOrientation="portrait"></activity>
+    	<activity android:name=".library.HelpActivity" android:screenOrientation="portrait"></activity>
     </application>
 </manifest>

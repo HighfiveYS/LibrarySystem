@@ -16,7 +16,7 @@
 		android:key="switchboard"
 		android:title="스위치보드"
 		android:summary="스위치보드를 설정하세요."
-		android:defaultValue="165.132.214.212"
+		android:defaultValue="mobilesw.yonsei.ac.kr"
 	/>
 	<CheckBoxPreference 
 		android:key="certification"
