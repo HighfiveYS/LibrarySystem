@@ -1,0 +1,30 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout
+  xmlns:android="http://schemas.android.com/apk/res/android"
+  android:orientation="vertical"
+  android:layout_width="match_parent"
+  android:layout_height="match_parent">
+    <ScrollView android:layout_height="wrap_content" android:layout_width="match_parent" android:id="@+id/scrollView1">
+        <LinearLayout android:id="@+id/linearLayout1" android:layout_width="match_parent" android:layout_height="match_parent" android:orientation="vertical">
+            <TextView android:layout_height="wrap_content" android:textAppearance="?android:attr/textAppearanceLarge" android:text="도움말" android:layout_width="wrap_content" android:id="@+id/textView1"></TextView>
+            <TextView android:layout_height="wrap_content" android:textAppearance="?android:attr/textAppearanceMedium" android:text="학사관리 인증 방법" android:layout_width="wrap_content" android:id="@+id/textView2"></TextView>
+            <TextView android:layout_height="wrap_content" android:text="설정아이콘이나 메뉴 버튼의 설정을 들어가 학번과 비밀번호를 입력하신 후 취소버튼을 누르면 학사관리 인증이 됩니다." android:layout_width="wrap_content" android:id="@+id/textView9"></TextView>
+            <TextView android:layout_height="wrap_content" android:textAppearance="?android:attr/textAppearanceMedium" android:text="도서대출서비스 이용 방법" android:layout_width="wrap_content" android:id="@+id/textView3"></TextView>
+            <TextView android:layout_height="wrap_content" android:text="대출 및 반납을 하실 경우 원하는 책을 찾아 NFC 태그부분에 핸드폰을 접촉하여 대출반납 창을 띄운 후 원하는 버튼을 누르시면 됩니다." android:layout_width="wrap_content" android:id="@+id/textView10"></TextView>
+            <TextView android:layout_height="wrap_content" android:text="도서 검색이나 현재 대여중인 도서목록을 확인하고 싶으신 경우 메인메뉴에서 Book 아이콘을 클릭하시면 됩니다." android:layout_width="wrap_content" android:id="@+id/textView11"></TextView>
+            <TextView android:layout_height="wrap_content" android:textAppearance="?android:attr/textAppearanceMedium" android:text="좌석배치서비스 이용 방법" android:layout_width="wrap_content" android:id="@+id/textView4"></TextView>
+            
+            <TextView android:layout_height="wrap_content" android:text="열람실 내의 원하는 좌석에 붙어있는 NFC 태그에 핸드폰을 접촉하면 좌석을 대여/반납하고 연장할 수 있는 창이 활성화됩니다." android:layout_width="wrap_content" android:id="@+id/textView8"></TextView>
+            <TextView android:layout_height="wrap_content" android:text="또는 열람실 입구에 있는 전체좌석보기 태그를 접촉하여 핸드폰을 통해 비어있는 좌석을 확인하고 대여할 수도 있습니다." android:layout_width="wrap_content" android:id="@+id/textView9"></TextView>
+            <TextView android:layout_height="wrap_content" android:textAppearance="?android:attr/textAppearanceMedium" android:text="프레젠테이션 사용 방법" android:layout_width="wrap_content" android:id="@+id/textView5"></TextView>
+            <TextView android:text="프레젠테이션 기능은 어플리케이션의 별도의 조작없이 프레젠테이션 슬라이드쇼가 켜져 있는 모니터에 붙어 있는 NFC 태그에 핸드폰을 터치하시면 리모콘이 활성화됩니다." android:id="@+id/textView14" android:layout_width="wrap_content" android:layout_height="wrap_content"></TextView>
+            <TextView android:layout_height="wrap_content" android:textAppearance="?android:attr/textAppearanceMedium" android:text="멀티미디어자료 이용 방법" android:layout_width="wrap_content" android:id="@+id/textView6"></TextView>
+            <TextView android:text="원하는 멀티미디어 자료를 찾아 핸드폰을 NFC 태그에 접촉하면 자료를 대출/반납 할 수 있습니다. 이 때 재생버튼을 누를 경우 멀티미디어 디스플레이에 해당 영상이 재생되며 핸드폰은 리모컨 기능을 수행합니다." android:id="@+id/textView12" android:layout_width="wrap_content" android:layout_height="wrap_content"></TextView>
+            <TextView android:layout_height="wrap_content" android:textAppearance="?android:attr/textAppearanceMedium" android:text="게임" android:layout_width="wrap_content" android:id="@+id/textView7"></TextView>
+        	<TextView android:text="카드 뒤집기 게임입니다. 게임 시작 후 1분동안 카드를 뒤집을 수 있습니다. 이 떄 점수가 더 높은 팀이 승리합니다." android:id="@+id/textView13" android:layout_width="wrap_content" android:layout_height="wrap_content"></TextView>
+            <TextView android:layout_height="wrap_content" android:textAppearance="?android:attr/textAppearanceMedium" android:text="NFC 공유" android:layout_width="wrap_content" android:id="@+id/textView15"></TextView>
+        	<TextView android:text="게임, 프레젠테이션, 멀티미디어자료의 경우 다른 NFC를 지원하는 핸드폰에 접촉하여 같이 즐길 수 있습니다." android:id="@+id/textView16" android:layout_width="wrap_content" android:layout_height="wrap_content"></TextView>            
+        </LinearLayout>
+    </ScrollView>
+    
+</LinearLayout>
