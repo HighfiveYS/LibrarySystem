@@ -114,6 +114,13 @@ public class Settings extends PreferenceActivity{
 						});
 						Settings.this.finish();
 					}
+					if(message.getString("inlibrary").equals("true")){
+						SharedPreferences pref = PreferenceManager.getDefaultSharedPreferences(Settings.this);
+						pref.edit().putBoolean("inlibrary", true).commit();
+					} else if(message.getString("inlibrary").equals("false")){
+						SharedPreferences pref = PreferenceManager.getDefaultSharedPreferences(Settings.this);
+						pref.edit().putBoolean("inlibrary", false).commit();
+					}
 				} catch (JSONException e) {
 					// TODO Auto-generated catch block
 					e.printStackTrace();

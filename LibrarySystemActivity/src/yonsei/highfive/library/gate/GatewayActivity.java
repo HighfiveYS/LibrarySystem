@@ -5,24 +5,17 @@ import org.json.JSONObject;
 
 import yonsei.highfive.R;
 import yonsei.highfive.junction.JunctionAsyncTask;
-import yonsei.highfive.library.LibrarySystemActivity;
 import yonsei.highfive.library.Settings;
 import android.app.Activity;
-import android.content.Context;
 import android.content.Intent;
 import android.content.SharedPreferences;
+import android.media.MediaPlayer;
 import android.os.AsyncTask;
 import android.os.Bundle;
 import android.preference.PreferenceManager;
 import android.view.Menu;
 import android.view.MenuInflater;
 import android.view.MenuItem;
-import android.view.View;
-import android.view.View.OnClickListener;
-import android.widget.ArrayAdapter;
-import android.widget.Button;
-import android.widget.Spinner;
-import android.widget.TextView;
 import android.widget.Toast;
 import edu.stanford.junction.api.activity.JunctionActor;
 import edu.stanford.junction.api.messaging.MessageHeader;
@@ -43,6 +36,7 @@ public class GatewayActivity extends Activity{
 		config = new XMPPSwitchboardConfig(switchboard);
 
 
+		
 		// Intent를 통해 bookid 가져오기 //
 		Intent intent = getIntent();
 		Bundle intent_data = intent.getExtras();
@@ -99,6 +93,10 @@ public class GatewayActivity extends Activity{
 									Toast.makeText(GatewayActivity.this, "입관처리 되었습니다.", Toast.LENGTH_SHORT).show();
 									SharedPreferences pref = PreferenceManager.getDefaultSharedPreferences(GatewayActivity.this);
 									pref.edit().putBoolean("inlibrary", true).commit();
+
+									// 미디어 파일 로드
+									MediaPlayer.create(GatewayActivity.this, R.raw.ding).start();
+
 								}
 							});
 							finish();
@@ -120,6 +118,10 @@ public class GatewayActivity extends Activity{
 									Toast.makeText(GatewayActivity.this, "퇴관처리 되었습니다.", Toast.LENGTH_SHORT).show();
 									SharedPreferences pref = PreferenceManager.getDefaultSharedPreferences(GatewayActivity.this);
 									pref.edit().putBoolean("inlibrary", false).commit();
+
+									// 미디어 파일 로드
+									MediaPlayer.create(GatewayActivity.this, R.raw.ding).start();
+
 								}
 							});
 
@@ -139,9 +141,11 @@ public class GatewayActivity extends Activity{
 								@Override
 								public void run() {
 									// TODO Auto-generated method stub
-									Toast.makeText(GatewayActivity.this, "등록된 데이터가 없습니다.", Toast.LENGTH_SHORT);
+									Toast.makeText(GatewayActivity.this, "학사인증이 되어있지않습니다.", Toast.LENGTH_SHORT).show();
 								}
 							});
+							
+							finish();
 						}
 					}
 
