@@ -1,11 +1,64 @@
 <?xml version="1.0" encoding="utf-8"?>
 <LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
-    android:orientation="vertical"
-    android:layout_width="fill_parent"
-    android:layout_height="fill_parent"
     android:id="@+id/mainlayout"
-	android:background="@android:color/background_light"
-	android:baselineAligned="true"
-	android:gravity="center">
-<yonsei.highfive.library.GalleryForOneFling android:overScrollMode="always" android:layout_width="match_parent" android:id="@+id/gallerymenu" android:layout_height="wrap_content"></yonsei.highfive.library.GalleryForOneFling>
+    android:layout_width="fill_parent"
+    android:layout_height="match_parent"
+    android:background="@android:color/white"
+    android:baselineAligned="true"
+    android:gravity="center"
+    android:orientation="vertical"
+    android:weightSum="10">
+
+<LinearLayout
+    android:id="@+id/linearLayout2"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:layout_weight="8"
+    android:gravity="center" >
+	
+    <yonsei.highfive.library.GalleryForOneFling
+        android:id="@+id/gallerymenu"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:overScrollMode="always" />
+
+</LinearLayout>
+
+<LinearLayout
+    android:id="@+id/linearLayout1"
+    android:layout_width="match_parent"
+    android:layout_height="wrap_content"
+    android:layout_gravity="center"
+    android:gravity="center"
+    android:layout_weight="1"
+    android:background="@android:color/black" >
+
+    <TextView
+        android:id="@+id/textView1"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:textColor="@android:color/white"
+        android:text="상태"
+        android:textAppearance="?android:attr/textAppearanceLarge" />
+
+    <RadioButton
+        android:id="@+id/radio_inlibrary"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:editable="false"
+        android:enabled="false"
+        android:textColor="@android:color/white"
+        android:text="도서관입장" />
+
+    <RadioButton
+        android:id="@+id/radio_certification"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:editable="false"
+        android:enabled="false"
+        android:textColor="@android:color/white"
+        android:text="학사정보인증" />
+
+</LinearLayout>
+
 </LinearLayout>

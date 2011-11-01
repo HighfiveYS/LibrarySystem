@@ -85,7 +85,6 @@ public class GatewayActivity extends Activity{
 					String service = message.getString("service");
 					if(service.equals("ingate")){
 						String ack = message.getString("ack");
-
 						synchronized (actor) {
 							actor.notify();
 							actor.leave();

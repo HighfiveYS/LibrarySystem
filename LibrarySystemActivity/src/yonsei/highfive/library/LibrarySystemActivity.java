@@ -23,6 +23,7 @@ import android.widget.AdapterView.OnItemClickListener;
 import android.widget.Button;
 import android.widget.Gallery;
 import android.widget.ImageView;
+import android.widget.RadioButton;
 import android.widget.Toast;
 
 public class LibrarySystemActivity extends Activity {
@@ -55,7 +56,9 @@ public class LibrarySystemActivity extends Activity {
 								}
 							}).create().show();
 		}
-
+		
+		
+		
 		/**
 		 * NFC핸들러에 의한 Intent를 받아 그 안에 있는 URI를 통하여 해당 service에 맞는 Activity를 시작하는
 		 * Intent를 보냄. 여기서 각 service에 필요한 추가적인 parameters를 Extra를 이용해 같이 보내줌.
@@ -197,6 +200,21 @@ public class LibrarySystemActivity extends Activity {
 			return true;
 		}
 		return false;
+	}
+
+	@Override
+	protected void onResume() {
+		// TODO Auto-generated method stub
+		super.onResume();
+		/*
+		 * 메인 UI의 상태정보를 나타낼 라디오버튼
+		 */
+		SharedPreferences pref = PreferenceManager.getDefaultSharedPreferences(this);
+		RadioButton r_inlibrary = (RadioButton)findViewById(R.id.radio_inlibrary);
+		RadioButton r_certification = (RadioButton)findViewById(R.id.radio_certification);
+		r_inlibrary.setChecked(pref.getBoolean("inlibrary", false));
+		r_certification.setChecked(pref.getBoolean("certification", false));
+		
 	}
 
 }
