@@ -6,10 +6,11 @@
     <uses-sdk android:minSdkVersion="10" />
     <uses-permission android:name="android.permission.INTERNET"/>
 	<uses-permission android:name="android.permission.NFC" />
+	<uses-permission android:name="android.permission.VIBRATE"></uses-permission>
 	
     <application android:icon="@drawable/icon" android:label="@string/app_name">
         <activity android:name=".library.LibrarySystemActivity" android:screenOrientation="portrait"
-                  android:label="@string/app_name" android:launchMode="standard">
+                  android:label="@string/app_name" android:launchMode="standard" android:finishOnTaskLaunch="true">
             <intent-filter>
                 <action android:name="android.intent.action.MAIN" />
                 <category android:name="android.intent.category.LAUNCHER" />

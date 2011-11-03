@@ -116,6 +116,7 @@ public class MediaCirculationActivity extends Activity implements OnClickListene
 				message.put("userid", pref.getString("id", ""));
 				AsyncTask<JSONObject, Void, Void> mJunctionBindingAsyncTask = new JunctionAsyncTask(MediaCirculationActivity.this, actor, "db", "반납 요청중입니다.");
 				mJunctionBindingAsyncTask.execute(message);
+				
 			}
 			
 			// coding by JYP

@@ -29,8 +29,8 @@ public class Settings extends PreferenceActivity{
 		// TODO Auto-generated method stub
 		super.onCreate(savedInstanceState);
 		addPreferencesFromResource(R.xml.settings);
+		
 	}
-
 	@Override
 	public boolean onKeyDown(int keyCode, KeyEvent event) {
 		// TODO Auto-generated method stub

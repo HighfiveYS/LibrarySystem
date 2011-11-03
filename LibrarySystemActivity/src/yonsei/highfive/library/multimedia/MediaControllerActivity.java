@@ -8,13 +8,17 @@ import org.json.JSONException;
 import org.json.JSONObject;
 
 import yonsei.highfive.R;
+import yonsei.highfive.junction.JunctionAsyncTask;
+import yonsei.highfive.library.Settings;
 import android.app.Activity;
 import android.content.Intent;
 import android.content.SharedPreferences;
 import android.nfc.NdefMessage;
 import android.nfc.NdefRecord;
+import android.os.AsyncTask;
 import android.os.Bundle;
 import android.preference.PreferenceManager;
+import android.view.KeyEvent;
 import android.view.View;
 import android.view.View.OnClickListener;
 import android.widget.Button;
@@ -29,6 +33,21 @@ public class MediaControllerActivity extends Activity{
 
 	private Nfc mNfc = null;
 	
+	@Override
+	public boolean onKeyDown(int keyCode, KeyEvent event) {
+		// TODO Auto-generated method stub
+		if(keyCode==KeyEvent.KEYCODE_BACK){
+			JSONObject msg = new JSONObject();
+			try {
+				msg.put("action", "return");
+			} catch (JSONException e) {
+				// TODO Auto-generated catch block
+				e.printStackTrace();
+			}
+			controller.sendMessageToSession(msg);
+		}
+		return super.onKeyDown(keyCode, event);
+	}
 	@Override
     public void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);

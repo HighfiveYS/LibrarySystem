@@ -37,24 +37,33 @@ public class LibrarySystemActivity extends Activity {
 		super.onCreate(savedInstanceState);
 		setContentView(R.layout.main);
 
-		SharedPreferences pref = PreferenceManager
+		final SharedPreferences pref = PreferenceManager
 				.getDefaultSharedPreferences(this);
 		if (!pref.getBoolean("certification", false)) {
 			AlertDialog.Builder builder = new Builder(this);
 			builder.setCancelable(true)
-					.setMessage("학사인증이 되어있지 않습니다. 지금 인증하시겠습니까?")
-					.setPositiveButton("확인",
+					.setMessage("학사인증이 되어있지 않습니다. 손님계정으로 로그인하시겠습니까?")
+					.setPositiveButton("네",
 							new DialogInterface.OnClickListener() {
 								@Override
 								public void onClick(DialogInterface dialog,
 										int which) {
 									// TODO Auto-generated method stub
-									Intent setintent = new Intent(
-											LibrarySystemActivity.this,
-											Settings.class);
+									Intent setintent = new Intent(LibrarySystemActivity.this,Settings.class);
+									pref.edit().putString("id", "guest").commit();
+									pref.edit().putString("pw", "guest").commit();
 									startActivity(setintent);
 								}
-							}).create().show();
+							})
+							.setNegativeButton("아니오", new DialogInterface.OnClickListener() {
+								
+								@Override
+								public void onClick(DialogInterface dialog, int which) {
+									// TODO Auto-generated method stub
+									
+								}
+							})
+							.create().show();
 		}
 		
 		
@@ -76,6 +85,9 @@ public class LibrarySystemActivity extends Activity {
 				Intent intent = new Intent(
 						this,
 						yonsei.highfive.library.circulation.CirculationActivity.class);
+
+				intent.addFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP);
+				
 				Bundle intent_data = new Bundle();
 				intent_data.putString("bookid", bookid);
 				intent.putExtras(intent_data);
@@ -84,6 +96,9 @@ public class LibrarySystemActivity extends Activity {
 				String SeatID = data.getQueryParameter("SeatID");
 				Intent intent = new Intent(this,
 						yonsei.highfive.library.seat.SeatActivity.class);
+
+				intent.addFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP);
+				
 				Bundle intent_data = new Bundle();
 				intent_data.putString("SeatID", SeatID);
 				intent.putExtras(intent_data);
@@ -91,6 +106,9 @@ public class LibrarySystemActivity extends Activity {
 			}else if(service.equals("gateway")){
 		    	String UserID = data.getQueryParameter("UserID");
 		    	Intent intent = new Intent(this, yonsei.highfive.library.gate.GatewayActivity.class);
+
+		    	intent.addFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP);
+				
 		    	Bundle intent_data = new Bundle();
 		    	intent_data.putString("UserID", UserID);
 		    	intent.putExtras(intent_data);
@@ -98,6 +116,9 @@ public class LibrarySystemActivity extends Activity {
 		    } else if (service.equals("slideshow")) {
 				String SessionID = data.getQueryParameter("SessionID");
 				Intent intent = new Intent(this, yonsei.highfive.slideshow.SlideShowActivity.class);
+
+				intent.addFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP);
+				
 				Bundle intent_data = new Bundle();
 				intent_data.putString("SessionID", SessionID);
 				intent.putExtras(intent_data);
@@ -111,6 +132,9 @@ public class LibrarySystemActivity extends Activity {
 				Intent intent = new Intent(
 						this,
 						yonsei.highfive.library.multimedia.MediaCirculationActivity.class);
+
+				intent.addFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP);
+				
 				Bundle intent_data = new Bundle();
 				intent_data.putString("mediaid", mediaid);
 				intent.putExtras(intent_data);
@@ -118,18 +142,28 @@ public class LibrarySystemActivity extends Activity {
 			}
 			else if (service.equals("cardgame")){
 				Intent intent = new Intent(this, yonsei.highfive.game.CardReverseGameActivity.class);
+
+				intent.addFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP);
+				
 				startActivity(intent);
 			}
 			else if (service.equals("player")){
 				Intent intent = new Intent(Intent.ACTION_VIEW, Uri.parse("http://mobilesw.yonsei.ac.kr/player"));
+
+				intent.addFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP);
+				
 				startActivity(intent);
 			}
 			else if (service.equals("showviewer")){
 				String SessionID = data.getQueryParameter("SessionID");
 				Intent intent = new Intent(Intent.ACTION_VIEW, Uri.parse("http://mobilesw.yonsei.ac.kr/slideshow?jxsessionid="+SessionID));
+
+				intent.addFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP);
+				
 				startActivity(intent);
 			}
 			/* 기타 시나리오 */
+			finish();
 
 		}
 
@@ -150,25 +184,34 @@ public class LibrarySystemActivity extends Activity {
 				switch(pos){
 				case 0:
 					Intent intent = new Intent(LibrarySystemActivity.this, SearchBookActivity.class);
+					intent.addFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP | Intent.FLAG_ACTIVITY_SINGLE_TOP);
 					startActivity(intent);
 					break;
 				case 1:
 					intent = new Intent(LibrarySystemActivity.this, SearchSeatActivity.class);
+					intent.addFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP | Intent.FLAG_ACTIVITY_SINGLE_TOP);
 					startActivity(intent);
 					break;
 				case 2:
 					intent = new Intent(LibrarySystemActivity.this, CardReverseGameActivity.class);
+					intent.addFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP | Intent.FLAG_ACTIVITY_SINGLE_TOP);
 					startActivity(intent);
 					break;
 				case 3:
-					startActivity(new Intent(LibrarySystemActivity.this, Settings.class));
+					intent = new Intent(LibrarySystemActivity.this, Settings.class);
+					intent.addFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP | Intent.FLAG_ACTIVITY_SINGLE_TOP);
+					startActivity(intent);
 					break;
 				case 4:
-					startActivity(new Intent(LibrarySystemActivity.this, HelpActivity.class));
+					intent = new Intent(LibrarySystemActivity.this, HelpActivity.class);
+					intent.addFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP | Intent.FLAG_ACTIVITY_SINGLE_TOP);
+					startActivity(intent);
 					break;
 				case 5:
 					break;
 				}
+				
+				
 			}
 		});
 	}

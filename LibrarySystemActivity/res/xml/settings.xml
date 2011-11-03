@@ -18,10 +18,11 @@
 		android:summary="스위치보드를 설정하세요."
 		android:defaultValue="mobilesw.yonsei.ac.kr"
 	/>
-	<CheckBoxPreference 
-		android:key="certification"
-		android:title="학사정보인증"
-		android:summary="(자동)학번과 비밀번호를 설정하세요"
+	<EditTextPreference
+		android:key="info"
+		android:title="학사정보인증방법"
+		android:summary="ID/PW 입력후 BACK버튼을 누르시면됩니다."
 		android:enabled="false"
 	/>
+	
 </PreferenceScreen>

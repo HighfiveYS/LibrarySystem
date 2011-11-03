@@ -7,11 +7,13 @@ import yonsei.highfive.R;
 import yonsei.highfive.junction.JunctionAsyncTask;
 import yonsei.highfive.library.Settings;
 import android.app.Activity;
+import android.content.Context;
 import android.content.Intent;
 import android.content.SharedPreferences;
 import android.media.MediaPlayer;
 import android.os.AsyncTask;
 import android.os.Bundle;
+import android.os.Vibrator;
 import android.preference.PreferenceManager;
 import android.view.Menu;
 import android.view.MenuInflater;
@@ -96,7 +98,9 @@ public class GatewayActivity extends Activity{
 
 									// 미디어 파일 로드
 									MediaPlayer.create(GatewayActivity.this, R.raw.ding).start();
-
+									Vibrator vibrator = (Vibrator) getSystemService(Context.VIBRATOR_SERVICE);
+									vibrator.vibrate(500);
+									
 								}
 							});
 							finish();
@@ -121,7 +125,8 @@ public class GatewayActivity extends Activity{
 
 									// 미디어 파일 로드
 									MediaPlayer.create(GatewayActivity.this, R.raw.ding).start();
-
+									Vibrator vibrator = (Vibrator) getSystemService(Context.VIBRATOR_SERVICE);
+									vibrator.vibrate(500);
 								}
 							});
 
