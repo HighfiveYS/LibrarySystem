@@ -43,10 +43,13 @@ public class SearchSeatActivity extends TabActivity implements OnClickListener{
 		clsTabHost.setCurrentTab(0);
 
 		
-		setButton();
-		
 	}
-
+	@Override
+	public void onResume(){
+		super.onResume();
+		setButton();
+	}
+	
 	// Junction Setup
 		private UserJunction actor = new UserJunction();
 
@@ -141,24 +144,24 @@ public class SearchSeatActivity extends TabActivity implements OnClickListener{
 		else if (v.getId() == R.id.Button7) temp = "1_1_7";
 		else if (v.getId() == R.id.Button8) temp = "1_1_8";
 		else if (v.getId() == R.id.Button9) temp = "1_1_9";
-		else if (v.getId() == R.id.Button10) temp = "1_2_10";
-		else if (v.getId() == R.id.Button11) temp = "1_2_11";
-		else if (v.getId() == R.id.Button12) temp = "1_2_12";
-		else if (v.getId() == R.id.Button13) temp = "1_2_13";
-		else if (v.getId() == R.id.Button14) temp = "1_2_14";
-		else if (v.getId() == R.id.Button15) temp = "1_2_15";
-		else if (v.getId() == R.id.Button16) temp = "1_2_16";
-		else if (v.getId() == R.id.Button17) temp = "1_2_17";
-		else if (v.getId() == R.id.Button18) temp = "1_2_18";
-		else if (v.getId() == R.id.Button19) temp = "2_3_19";
-		else if (v.getId() == R.id.Button20) temp = "2_3_20";
-		else if (v.getId() == R.id.Button21) temp = "2_3_21";
-		else if (v.getId() == R.id.Button22) temp = "2_3_22";
-		else if (v.getId() == R.id.Button23) temp = "2_3_23";
-		else if (v.getId() == R.id.Button24) temp = "2_3_24";
-		else if (v.getId() == R.id.Button25) temp = "2_3_25";
-		else if (v.getId() == R.id.Button26) temp = "2_3_26";
-		else if (v.getId() == R.id.Button27) temp = "2_3_27";
+		else if (v.getId() == R.id.Button10) temp = "1_2_1";
+		else if (v.getId() == R.id.Button11) temp = "1_2_2";
+		else if (v.getId() == R.id.Button12) temp = "1_2_3";
+		else if (v.getId() == R.id.Button13) temp = "1_2_4";
+		else if (v.getId() == R.id.Button14) temp = "1_2_5";
+		else if (v.getId() == R.id.Button15) temp = "1_2_6";
+		else if (v.getId() == R.id.Button16) temp = "1_2_7";
+		else if (v.getId() == R.id.Button17) temp = "1_2_8";
+		else if (v.getId() == R.id.Button18) temp = "1_2_9";
+		else if (v.getId() == R.id.Button19) temp = "2_3_1";
+		else if (v.getId() == R.id.Button20) temp = "2_3_2";
+		else if (v.getId() == R.id.Button21) temp = "2_3_3";
+		else if (v.getId() == R.id.Button22) temp = "2_3_4";
+		else if (v.getId() == R.id.Button23) temp = "2_3_5";
+		else if (v.getId() == R.id.Button24) temp = "2_3_6";
+		else if (v.getId() == R.id.Button25) temp = "2_3_7";
+		else if (v.getId() == R.id.Button26) temp = "2_3_8";
+		else if (v.getId() == R.id.Button27) temp = "2_3_9";
 
 	
 		Intent intent = new Intent(this,

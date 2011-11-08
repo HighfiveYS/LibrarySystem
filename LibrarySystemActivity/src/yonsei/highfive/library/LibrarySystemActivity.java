@@ -1,7 +1,11 @@
 package yonsei.highfive.library;
 
+import org.json.JSONException;
+import org.json.JSONObject;
+
 import yonsei.highfive.R;
 import yonsei.highfive.game.CardReverseGameActivity;
+import yonsei.highfive.junction.JunctionAsyncTask;
 import yonsei.highfive.library.circulation.SearchBookActivity;
 import yonsei.highfive.library.seat.SearchSeatActivity;
 import android.app.Activity;
@@ -11,20 +15,19 @@ import android.content.DialogInterface;
 import android.content.Intent;
 import android.content.SharedPreferences;
 import android.net.Uri;
+import android.os.AsyncTask;
 import android.os.Bundle;
 import android.preference.PreferenceManager;
 import android.view.Menu;
 import android.view.MenuInflater;
 import android.view.MenuItem;
 import android.view.View;
-import android.view.View.OnClickListener;
 import android.widget.AdapterView;
 import android.widget.AdapterView.OnItemClickListener;
-import android.widget.Button;
-import android.widget.Gallery;
-import android.widget.ImageView;
 import android.widget.RadioButton;
 import android.widget.Toast;
+import edu.stanford.junction.api.activity.JunctionActor;
+import edu.stanford.junction.api.messaging.MessageHeader;
 
 public class LibrarySystemActivity extends Activity {
 	/** Called when the activity is first created. */
@@ -52,7 +55,22 @@ public class LibrarySystemActivity extends Activity {
 									Intent setintent = new Intent(LibrarySystemActivity.this,Settings.class);
 									pref.edit().putString("id", "guest").commit();
 									pref.edit().putString("pw", "guest").commit();
-									startActivity(setintent);
+									
+									JSONObject message = new JSONObject();
+									
+									try {
+										message.put("service", "certification");
+										message.put("id","guest");
+										message.put("pw","guest");
+									} catch (JSONException e) {
+										// TODO Auto-generated catch block
+										e.printStackTrace();
+									}
+									
+									AsyncTask<JSONObject, Void, Void> mJunctionBindingAsyncTask = new JunctionAsyncTask(LibrarySystemActivity.this, actor, "db", "학사정보 인증중입니다.");
+									
+									mJunctionBindingAsyncTask.execute(message); // AsyncTask Thread 시작
+									
 								}
 							})
 							.setNegativeButton("아니오", new DialogInterface.OnClickListener() {
@@ -257,7 +275,83 @@ public class LibrarySystemActivity extends Activity {
 		RadioButton r_certification = (RadioButton)findViewById(R.id.radio_certification);
 		r_inlibrary.setChecked(pref.getBoolean("inlibrary", false));
 		r_certification.setChecked(pref.getBoolean("certification", false));
-		
+
+	}
+
+	private UserJunction actor = new UserJunction();
+
+	/**
+	 * custom Junction Actor 클래스 생성 어플리케이션에서 Actor의 Role은 user ( Java Director의
+	 * Role은 director ) onMessageReceived 핸들러를 정의함.
+	 * 
+	 * @author Lee
+	 * @issue 이 클래스를 외부에 다시 정의하여 재사용이 가능하도록 만들어야함.
+	 */
+	private class UserJunction extends JunctionActor {
+		public UserJunction() {
+			super("user");
+		}
+
+		public UserJunction(String role) {
+			super(role);
+			// TODO Auto-generated constructor stub
+		}
+
+		@Override
+		public void onMessageReceived(MessageHeader header, JSONObject message) {
+			// TODO Auto-generated method stub
+			if (message.has("accept")) {
+				try {
+					if (message.getString("accept").equals("true")) {
+						SharedPreferences pref = PreferenceManager
+								.getDefaultSharedPreferences(LibrarySystemActivity.this);
+						pref.edit().putBoolean("certification", true).commit();
+						synchronized (actor) {
+							actor.notify();
+							actor.leave();
+						}
+						runOnUiThread(new Runnable() {
+							@Override
+							public void run() {
+								// TODO Auto-generated method stub
+								Toast.makeText(LibrarySystemActivity.this, "학사인증에 성공하였습니다.",
+										Toast.LENGTH_SHORT).show();
+							}
+						});
+						LibrarySystemActivity.this.finish();
+					} else if (message.getString("accept").equals("false")) {
+						SharedPreferences pref = PreferenceManager
+								.getDefaultSharedPreferences(LibrarySystemActivity.this);
+						pref.edit().putBoolean("certification", false).commit();
+						synchronized (actor) {
+							actor.notify();
+							actor.leave();
+						}
+						runOnUiThread(new Runnable() {
+							@Override
+							public void run() {
+								// TODO Auto-generated method stub
+								Toast.makeText(LibrarySystemActivity.this, "학사인증에 실패하였습니다.",
+										Toast.LENGTH_SHORT).show();
+							}
+						});
+						LibrarySystemActivity.this.finish();
+					}
+					if (message.getString("inlibrary").equals("true")) {
+						SharedPreferences pref = PreferenceManager
+								.getDefaultSharedPreferences(LibrarySystemActivity.this);
+						pref.edit().putBoolean("inlibrary", true).commit();
+					} else if (message.getString("inlibrary").equals("false")) {
+						SharedPreferences pref = PreferenceManager
+								.getDefaultSharedPreferences(LibrarySystemActivity.this);
+						pref.edit().putBoolean("inlibrary", false).commit();
+					}
+				} catch (JSONException e) {
+					// TODO Auto-generated catch block
+					e.printStackTrace();
+				}
+			}
+		}
 	}
 
 }
