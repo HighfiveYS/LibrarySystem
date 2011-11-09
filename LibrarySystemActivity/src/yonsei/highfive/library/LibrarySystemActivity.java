@@ -18,6 +18,7 @@ import android.net.Uri;
 import android.os.AsyncTask;
 import android.os.Bundle;
 import android.preference.PreferenceManager;
+import android.telephony.TelephonyManager;
 import android.view.Menu;
 import android.view.MenuInflater;
 import android.view.MenuItem;
@@ -55,6 +56,8 @@ public class LibrarySystemActivity extends Activity {
 									Intent setintent = new Intent(LibrarySystemActivity.this,Settings.class);
 									pref.edit().putString("id", "guest").commit();
 									pref.edit().putString("pw", "guest").commit();
+									TelephonyManager tm = (TelephonyManager)getSystemService(TELEPHONY_SERVICE);
+									String IMEI = tm.getDeviceId();
 									
 									JSONObject message = new JSONObject();
 									
@@ -62,6 +65,7 @@ public class LibrarySystemActivity extends Activity {
 										message.put("service", "certification");
 										message.put("id","guest");
 										message.put("pw","guest");
+										message.put("IMEI", IMEI);
 									} catch (JSONException e) {
 										// TODO Auto-generated catch block
 										e.printStackTrace();
