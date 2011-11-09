@@ -59,7 +59,33 @@ public class JunctionAsyncTask extends AsyncTask<JSONObject, Void, Void> {
 		}
 		return null;
 	};
-
+	
+	/*
+	 * implements Junction Connection Timeout
+	 */
+	Timer timer = new Timer();
+	TimerTask task = new TimerTask() {
+		@Override
+		public void run() {
+			mDialog.cancel();
+			activity.runOnUiThread(new Runnable() {
+				@Override
+				public void run() {
+					// TODO Auto-generated method stub
+					if(activity.getLocalClassName().equals("library.Settings"))
+							activity.finish();
+					Toast.makeText(activity, "Timeout", Toast.LENGTH_LONG).show();
+					try {
+						this.finalize();
+					} catch (Throwable e) {
+						// TODO Auto-generated catch block
+						e.printStackTrace();
+					}
+				}
+			});
+		}
+	};
+	
 	@Override
 	protected void onPreExecute() {
 		if (mDialog == null) {
@@ -74,40 +100,13 @@ public class JunctionAsyncTask extends AsyncTask<JSONObject, Void, Void> {
 				}
 			});
 			mDialog.show();	
-			
-			/*
-			 * implements Junction Connection Timeout
-			 */
-			/*
-			TimerTask task = new TimerTask() {
-				@Override
-				public void run() {
-					// TODO Auto-generated method stub
-					try {
-						Thread.sleep(5000);
-						mDialog.cancel();
-						activity.runOnUiThread(new Runnable() {
-							@Override
-							public void run() {
-								// TODO Auto-generated method stub
-								if(activity.getLocalClassName().equals("library.Settings"))
-										activity.finish();
-								Toast.makeText(activity, "Timeout", Toast.LENGTH_LONG).show();
-							}
-						});
-					} catch (InterruptedException e) {
-						// TODO Auto-generated catch block
-						e.printStackTrace();
-					}
-				}
-			};
-			Timer timer = new Timer();
-			timer.schedule(task, 0);
-			*/
+			timer.schedule(task, 10000);
+		
 		}
 	}
 
 	protected void onPostExecute(Void result) {
 		mDialog.hide();
+		timer.cancel();
 	};
 }

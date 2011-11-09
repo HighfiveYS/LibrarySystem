@@ -1,26 +1,20 @@
 package yonsei.highfive.library;
 
-import java.net.URI;
-
 import org.json.JSONException;
 import org.json.JSONObject;
 
 import yonsei.highfive.R;
 import yonsei.highfive.junction.JunctionAsyncTask;
-import android.app.ProgressDialog;
-import android.content.DialogInterface;
 import android.content.SharedPreferences;
 import android.os.AsyncTask;
 import android.os.Bundle;
 import android.preference.PreferenceActivity;
 import android.preference.PreferenceManager;
+import android.telephony.TelephonyManager;
 import android.view.KeyEvent;
 import android.widget.Toast;
-import edu.stanford.junction.JunctionException;
-import edu.stanford.junction.android.AndroidJunctionMaker;
 import edu.stanford.junction.api.activity.JunctionActor;
 import edu.stanford.junction.api.messaging.MessageHeader;
-import edu.stanford.junction.provider.xmpp.XMPPSwitchboardConfig;
 
 public class Settings extends PreferenceActivity{
 
@@ -39,13 +33,15 @@ public class Settings extends PreferenceActivity{
 			SharedPreferences pref = PreferenceManager.getDefaultSharedPreferences(this);
 			String id = pref.getString("id", "");
 			String pw = pref.getString("pw", "");
-
+			TelephonyManager tm = (TelephonyManager)getSystemService(TELEPHONY_SERVICE);
+			String IMEI = tm.getDeviceId();
 			JSONObject message = new JSONObject();
 			
 			try {
 				message.put("service", "certification");
 				message.put("id",id);
 				message.put("pw",pw);
+				message.put("IMEI", IMEI);
 			} catch (JSONException e) {
 				// TODO Auto-generated catch block
 				e.printStackTrace();
