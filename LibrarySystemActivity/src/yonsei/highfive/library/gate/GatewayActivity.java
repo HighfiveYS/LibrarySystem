@@ -119,7 +119,7 @@ public class GatewayActivity extends Activity{
 								@Override
 								public void run() {
 									// TODO Auto-generated method stub
-									Toast.makeText(GatewayActivity.this, "퇴관처리 되었습니다.", Toast.LENGTH_SHORT).show();
+									Toast.makeText(GatewayActivity.this, "퇴관처리 되었습니다.", Toast.LENGTH_LONG).show();
 									SharedPreferences pref = PreferenceManager.getDefaultSharedPreferences(GatewayActivity.this);
 									pref.edit().putBoolean("inlibrary", false).commit();
 
@@ -146,7 +146,7 @@ public class GatewayActivity extends Activity{
 								@Override
 								public void run() {
 									// TODO Auto-generated method stub
-									Toast.makeText(GatewayActivity.this, "학사인증이 되어있지않습니다.", Toast.LENGTH_SHORT).show();
+									Toast.makeText(GatewayActivity.this, "학사인증이 되어있지않습니다.", Toast.LENGTH_LONG).show();
 								}
 							});
 							
