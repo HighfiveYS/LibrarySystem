@@ -1,9 +1,5 @@
 package yonsei.highfive.library.multimedia;
 
-import java.net.URI;
-import java.util.ArrayList;
-
-import org.json.JSONArray;
 import org.json.JSONException;
 import org.json.JSONObject;
 
@@ -23,7 +19,6 @@ import android.view.MenuItem;
 import android.view.View;
 import android.view.View.OnClickListener;
 import android.widget.Button;
-import android.widget.ListView;
 import android.widget.TextView;
 import android.widget.Toast;
 import edu.stanford.junction.api.activity.JunctionActor;
@@ -48,7 +43,8 @@ public class MediaCirculationActivity extends Activity implements OnClickListene
         //coding by JYP
         Button _play = (Button)findViewById(R.id.button_play);
         _play.setOnClickListener(this);
-        
+        Button _playself = (Button)findViewById(R.id.button_playself);
+        _playself.setOnClickListener(this);
         // MediaSpec 생성
         media = new MediaSpec();
         
@@ -139,6 +135,22 @@ public class MediaCirculationActivity extends Activity implements OnClickListene
 				Bundle intent_data = new Bundle();
 				intent_data.putString("url", url);
 				intent.putExtras(intent_data);
+				startActivity(intent);
+				
+			}
+			
+			else if(v.getId() == R.id.button_playself){
+				SharedPreferences pref = PreferenceManager.getDefaultSharedPreferences(MediaCirculationActivity.this);
+				if(!pref.getBoolean("certification", false)){
+					Toast.makeText(this, "학사 인증이 되어있지 않습니다.", Toast.LENGTH_SHORT).show();
+					return;
+				}
+				if(!pref.getBoolean("inlibrary", false)){
+					Toast.makeText(this, "도서관에 입장한 상태가 아닙니다.", Toast.LENGTH_SHORT).show();
+					return;
+				}
+				String url = media.getMedialink();
+				Intent intent = new Intent(Intent.ACTION_VIEW, Uri.parse(url));
 				startActivity(intent);
 				
 			}

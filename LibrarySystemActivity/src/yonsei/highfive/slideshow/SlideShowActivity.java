@@ -28,6 +28,7 @@ import edu.stanford.junction.provider.xmpp.XMPPSwitchboardConfig;
 public class SlideShowActivity extends Activity implements OnClickListener{
 
 	private Nfc mNfc = null;
+	private String SessionID = null;
 	
 	@Override
 	protected void onCreate(Bundle savedInstanceState) {
@@ -37,7 +38,7 @@ public class SlideShowActivity extends Activity implements OnClickListener{
 		
 		Intent intent = getIntent();
 		Bundle intent_data = intent.getExtras();
-	    String SessionID = intent_data.getString("SessionID");
+	    SessionID = intent_data.getString("SessionID");
 	    SharedPreferences pref = PreferenceManager.getDefaultSharedPreferences(this);
 	    String switchboard = pref.getString("switchboard", "mobilesw.yonsei.ac.kr"); 
 		XMPPSwitchboardConfig config =  new XMPPSwitchboardConfig(switchboard);
@@ -50,8 +51,18 @@ public class SlideShowActivity extends Activity implements OnClickListener{
 			e.printStackTrace();
 		}
 		Toast.makeText(this, "세션 연결 성공!", Toast.LENGTH_LONG).show();
-		
+		JSONObject message = new JSONObject();
 
+		try {
+			message.put("service","openurl");
+			message.put("url","http://mobilesw.yonsei.ac.kr/slideshow?SessionID="+SessionID);
+		} catch (JSONException e) {
+			// TODO Auto-generated catch block
+			e.printStackTrace();
+		}
+		actor.sendMessageToSession(message);
+		
+		
 		 /*
         * NFC 공유를 설정하는 부분
         * ( onPause와 onResume을 오버라이딩 해야한다. )
@@ -81,6 +92,15 @@ public class SlideShowActivity extends Activity implements OnClickListener{
 		// TODO Auto-generated method stub
 		super.onPause();
 		mNfc.onPause(this);
+		JSONObject message = new JSONObject();
+
+		try {
+			message.put("service","exit");
+		} catch (JSONException e) {
+			// TODO Auto-generated catch block
+			e.printStackTrace();
+		}
+		actor.sendMessageToSession(message);
 	}
 
 	@Override

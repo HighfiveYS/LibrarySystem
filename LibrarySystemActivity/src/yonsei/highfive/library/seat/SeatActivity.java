@@ -86,7 +86,7 @@ public class SeatActivity extends Activity implements OnClickListener {
         _occupy.setOnClickListener(this);
         _return2.setOnClickListener(this);
         _extent.setOnClickListener(this);
-  
+        
         // 설정에서 Switchboard 호스트를 불러와 config 설정 
 		SharedPreferences pref = PreferenceManager.getDefaultSharedPreferences(this);
 		switchboard = pref.getString("switchboard", "mobilesw.yonsei.ac.kr"); 

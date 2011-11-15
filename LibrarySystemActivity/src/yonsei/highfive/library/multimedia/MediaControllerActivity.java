@@ -8,14 +8,11 @@ import org.json.JSONException;
 import org.json.JSONObject;
 
 import yonsei.highfive.R;
-import yonsei.highfive.junction.JunctionAsyncTask;
-import yonsei.highfive.library.Settings;
 import android.app.Activity;
 import android.content.Intent;
 import android.content.SharedPreferences;
 import android.nfc.NdefMessage;
 import android.nfc.NdefRecord;
-import android.os.AsyncTask;
 import android.os.Bundle;
 import android.preference.PreferenceManager;
 import android.view.KeyEvent;
@@ -40,6 +37,7 @@ public class MediaControllerActivity extends Activity{
 			JSONObject msg = new JSONObject();
 			try {
 				msg.put("action", "return");
+				msg.put("service", "exit");
 			} catch (JSONException e) {
 				// TODO Auto-generated catch block
 				e.printStackTrace();
@@ -65,7 +63,7 @@ public class MediaControllerActivity extends Activity{
         mNfc.share(uriMessage);
         
         
-        
+		
         Button _play = (Button)findViewById(R.id.play);
         Button _pause = (Button)findViewById(R.id.pause);
         Button _stop = (Button)findViewById(R.id.stop);
@@ -132,10 +130,20 @@ public class MediaControllerActivity extends Activity{
 		String switchboard = pref.getString("switchboard", "mobilesw.yonsei.ac.kr"); 
 		XMPPSwitchboardConfig config =  new XMPPSwitchboardConfig(switchboard);
 		
-		URI jxSession = URI.create("junction://"+switchboard+"/"+"player");
+		URI jxSession = URI.create("http://"+switchboard+"/"+"hf");
 		try {
 			AndroidJunctionMaker.getInstance(config).newJunction(jxSession,	controller);
 			Toast.makeText(this, "Session Connect", Toast.LENGTH_SHORT).show();
+
+	        JSONObject msg = new JSONObject();
+			try {
+				msg.put("service", "openurl");
+				msg.put("url", "http://mobilesw.yonsei.ac.kr/player?jxsessionid=hf");
+			} catch (JSONException e2) {
+				// TODO Auto-generated catch block
+				e2.printStackTrace();
+			}
+			controller.sendMessageToSession(msg);
 		} catch (JunctionException e1) {
 			// TODO Auto-generated catch block
 			e1.printStackTrace();
@@ -144,6 +152,7 @@ public class MediaControllerActivity extends Activity{
 		Intent intent = getIntent();
         Bundle intent_data = intent.getExtras();
         String url = intent_data.getString("url");
+        
         JSONObject msg = new JSONObject();
         try {
         	msg.put("action", "load");

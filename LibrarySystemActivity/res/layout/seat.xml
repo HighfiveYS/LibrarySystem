@@ -20,4 +20,5 @@
         <Spinner android:prompt="@string/hour_prompt" android:layout_height="wrap_content" android:id="@+id/spinner_hour" android:layout_width="wrap_content"></Spinner>
         <Button android:textSize="30dp" android:layout_height="wrap_content" android:id="@+id/button_extent" android:text="연장" android:layout_width="wrap_content"></Button>
     </LinearLayout>
+
 </LinearLayout>

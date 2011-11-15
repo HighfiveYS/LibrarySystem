@@ -35,7 +35,7 @@
 				<data android:scheme="http" android:host="mobilesw.yonsei.ac.kr"/>
 			 </intent-filter>
         </activity>
-        <activity android:name=".library.circulation.CirculationActivity" android:screenOrientation="portrait" android:clearTaskOnLaunch="true" android:launchMode="singleTop"></activity>
+        <activity android:name=".library.circulation.CirculationActivity" android:screenOrientation="portrait"></activity>
         <activity android:name=".library.Settings" android:screenOrientation="portrait"></activity>
 		<activity android:name=".library.circulation.SearchBookActivity" android:screenOrientation="portrait"></activity>
 		<activity android:name=".library.seat.SeatActivity" android:screenOrientation="portrait"></activity>
