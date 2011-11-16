@@ -6,7 +6,7 @@
 	<classpathentry kind="lib" path="lib/easynfc-0.3-SNAPSHOT.jar"/>
 	<classpathentry kind="lib" path="lib/JAVAJunction-0.6.7-SNAPSHOT.jar"/>
 	<classpathentry kind="src" path="src"/>
-	<classpathentry kind="src" path="gen"/>
 	<classpathentry kind="con" path="com.android.ide.eclipse.adt.LIBRARIES"/>
+	<classpathentry kind="src" path="gen"/>
 	<classpathentry kind="output" path="bin/classes"/>
 </classpath>
